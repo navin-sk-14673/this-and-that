@@ -1,0 +1,261 @@
+@use 'sass:color';
+@import '../abstracts/util';
+
+button.btn-c2a {
+	height: 40px;
+	@include flex-box(center, center, $inline: true);
+	font-size: var(--font-size__s);
+	padding: 8px 16px;
+	@include border-radius(var(--border-radius__m));
+	@include transition((transform 0.15s ease, color 0.15s ease, background-color 0.15s ease));
+	&:disabled {
+		cursor: not-allowed;
+	}
+	&:active:not(:disabled) {
+		@include transform(scale(0.95));
+	}
+}
+button.btn-primary {
+	@extend .btn-c2a;
+	color: var(--color-primary-text);
+	background-color: var(--color-primary);
+	&:focus,
+	&:hover {
+		background-color: var(--color-primary--hover);
+	}
+	&:disabled {
+		background-color: var(--color-primary--disabled);
+	}
+}
+button.btn-danger {
+	@extend .btn-c2a;
+	color: var(--color-text-on-primary);
+	background-color: var(--color-negative);
+	&:focus,
+	&:hover {
+		background-color: var(--color-negative--hover);
+	}
+	&:disabled {
+		background-color: var(--color-negative--disabled);
+	}
+}
+button.btn-danger-sec {
+	@extend .btn-c2a;
+	color: var(--color-negative);
+	&:focus,
+	&:hover {
+		color: var(--color-text-on-primary);
+		background-color: var(--color-negative--hover);
+	}
+	&:disabled {
+		background-color: var(--color-negative--disabled);
+	}
+}
+button.btn-sec {
+	@extend .btn-c2a;
+	color: var(--color-primary);
+	background-color: var(--background-color-sec-button);
+	&:focus,
+	&:hover {
+		background-color: var(--background-color-sec-button--hover);
+	}
+}
+.btn-sec-wrapper {
+	position: relative;
+	@include flex-box($inline: true);
+
+	> .btn-sec-loader {
+		@extend .btn-sec;
+		@include absolute--center;
+
+		visibility: hidden;
+		&.show {
+			visibility: visible;
+		}
+
+		&:active {
+			@include transform(none !important);
+		}
+
+		&::after {
+			--border-color: var(--color-primary);
+
+			content: '';
+			@include dimension--square(24px);
+			@include border(3px solid, 50%);
+			border-color: var(--border-color) var(--border-color) transparent transparent;
+			margin: 0 auto;
+
+			@include transition(0.3s);
+			@include animation-frames(1s linear infinite) {
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		}
+	}
+}
+
+button.btn-sec-low {
+	@extend .btn-c2a;
+	color: #e2e2e2;
+	background-color: #307fb8;
+	&:focus,
+	&:hover {
+		background-color: #296b9a;
+	}
+}
+button.btn-icon-sec {
+	@extend .btn-sec;
+
+	@include dimension--square(32px);
+	padding: 0;
+	color: var(--color-primary--selected);
+	background-color: transparent;
+
+	&:focus,
+	&:hover {
+		color: var(--color-primary--hover);
+		// background-color: var(--background-color-primary--selected);
+		// background-color: var(--background-color-primary--hover); // old
+		background-color: rgba(215, 219, 235, 0.1);
+	}
+	&:disabled {
+		color: hsl(237deg 6.21% 57.14%);
+		background-color: var(--background-color-sec-button);
+	}
+	> * {
+		margin: auto;
+	}
+}
+button.btn-icon-sec__m {
+	@extend .btn-icon-sec;
+	@include dimension--square(24px);
+	@include border-radius(var(--border-radius__s));
+	padding: 0;
+	> * {
+		margin: auto;
+	}
+}
+button.btn-icon-sec__s {
+	@extend .btn-icon-sec;
+	@include dimension--square(20px);
+	@include border-radius(var(--border-radius__s));
+	padding: 0;
+	> * {
+		margin: auto;
+	}
+}
+
+button.btn-tertiary {
+	@extend .btn-c2a;
+	color: var(--color-text-tertiary);
+	background-color: #fff;
+	border: 1px solid var(--background-color-tertiary);
+	font-size: 15px;
+
+	&:focus,
+	&:hover {
+		color: var(--color-text-tertiary--hover);
+		border: 1px solid var(--background-color-tertiary--hover);
+		background-color: var(--background-color-tertiary--hover);
+	}
+	&:disabled {
+		color: var(--color-text-tertiary--disabled);
+		border-color: #0000;
+		background-color: var(--background-color-tertiary--disabled);
+	}
+}
+
+button.button-c2a:disabled {
+	cursor: not-allowed;
+}
+button.button-c2a:active {
+	@include transform(scale(0.95));
+}
+
+.clsc-input-text {
+	display: block;
+	@include dimension--box(100%, 34px);
+	@include border(1px solid var(--border-color-input-field), var(--border-radius__s));
+	padding: 4px 12px;
+	font-size: var(--font-size__s);
+
+	&:hover {
+		border-color: var(--color-sec-text);
+	}
+	&:focus {
+		border-color: var(--color-primary);
+		background: #fff;
+	}
+	&:disabled {
+		border-color: var(--color-optional-text);
+		color: var(--color-sec-text);
+		cursor: not-allowed;
+
+		&:hover,
+		&:focus {
+			border-color: var(--color-optional-text);
+		}
+	}
+	@include placeholder {
+		color: var(--color-placeholder);
+		font-size: var(--font-size__s);
+	}
+}
+.clsc-static-text-field {
+	@include border(1px solid var(--border-color-input-field), var(--border-radius__s));
+	padding: 4px 12px;
+	font-size: var(--font-size__s);
+	cursor: text;
+	@include user-select(text);
+
+	&:hover {
+		border-color: var(--color-sec-text);
+	}
+	&:focus {
+		border-color: var(--color-primary);
+		background: #fff;
+	}
+	&:disabled {
+		border-color: var(--color-optional-text);
+		color: var(--color-sec-text);
+		cursor: not-allowed;
+
+		&:hover,
+		&:focus {
+			border-color: var(--color-optional-text);
+		}
+	}
+	@include placeholder {
+		color: var(--color-placeholder);
+		font-size: var(--font-size__s);
+	}
+}
+
+:root {
+	$scrollbar-width: 4px; // for vertical scrolbar
+	$scrollbar-height: 4px; // for horizontal scrolbar
+	$scrollbar-thumb-color: hsl(0, 0%, 66%);
+	$scrollbar-thumb-color--hover: hsl(0, 0%, 60%);
+	$scrollbar-thumb-radius: 16px;
+	$scrollbar-track-piece-color: hsla(0, 0%, 0%, 0);
+
+	scrollbar-width: $scrollbar-width;
+	scrollbar-color: $scrollbar-thumb-color $scrollbar-track-piece-color;
+
+	::-webkit-scrollbar {
+		width: $scrollbar-width;
+		height: $scrollbar-height;
+	}
+	::-webkit-scrollbar-track-piece {
+		background-color: $scrollbar-track-piece-color;
+	}
+	::-webkit-scrollbar-thumb {
+		@include border-radius($scrollbar-thumb-radius);
+		background-color: $scrollbar-thumb-color;
+		&:hover {
+			background-color: $scrollbar-thumb-color--hover;
+		}
+	}
+}

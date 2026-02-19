@@ -1,0 +1,28 @@
+@import '../abstracts/util';
+
+.input-text {
+	@include dimension--box(100%, 40px);
+}
+.input-number {
+	@include dimension--box(126px, 40px);
+}
+.input-textarea {
+	@include dimension--box(100%, 112px);
+	padding: 12px 16px;
+}
+.input-text-sec {
+	font-size: var(--font-size__s);
+	padding: 8px 12px;
+	@include border(1px solid, 4px);
+	border-color: var(--border-color-input-field);
+
+	&:hover {
+		border-color: var(--color-sec-text);
+	}
+	&:focus {
+		border-color: var(--color-primary);
+	}
+	@include placeholder {
+		color: var(--color-placeholder);
+	}
+}

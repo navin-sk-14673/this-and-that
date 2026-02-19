@@ -1,0 +1,336 @@
+@mixin vendor-prefixer($property, $value, $prefixes) {
+	// 'null' value is ignored by sass while compilation, but lets just check
+	@if $value != null {
+		@each $prefix in $prefixes {
+			-#{$prefix}-#{$property}: $value;
+		}
+		#{$property}: $value;
+	}
+}
+
+@mixin headings {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@content;
+	}
+}
+
+@mixin user-select($value) {
+	@include vendor-prefixer(user-select, $value, ('webkit', 'moz', 'ms'));
+}
+
+@mixin appearance($value) {
+	@include vendor-prefixer(appearance, $value, ('webkit', 'moz'));
+}
+
+// refer for properties that are supported ==>> https://developer.mozilla.org/en-US/docs/Web/CSS/::selection#try_it
+@mixin selection {
+	&::-moz-selection {
+		@content;
+	}
+	&::selection {
+		@content;
+	}
+}
+
+@mixin object-fit($value) {
+	@include vendor-prefixer(object-fit, $value, ('o'));
+}
+
+@mixin perspective($value) {
+	@include vendor-prefixer(perspective, $value, ('webkit', 'moz', 'ms'));
+}
+
+@mixin box-sizing($value) {
+	@include vendor-prefixer(box-sizing, $value, ('webkit', 'moz'));
+}
+
+@mixin box-shadow($value) {
+	@include vendor-prefixer(box-shadow, $value, ('webkit', 'moz'));
+}
+
+@mixin filter($value) {
+	@include vendor-prefixer(filter, $value, ('webkit'));
+}
+
+@mixin backdrop-filter($value) {
+	@include vendor-prefixer(backdrop-filter, $value, ('webkit'));
+}
+
+@mixin transform($value) {
+	@include vendor-prefixer(transform, $value, ('webkit', 'moz', 'ms', 'o'));
+}
+
+@mixin transition($value) {
+	@include vendor-prefixer(transition, $value, ('webkit', 'moz', 'ms', 'o'));
+}
+
+@mixin animation($value) {
+	@include vendor-prefixer(animation, $value, ('webkit', 'moz', 'o'));
+}
+@mixin animation-prop($property, $value) {
+	@include vendor-prefixer(animation-#{$property}, $value, ('webkit', 'moz', 'o'));
+}
+
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+	@-o-keyframes #{$name} {
+		@content;
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+@mixin animation-frames($value) {
+	$name: unique-id();
+	@include animation($name $value);
+	@include keyframes($name) {
+		@content;
+	}
+}
+
+@mixin border($border, $radius) {
+	border: $border;
+	@include border-radius($radius);
+}
+@mixin border-radius($value) {
+	@include vendor-prefixer(border-radius, $value, ('webkit', 'moz', 'ms', 'o'));
+}
+
+@mixin margin($top: null, $right: null, $bottom: null, $left: null) {
+	margin-top: $top;
+	margin-right: $right;
+	margin-bottom: $bottom;
+	margin-left: $left;
+}
+
+@mixin resize($value) {
+	@include vendor-prefixer(resize, $value, ('moz'));
+}
+
+@mixin position($value: null, $top: null, $right: null, $bottom: null, $left: null) {
+	position: $value;
+	@include inset($top, $right, $bottom, $left);
+}
+@mixin inset($top: null, $right: null, $bottom: null, $left: null) {
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
+}
+// vertical includes 'top' & 'bottom', and horizontal includes 'left' & 'right'
+@mixin absolute--center($vertical: null, $horizontal: null) {
+	@include position(absolute, 0, 0, 0, 0);
+	margin: auto;
+
+	@if $vertical != null {
+		@if $vertical == top {
+			bottom: auto;
+		} @else if $vertical == bottom {
+			top: auto;
+		}
+	}
+	@if $horizontal != null {
+		@if $horizontal == left {
+			right: auto;
+		} @else if $horizontal == right {
+			left: auto;
+		}
+	}
+}
+
+@mixin dimension--box($width: null, $height: null, $ratio: null) {
+	@if $width == null or $height == null {
+		@if $width == null and $height != null and $ratio != null {
+			$width: $height * $ratio;
+		} @else if $height == null and $width != null and $ratio != null {
+			$height: $width * $ratio;
+		} @else {
+			$width: if($width != null, $width, auto);
+			$height: if($height != null, $height, auto);
+		}
+		@include dimension--box($width, $height);
+	} @else {
+		width: $width;
+		height: $height;
+	}
+}
+@mixin dimension--square($length) {
+	@include dimension--box($length, $length);
+}
+@mixin width-curb($min: null, $width: null, $max: null) {
+	min-width: $min;
+	width: $width;
+	max-width: $max;
+}
+@mixin height-curb($min: null, $height: null, $max: null) {
+	min-height: $min;
+	height: $height;
+	max-height: $max;
+}
+@mixin width--fill-available {
+	width: 100%;
+	width: -moz-available;
+	width: -webkit-fill-available;
+	width: fill-available;
+}
+@mixin width--fit-content {
+	@include vendor-prefixer(width, fit-content, ('webkit'));
+}
+@mixin height--fit-content {
+	@include vendor-prefixer(height, fit-content, ('webkit'));
+}
+
+@mixin flex-box(
+	$align-items: null,
+	$justify-content: null,
+	$flex-direction: null,
+	$gap: null,
+	$flex-wrap: null,
+	$inline: false
+) {
+	$display: if($inline, inline-flex, flex);
+	@include vendor-prefixer(display, $display, ('webkit', 'moz', 'ms', 'o'));
+	@include vendor-prefixer(align-items, $align-items, ('webkit'));
+	@include vendor-prefixer(justify-content, $justify-content, ('webkit'));
+	@include vendor-prefixer(flex-direction, $flex-direction, ('ms'));
+	gap: $gap;
+	@include flex-wrap($flex-wrap);
+	@content;
+}
+@mixin flex-box--order($value) {
+	@include vendor-prefixer(order, $value, ('webkit', 'ms'));
+}
+@mixin flex-wrap($value) {
+	@include vendor-prefixer(flex-wrap, $value, ('webkit'));
+}
+%flex-center {
+	@include flex-box(center, center);
+}
+
+@mixin grid-container($gap: null, $inline: false) {
+	$display: if($inline, inline-grid, grid);
+	@include vendor-prefixer(display, $display, ('ms'));
+	@include grid-gap($gap);
+	@content;
+}
+@mixin grid-gap($value) {
+	grid-gap: $value;
+	gap: $value;
+}
+
+@mixin writing-mode($value) {
+	@include vendor-prefixer(writing-mode, $value, ('webkit', 'ms'));
+}
+
+@mixin background-clip($value) {
+	@include vendor-prefixer(background-clip, $value, ('webkit', 'moz'));
+}
+
+@mixin background-clip--text {
+	@include vendor-prefixer(background-clip, text, ('webkit', 'ms'));
+}
+@mixin text-fill-color($value) {
+	-webkit-text-fill-color: $value;
+}
+
+@mixin text-size-adjust($value) {
+	@include vendor-prefixer(text-size-adjust, $value, ('webkit', 'moz', 'ms'));
+}
+
+@mixin line-clamp($value) {
+	@include vendor-prefixer(line-clamp, $value, ('webkit'));
+}
+
+@mixin box-orient($value) {
+	@include vendor-prefixer(box-orient, $value, ('webkit', 'moz', 'ms'));
+}
+
+@mixin placeholder {
+	&:-webkit-input-placeholder {
+		@content;
+	}
+	&::-webkit-input-placeholder {
+		@content;
+	}
+	&::-moz-placeholder {
+		@content;
+	}
+	&:-ms-input-placeholder {
+		@content;
+	}
+	&::-ms-input-placeholder {
+		@content;
+	}
+	&::placeholder {
+		@content;
+	}
+}
+
+@mixin placeholder-shown {
+	&:-moz-placeholder {
+		@content;
+	}
+	&:-ms-input-placeholder {
+		@content;
+	}
+	&:placeholder-shown {
+		@content;
+	}
+}
+
+@mixin autofill {
+	&:-webkit-autofill {
+		@content;
+	}
+	&:autofill {
+		@content;
+	}
+}
+
+%truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+%tap-on-highlight--disable {
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Disable scrollbar */
+%scrollbar--disable {
+	/* Internet Explorer 10+ */
+	-ms-overflow-style: none;
+	/* Firefox */
+	scrollbar-width: none;
+	/* Webkit browsers */
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@mixin input-number-spin-button {
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		@content;
+	}
+}
+
+%input-number-spin-button--hide {
+	@include input-number-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	-moz-appearance: textfield;
+}

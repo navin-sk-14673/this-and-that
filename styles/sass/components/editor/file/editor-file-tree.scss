@@ -1,0 +1,28 @@
+@import '../../../abstracts/util';
+
+.editor-file-tree-container {
+	$scrollbar-width: 2px;
+	$scrollbar-height: 2px;
+	$scrollbar-thumb-color: rgba(215, 219, 235, 0.4);
+	$scrollbar-thumb-radius: 16px;
+	$scrollbar-track-piece-color: rgba(215, 219, 235, 0.1);
+
+	scrollbar-width: $scrollbar-width;
+	scrollbar-color: $scrollbar-thumb-color $scrollbar-track-piece-color;
+
+	&::-webkit-scrollbar {
+		width: $scrollbar-width;
+		height: $scrollbar-height;
+	}
+	&::-webkit-scrollbar-track-piece {
+		background-color: $scrollbar-track-piece-color;
+	}
+	&::-webkit-scrollbar-thumb {
+		@include border-radius($scrollbar-thumb-radius);
+		background-color: $scrollbar-thumb-color;
+	}
+
+	@include grid-container(4px) {
+		grid-template-columns: 210px;
+	}
+}

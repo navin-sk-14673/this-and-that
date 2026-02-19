@@ -1,0 +1,113 @@
+<template
+	tag-name="main-container"
+	lyte-comp="true"
+	class="h-full">
+	<!-- <lyte-modal
+		lt-prop-aria="true"
+		lt-prop-show="true"
+		lt-prop-overlay-close="true"
+		lt-prop-close-on-escape="true"
+		lt-prop-allow-multiple="true"
+		lt-prop='{ "transition": { "animation": "fadeIn" } }'
+		lt-prop-wrapper-class="clsc-modal-base clsc-modal-center">
+		<template
+			is="registerYield"
+			yield-name="modal">
+			<file-creator-modal></file-creator-modal>
+		</template>
+	</lyte-modal> -->
+	<div class="main-container flex h-full">
+		<div class="pb-2 pl-2 shrink-0">
+			<div class="h-full flex-col">
+				<div class="flex items-center">
+					<h4 class="sticky top-0 text-title">PenPal</h4>
+					<div class="ml-auto flex">
+						<button
+							lt-prop-title="New Comparator File"
+							lt-prop-tooltip-class="clsc-text-tooltip clsc-text-tooltip--dark"
+							lt-prop-tooltip-config='{"position": "bottom", "keeptooltip" : true, "startClass": "clsc-tooltip-start", "animationClass": "clsc-tooltip-animation", "endClass": "clsc-tooltip-end"}'
+							class="btn-icon-sec"
+							onclick="{{action('onCreateComparatorFileClick')}}">
+							<svg-icon
+								icon-name="file-compare"
+								icon-size="m"
+								svg-class="fill-primary stroke-0.5"></svg-icon>
+						</button>
+						<button
+							lt-prop-title="New Editor File"
+							lt-prop-tooltip-class="clsc-text-tooltip clsc-text-tooltip--dark"
+							lt-prop-tooltip-config='{"position": "bottom", "keeptooltip" : true, "startClass": "clsc-tooltip-start", "animationClass": "clsc-tooltip-animation", "endClass": "clsc-tooltip-end"}'
+							class="btn-icon-sec"
+							onclick="{{action('onCreateFileClick')}}">
+							<svg-icon
+								icon-name="file"
+								icon-size="m"
+								svg-class="stroke-primary stroke-0.5"></svg-icon>
+							<!-- fill-primary -->
+						</button>
+					</div>
+				</div>
+				<editor-file-tree
+					id="editor-file-tree"
+					files="{{files}}"
+					class="grow min-h-0"></editor-file-tree>
+				<div class="flex-col pt-1">
+					<div class="flex items-center">
+						<button class="btn-primary">
+							<svg-icon
+								icon-name="cog"
+								icon-size="l"
+								svg-class="fill-primary stroke-0.5"></svg-icon>
+						</button>
+					</div>
+					<!-- <button class="btn-primary">
+                            <div class="w-full flex items-center gap-1">
+                                <svg-icon
+                                    icon-name="plus"
+                                    icon-size="l"
+                                    svg-class="stroke-primary fill-primary stroke-3"></svg-icon>
+                                <span>New Editor File</span>
+                            </div>
+                        </button> -->
+					<!-- <button class="btn-primary mt-1">
+                            <div class="w-full flex items-center gap-1">
+                                <span>Settings</span>
+                                <span
+                                    class="ml-auto"
+                                    style="color: #ececec">
+                                    <kbd class="flex-center gap-1 text-xs">
+                                        <span class="text-l">⌥</span>
+                                        <span>+</span>
+                                        <span>N</span>
+                                    </kbd>
+                                </span>
+                            </div>
+                        </button> -->
+					<!-- <h4 class="no-margin text-title">Theme</h4>
+                        <clsc-template-dropdown
+                            data="{{editorThemes}}"
+                            placeholder="Choose Theme"
+                            active-option-index="{{currentThemeIndex}}"
+                            on-select="{{method('onThemeSelect')}}">
+                            <template
+                                is="yield"
+                                yield-name="lyte-drop-button">
+                                <div class="flex-center gap-1.5">{{selected.name}}</div>
+                            </template>
+                            <template
+                                is="yield"
+                                yield-name="lyte-drop-item">
+                                <div class="">{{item.name}}</div>
+                            </template>
+                        </clsc-template-dropdown> -->
+				</div>
+			</div>
+		</div>
+		<div class="editor-area-container grow flex">
+			<editor-container
+				monaco="{{monaco}}"
+				files="{{files}}"
+				class="wh-full"></editor-container>
+		</div>
+	</div>
+</template>

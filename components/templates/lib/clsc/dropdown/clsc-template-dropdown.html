@@ -1,0 +1,41 @@
+<template
+	tag-name="clsc-template-dropdown"
+	lyte-comp="true">
+	<lyte-dropdown
+		class="block w-full"
+		lt-prop-freeze="false"
+		on-show="{{method('isOpen', true)}}"
+		on-hide="{{method('isOpen', false)}}"
+		lt-prop-selected="{{activeOptionIndex}}"
+		lt-prop-disabled="{{disabled}}"
+		on-option-selected="{{method('onOptionSelected')}}">
+		<template
+			is="registerYield"
+			yield-name="yield">
+			<lyte-drop-button class="flex items-center justify-between gap-1">
+				<lyte-yield
+					yield-name="lyte-drop-button"
+					is-open="{{isOpen}}"
+					placeholder="{{activeOptionIndex == undefined ? placeholder : undefined}}"
+					selected="{{data[activeOptionIndex]}}"></lyte-yield>
+				<svg-icon
+					class="duration-300 {{if(isOpen, 'rotate-180', 'rotate-0')}}"
+					svg-class="stroke-primary"
+					icon-name="chevron-down"
+					icon-size="m"></svg-icon>
+			</lyte-drop-button>
+			<lyte-drop-box class="clsc-drop-box">
+				<lyte-drop-body>
+					<lyte-drop-item
+						lyte-for="{{data}} as item index"
+						data-value="{{index}}">
+						<lyte-yield
+							yield-name="lyte-drop-item"
+							item-index="{{index}}"
+							item="{{item}}"></lyte-yield>
+					</lyte-drop-item>
+				</lyte-drop-body>
+			</lyte-drop-box>
+		</template>
+	</lyte-dropdown>
+</template>

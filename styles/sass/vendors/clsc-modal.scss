@@ -1,0 +1,92 @@
+@import '../abstracts/util';
+
+// .clsc-modal-h-full {
+// 	.lyteModal {
+// 		height: 100% !important;
+// 	}
+// }
+// .clsc-modal-base.clsc-modal-w-30 > .lyteModal {
+// 	@include width-curb($min: 362px, $width: 30% !important, $max: 536px);
+// }
+// .clsc-modal-base.clsc-modal-w-50 > .lyteModal {
+// 	@include width-curb($min: 362px, $width: 50% !important, $max: 536px);
+// }
+
+// .clsc-modal-base {
+// 	.lyteModal {
+// 		@include box-shadow(var(--box-shadow__l));
+// 		background-color: var(--background-color-primary);
+// 		@include transition(0.2s);
+// 	}
+// 	.lyteModal > lyte-yield {
+// 		height: 100%;
+// 		padding: 32px;
+// 	}
+// 	> lyte-modal-freeze {
+// 		@include transition(0.2s);
+// 		background-color: var(--background-color-modal-freeze);
+// 	}
+// }
+// .clsc-modal-center {
+// 	.lyteModal {
+// 		@include border-radius(var(--border-radius__l));
+// 	}
+// 	&.modalWrapper {
+// 		.lyteModal {
+// 			opacity: 0;
+// 			@include transform(scale(0.95));
+// 		}
+// 		.lyteModalFadeIn {
+// 			opacity: 1;
+// 			@include transform(scale(1));
+// 		}
+// 	}
+// }
+// .clsc-modal-right {
+// 	.lyteModal {
+// 		border-top-left-radius: var(--border-radius__l);
+// 		border-bottom-left-radius: var(--border-radius__l);
+// 		margin-left: auto;
+// 	}
+// 	&.modalWrapper {
+// 		.lyteModal {
+// 			opacity: 0;
+// 			@include transform(translateX(100%));
+// 		}
+// 		.lyteModalFadeIn {
+// 			opacity: 1;
+// 			@include transform(translateX(0));
+// 		}
+// 	}
+// }
+
+// .clsc-modal-level-3 {
+// 	z-index: 5;
+// }
+
+// .clsc-modal {
+// 	.lyteModal {
+// 		@include width-curb($min: 362px, $width: 50% !important, $max: 536px);
+// 		@include border-radius(var(--border-radius__l));
+// 		@include box-shadow(var(--box-shadow__l));
+// 		background-color: var(--background-color-body);
+// 		@include transition(0.2s);
+// 	}
+// 	.lyteModal > lyte-yield {
+// 		padding: 32px;
+// 	}
+// 	> lyte-modal-freeze {
+// 		@include transition(0.2s);
+// 		background-color: var(--background-color-modal-freeze);
+// 	}
+// 	&.modalWrapper {
+// 		.lyteModal {
+// 			opacity: 0;
+// 			@include transform(scale(0.95));
+// 		}
+// 		.lyteModalFadeIn {
+// 			opacity: 1;
+// 			@include transform(scale(1));
+// 		}
+// 	}
+// }

@@ -1,0 +1,35 @@
+@import '../abstracts/util';
+
+.two-radio-switch-holder {
+	--color-primary: rgb(145 169 255);
+	--color-primary: rgb(100 134 255);
+
+	@include flex-box($inline: true);
+	@include border(1px solid var(--color-primary), 8px);
+	overflow: hidden;
+	background-color: rgba(255, 255, 255, 0.74);
+}
+label.two-radio-switch-label {
+	cursor: pointer;
+}
+input[type='radio'].two-radio-switch {
+	&:hover:not(:checked) + .two-radio-switch-label-text {
+		background-color: rgb(184 199 255 / 32%);
+	}
+	&:checked + .two-radio-switch-label-text {
+		color: #fff;
+		background-color: var(--color-primary);
+	}
+	&:active + .two-radio-switch-label-text {
+		@include transform(scale(0.96));
+	}
+}
+.two-radio-switch-label-text {
+	height: 36px;
+	@include flex-box(center);
+
+	@include transition((transform 0.15s ease, background-color 0.15s ease, color 0.15s ease));
+	padding: 4px 16px;
+	color: var(--color-primary-text);
+	color: #3a62f0;
+}

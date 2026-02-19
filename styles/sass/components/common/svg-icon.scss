@@ -1,0 +1,5 @@
+@import '../../abstracts/util';
+
+svg-icon[lyte-comp] {
+	@include flex-box(center, center, $inline: true);
+}

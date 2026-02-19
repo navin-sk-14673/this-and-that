@@ -1,0 +1,17 @@
+<template
+	tag-name="editor-container"
+	lyte-comp="true">
+	<template lyte-if="{{monaco}}">
+		<template lyte-for="{{files}} as file">
+			<div
+				lyte-if="{{!file.isCreate}}"
+				class="h-full {{if(file.id == viewId, 'flex', 'hidden')}}">
+				<editor-view
+					is-active="{{file.id == viewId}}"
+					file="{{file}}"
+					monaco="{{monaco}}"
+					class="grow"></editor-view>
+			</div>
+		</template>
+	</template>
+</template>

@@ -1,0 +1,12 @@
+@import 'util';
+
+@mixin icon-box($length, $font-size, $border, $border-radius, $color, $background) {
+	@include dimension--square($length);
+	line-height: $length;
+	color: $color;
+	text-align: center;
+	font-size: $font-size;
+	@include border($border, $border-radius);
+	background: $background;
+	overflow: hidden;
+}

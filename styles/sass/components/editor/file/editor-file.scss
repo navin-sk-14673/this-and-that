@@ -1,0 +1,41 @@
+@import '../../../abstracts/util';
+
+.editor-file {
+	// @include border(1px solid var(--background-color-highlight));
+	@include border-radius(var(--border-radius__s));
+	background-color: rgba(215, 219, 235, 0.1);
+}
+editor-file.--active {
+	.editor-file {
+		background-color: rgb(100, 134, 255);
+	}
+}
+.editor-file-title {
+	position: relative;
+	color: var(--color-primary-text);
+	padding: 6px 8px;
+}
+.editor-file-close-button {
+	width: 0;
+	opacity: 0;
+	visibility: hidden;
+}
+
+editor-file.sortable-element-selected > .editor-file {
+	background-color: rgb(100, 134, 255);
+}
+.editor-file:hover,
+.editor-file:focus {
+	background-color: rgb(100, 134, 255);
+
+	.editor-file-close-button {
+		width: auto;
+		opacity: 1;
+		visibility: visible;
+	}
+}
+.editor-file-title-input {
+	@include selection {
+		background-color: var(--background-color-highlight);
+	}
+}

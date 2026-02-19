@@ -1,0 +1,17 @@
+<template
+	tag-name="editor-file-tree"
+	lyte-comp="true">
+	<div class="h-full flex-col">
+		<div class="editor-file-tree-container pr-2 overflow-x-hidden">
+			<template lyte-for="{{files}} as file index">
+				<editor-file
+					class="sortable-element {{sortableClass}} {{if(file.id == activeFileId, '--active')}}"
+					file="{{file}}"
+					file-index="{{index}}"
+					on-file-create="{{method('onFileCreate', file)}}"
+					on-file-update="{{method('onFileUpdate', file)}}"
+					on-file-remove="{{method('onFileRemove', file)}}"></editor-file>
+			</template>
+		</div>
+	</div>
+</template>

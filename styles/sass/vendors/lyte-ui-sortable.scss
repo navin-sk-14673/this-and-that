@@ -1,0 +1,32 @@
+@import '../abstracts/util';
+
+.lyteSortableParent .lyteSortablePlaceholder:hover,
+.lyteSortableParent .lyteSortablePlaceholder {
+	width: auto !important;
+	@include border(1px dashed var(--border-color-input-field), var(--border-radius__s));
+	background-color: hsla(228, 38.5%, 94.9%, 0.22);
+}
+.lyteSortableParent .lyteSortableDisabledPlaceholder:hover,
+.lyteSortableParent .lyteSortableDisabledPlaceholder {
+	border: 1px solid #f4a7a7;
+	background: #f5c7c7;
+}
+.sortable-element {
+	@include transition((0.3s ease transform, 0.3s ease-out top, 0.3s ease-out left));
+
+	&.sortable-element-selected {
+		@include transform(scale(1.05));
+	}
+}
+
+.nullifyTransition {
+	transition-duration: 0s;
+}
+.lyteSortableDisablePE {
+	pointer-events: none;
+}
+.lyteSortableDummyTr {
+	opacity: 0 !important;
+	pointer-events: inherit !important;
+	pointer-events: none !important;
+}

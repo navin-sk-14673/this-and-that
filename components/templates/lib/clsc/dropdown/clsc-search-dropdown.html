@@ -1,0 +1,62 @@
+<template
+	tag-name="clsc-search-dropdown"
+	lyte-comp="true">
+	<lyte-dropdown
+		lt-prop-freeze="false"
+		lt-prop-placeholder="{{placeholder}}"
+		on-show="{{method('isOpen', true)}}"
+		on-hide="{{method('isOpen', false)}}"
+		on-option-selected="{{method('onOptionSelected')}}">
+		<template
+			is="registerYield"
+			yield-name="yield">
+			<lyte-drop-button class="clsc-search-drop-button">
+				<div class="h-3 relative inline-flex grow">
+					<input
+						type="text"
+						class="wh-full absolute z-1 text-s clsc-placeholder-input clsc-search-dropdown-input"
+						placeholder="{{selectedKey == null ? placeholder : ''}}"
+						oninput="{{action('onInput', event)}}" />
+					<!-- just to set a min-width initially, to match the placeholder's width -->
+					<div
+						lyte-if="{{selectedItem == undefined}}"
+						class="transparent">
+						{{placeholder}}
+					</div>
+					<div
+						lyte-else
+						class="h-full flex items-center justify-center whitespace-nowrap clsc-sd-selected-container">
+						<lyte-yield
+							yield-name="selected-item"
+							item="{{selectedItem}}"></lyte-yield>
+					</div>
+				</div>
+				<button
+					class="btn-icon-sec__m"
+					onclick="{{action('onChevronClick', event)}}">
+					<svg-icon
+						class="duration-300 {{if(isOpen, 'rotate-180', 'rotate-0')}}"
+						icon-name="chevron-down"
+						icon-size="m"></svg-icon>
+				</button>
+			</lyte-drop-button>
+			<lyte-drop-box class="clsc-drop-box">
+				<lyte-drop-body class="clsc-search-dropdown-body">
+					<template lyte-for="{{optionItems}} as item">
+						<lyte-drop-item
+							lyte-if="{{item != null}}"
+							data-value="{{item[keyName]}}"
+							selected="{{item[keyName] == selectedKey ? 'true' : ''}}">
+							<lyte-yield
+								yield-name="option-item"
+								item="{{item}}"></lyte-yield>
+						</lyte-drop-item>
+					</template>
+					<div lyte-if="{{optionItems.length == 0}}">
+						<lyte-yield yield-name="empty-options"></lyte-yield>
+					</div>
+				</lyte-drop-body>
+			</lyte-drop-box>
+		</template>
+	</lyte-dropdown>
+</template>

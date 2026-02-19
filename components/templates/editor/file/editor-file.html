@@ -1,0 +1,60 @@
+<template
+	tag-name="editor-file"
+	lyte-comp="true">
+	<template lyte-if="{{state == 'create'}}">
+		<div class="editor-file flex items-center gap-1 pl-0.5">
+			<div class="editor-file-title flex items-center gap-1">
+				<editor-file-icon
+					extension="{{file.extension}}"
+					is-comparator="{{file.isComparator}}"
+					class="w-3 h-3"></editor-file-icon>
+				<clsc-input
+					input-class="editor-file-title-input w-full text-s"
+					input-placeholder="Name your file"
+					input-focus="true"
+					input-value="{{file.title + file.extension}}"
+					on-blur="{{method('onFileNameBlur')}}"
+					on-focus="{{method('onFileNameFocus')}}"
+					on-keyup="{{method('onFileNameKeyup')}}"
+					on-value-change="{{method('onFileNameChange')}}"
+					class="flex-1"></clsc-input>
+				<button
+					class="btn-icon-sec__s"
+					onclick="{{action('onFileRemove')}}">
+					<svg-icon
+						icon-name="wrong"
+						icon-size="ms"
+						svg-class="stroke-current fill-current stroke-0.5"></svg-icon>
+				</button>
+			</div>
+		</div>
+	</template>
+	<template lyte-else>
+		<div class="editor-file flex items-center gap-1">
+			<link-to
+				lt-prop-route="index.view"
+				lt-prop-dp='["{{file.id}}"]'
+				lt-prop-class="editor-file-title flex items-center gap-1  text-s"
+				class="min-w-0 grow"
+				ondblclick="{{action('onDoubleClick')}}">
+				<div class="min-w-0 flex items-center gap-1 pl-0.5">
+					<editor-file-icon
+						extension="{{file.extension}}"
+						is-comparator="{{file.isComparator}}"
+						class="w-3 h-3 shrink-0"></editor-file-icon>
+					<span class="leading-3 truncate">{{file.title}}</span>
+				</div>
+			</link-to>
+			<div class="editor-file-close-button sortable-item-restrict flex pr-1">
+				<button
+					class="btn-icon-sec__s"
+					onclick="{{action('onFileRemove')}}">
+					<svg-icon
+						icon-name="wrong"
+						icon-size="ms"
+						svg-class="stroke-current fill-current stroke-0.5"></svg-icon>
+				</button>
+			</div>
+		</div>
+	</template>
+</template>

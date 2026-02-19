@@ -1,0 +1,16 @@
+<template
+	tag-name="editor-file-icon"
+	lyte-comp="true">
+	<div class="relative">
+		<div class="icon"></div>
+		<div
+			lyte-if="{{isComparator}}"
+			class="icon-comparator flex absolute"
+			style="right: -4px; bottom: 2px">
+			<svg-icon
+				icon-name="file-comparator-icon"
+				icon-size="xs"
+				svg-class="fill-color-primary stroke-sec stroke-0.5"></svg-icon>
+		</div>
+	</div>
+</template>

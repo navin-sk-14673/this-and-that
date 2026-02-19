@@ -1,0 +1,21 @@
+@import '../../../../abstracts/util';
+
+clsc-search-dropdown {
+	position: relative;
+	width: 100%;
+}
+
+lyte-drop-button.clsc-search-drop-button {
+	min-height: 40px;
+	max-height: 80px;
+	@include flex-box(flex-start, space-between, $gap: 8px);
+	padding: 8px 8px 8px 16px;
+}
+
+.clsc-search-dropdown-input:focus:placeholder-shown + .clsc-sd-selected-container {
+	opacity: 0.54;
+}
+.clsc-search-dropdown-input:focus:not(:placeholder-shown) + .clsc-sd-selected-container {
+	visibility: hidden;
+	opacity: 0;
+}

@@ -1,0 +1,57 @@
+{
+	"name": "this-and-that",
+	"version": "1.0.0",
+	"description": "this-and-that",
+	"type": "commonjs",
+	"scripts": {
+		"postinstall": "npx husky install",
+		"sass:build": "sass --no-source-map --color --style=compressed styles/sass:styles/css",
+		"lyte:build:dev": "npm run sass:build && lyte build --env=dev",
+		"lyte:build:prod": "npm run sass:build && lyte build --env=prod",
+		"sass:watch": "sass --no-source-map --color --style=compressed --watch --poll styles/sass:styles/css",
+		"lyte:watch": "npm run sass:build && lyte serve --env=dev --port=4040",
+		"watch": "concurrently npm:sass:watch npm:lyte:watch",
+		"start": "npm run watch",
+		"release": "node release.js",
+		"format": "prettier --write --ignore-unknown .",
+		"lint": "eslint .",
+		"lyte-model:g": "lyte g model ${npm_config_model} && lyte g adapter ${npm_config_model} && lyte g serializer ${npm_config_model}",
+		"lyte-model:d": "lyte d model ${npm_config_model} && lyte d adapter ${npm_config_model} && lyte d serializer ${npm_config_model}"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://git.csez.zohocorpin.com/navin.sk/"
+	},
+	"keywords": [],
+	"author": "Navin SK",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://git.csez.zohocorpin.com/navin.sk"
+	},
+	"homepage": "https://git.csez.zohocorpin.com/navin.sk",
+	"dependencies": {
+		"@zoho/lyte": "3.3.0-BETA",
+		"@zoho/lyte-dom": "2.0.17",
+		"@zoho/lyte-ui-component": "3.85.3",
+		"material-file-icons": "^2.4.0",
+		"monaco-themes": "^0.4.4"
+	},
+	"devDependencies": {
+		"@zoho/lyte-cli": "3.3.15",
+		"axios": "^1.4.0",
+		"concurrently": "^8.2.2",
+		"eslint": "^8.37.0",
+		"fs-extra": "^11.1.1",
+		"husky": "^8.0.0",
+		"lint-staged": "13.2.0",
+		"moment": "^2.29.4",
+		"node-fetch": "^3.3.1",
+		"pg": "^8.8.0",
+		"prettier": "^2.8.8",
+		"sass": "^1.62.1"
+	},
+	"lint-staged": {
+		"**/*": "prettier --write --ignore-unknown",
+		"**/*.js": "eslint"
+	}
+}

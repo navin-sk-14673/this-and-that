@@ -1,0 +1,26 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"parserOptions": {
+		"ecmaVersion": "latest"
+	},
+	"rules": {
+		"no-console": "error",
+		"no-empty": "error",
+		"no-new": "error",
+		"linebreak-style": ["error", "unix"],
+		"comma-dangle": ["error", "never"]
+	},
+	"overrides": [
+		{
+			"files": ["build/scripts/*.js", "build/build.js"],
+			"rules": {
+				"no-console": "off",
+				"comma-dangle": "off"
+			}
+		}
+	]
+}

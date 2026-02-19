@@ -1,0 +1,81 @@
+@import '../../../../abstracts/util';
+
+lyte-dropdown {
+	lyte-drop-button {
+		@include border(1px solid var(--border-color-input-field), var(--border-radius__s));
+		padding: 8px 16px;
+
+		&:hover {
+			border-color: var(--color-sec-text);
+		}
+		&.lyteDropButtonUp,
+		&.lyteDropButtonDown,
+		&:focus {
+			border-color: var(--color-primary);
+		}
+		&.normalize {
+			border: none;
+			padding: 0;
+		}
+	}
+	lyte-drop-button > lyte-icon.dropdown {
+		margin: 2px 0 auto 12px;
+		@include dimension--box(8px, 8px);
+		@include transform(rotate(45deg));
+		border: solid var(--color-icon);
+		border-width: 0 1px 1px 0;
+	}
+}
+// lyte-drop-box.clsc__drop-box {
+lyte-drop-box.clsc-drop-box {
+	lyte-drop-body {
+		min-width: 180px;
+
+		lyte-drop-item:not(:first-child) {
+			margin-top: 4px;
+		}
+	}
+}
+lyte-drop-box {
+	color: var(--color-primary-text);
+	@include border-radius(var(--border-radius__s));
+	@include box-shadow(var(--box-shadow__s));
+	background-color: var(--background-color-dialog);
+	max-height: 324px;
+	overflow-y: auto;
+
+	&.lyteDropdownDown {
+		margin-top: 4px;
+	}
+	&.lyteDropdownUp {
+		margin-bottom: 4px;
+	}
+
+	lyte-drop-body {
+		display: block;
+		position: relative;
+		padding: 8px;
+
+		lyte-drop-item {
+			font-size: var(--font-size__xs);
+			padding: 8px;
+			@include border-radius(var(--border-radius__s));
+			&.lyteDropdownSelection {
+				background-color: var(--background-color-primary--hover);
+			}
+			&[selected='true'] {
+				background-color: var(--background-color-primary--selected);
+			}
+			&.lyte-drop-item--negative {
+				color: var(--color-negative);
+
+				&:hover,
+				&.lyteDropdownSelection,
+				&[selected='true'] {
+					// background-color: var(--background-color-primary--hover);
+					background-color: var(--background-color-negative);
+				}
+			}
+		}
+	}
+}

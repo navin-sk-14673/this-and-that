@@ -1,0 +1,14 @@
+<template
+	tag-name="clsc-input"
+	lyte-comp="true">
+	<lyte-input
+		lt-prop-type="text"
+		lt-prop-class="{{inputClass}}"
+		lt-prop-placeholder="{{inputPlaceholder}}"
+		lt-prop-focus="{{inputFocus}}"
+		lt-prop-update-delay="0"
+		lt-prop-value="{{lbind(inputValue)}}"
+		on-blur="{{method('onBlur')}}"
+		on-focus="{{method('onFocus')}}"
+		on-value-change="{{method('onValueChange')}}"></lyte-input>
+</template>

@@ -1,0 +1,6 @@
+dist
+node_modules
+bower_components
+build/scripts
+build/blueprints/**/templates/__demo__.html
+styles/css

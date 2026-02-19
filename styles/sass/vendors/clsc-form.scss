@@ -1,0 +1,39 @@
+@import '../abstracts/util';
+
+.form-header {
+	margin-bottom: 32px;
+}
+
+.form-label-group {
+	@include flex-box($flex-direction: column, $gap: 20px);
+}
+.form-footer {
+	margin-top: 16px;
+	margin-left: auto;
+	@include flex-box($gap: 4px);
+}
+
+.label {
+	display: inline-block;
+	font-size: var(--font-size__s);
+	// margin-bottom: 8px;
+}
+.label-name {
+}
+.form-field-wrapper {
+	color: var(--color-primary-text);
+}
+
+.label-optional-tag {
+	color: var(--color-optional-text);
+	font-size: 12px;
+	padding-left: 8px;
+}
+
+.label-error-msg {
+	display: none;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.1px;
+	margin: 4px 0 0 4px;
+}

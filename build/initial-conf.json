@@ -1,0 +1,41 @@
+{
+	"consolidated_files/lyte/es5-adapter.js": ["node_modules/@zoho/lyte/custom-elements-es5-adapter.js"],
+	"consolidated_files/lyte/lyte-req.js": [
+		"node_modules/@zoho/lyte/polyfill-bundle.js",
+		"node_modules/@zoho/lyte/lyte-es5.min.js",
+		"node_modules/@zoho/lyte-dom/lyte-dom.min.js",
+		"addons/@zoho/lyte-ui-component/dist/components/helpers/helpers.js",
+		"addons/@zoho/lyte-ui-component/dist/I18n/en_US.js"
+	],
+	"consolidated_files/lyte-ui-components/plugins.js": [
+		"addons/@zoho/lyte-ui-component/dist/plugins/lyte-moment.js",
+		"addons/@zoho/lyte-ui-component/dist/plugins/lyte-search.js",
+		"addons/@zoho/lyte-ui-component/dist/plugins/lyte-sortable.js"
+	],
+	"consolidated_files/lyte-ui-components/components.js": [
+		"addons/@zoho/lyte-ui-component/dist/components/lyte-input.js",
+		"addons/@zoho/lyte-ui-component/dist/components/lyte-wormhole.js",
+		"addons/@zoho/lyte-ui-component/dist/components/lyte-popover.js",
+		"addons/@zoho/lyte-ui-component/dist/components/lyte-modal.js",
+		"addons/@zoho/lyte-ui-component/dist/components/lyte-tooltip.js",
+		"addons/@zoho/lyte-ui-component/dist/components/lyte-dropdown.js"
+	],
+	"consolidated_files/models/initial-models.js": ["data-store"],
+	"consolidated_files/mixins/initial-mixins.js": ["mixins"],
+	"consolidated_files/components/initial-helpers.js": ["components/helpers"],
+	"consolidated_files/routes/initial-routes.js": ["routes"],
+	"consolidated_files/components/initial-components.js": ["components/javascript"],
+	"consolidated_files/css/initial-styles.css": [
+		"styles/css/vendors",
+		"styles/css/base",
+		"styles/css/components",
+		"styles/css/fonts",
+		"styles/css/icons",
+		"styles/css/layout",
+		"styles/css/themes"
+	],
+	"consolidated_files/css/loader-styles.css": ["styles/css/pages/index/load.css"],
+	"consolidated_files/init.js": ["scripts/init/post-init.js"],
+	"consolidated_files/conf.js": ["scripts/conf"],
+	"consolidated_files/util.js": ["scripts/util"]
+}

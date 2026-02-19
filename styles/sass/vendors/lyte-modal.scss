@@ -1,0 +1,32 @@
+@import '../abstracts/util';
+
+.bodyWrapper {
+	overflow: hidden;
+}
+.modalWrapper {
+	@include position(fixed, 0, 0, 0, 0);
+	@include flex-box(center, center);
+	overflow: auto;
+	z-index: 45;
+
+	&.scrollable {
+		overflow: hidden;
+	}
+	&.noFreeze {
+		pointer-events: none;
+		.lyteModal {
+			pointer-events: auto;
+		}
+	}
+}
+.lyteModal {
+	@include position(absolute, initial !important, initial !important, initial !important, initial !important);
+	z-index: 2;
+	.lyteModalClose {
+		display: none;
+	}
+}
+lyte-modal-freeze {
+	@include position(fixed, 0, 0, 0, 0);
+	z-index: 1;
+}

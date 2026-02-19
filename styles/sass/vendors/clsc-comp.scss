@@ -1,0 +1,137 @@
+@import '../abstracts/util';
+@import '../abstracts/ui-util';
+
+.clsc-placeholder {
+	color: var(--color-placeholder);
+	opacity: var(--opacity-placeholder-text);
+}
+.clsc-placeholder\:italic {
+	color: var(--color-placeholder);
+	font-style: italic;
+	opacity: var(--opacity-placeholder-text);
+}
+
+.clsc-placeholder-input {
+	@include placeholder {
+		color: var(--color-placeholder);
+	}
+}
+.clsc-placeholder-input\:italic {
+	@include placeholder {
+		color: var(--color-placeholder);
+		font-style: italic;
+	}
+}
+
+.clsc__menu-body {
+	width: 196px;
+	padding: 8px;
+	@include border-radius(var(--border-radius__m));
+	@include box-shadow(var(--box-shadow__m));
+	background-color: var(--background-color-secondary);
+}
+.clsc__menu-item {
+	@include dimension--box(auto, 32px);
+	@include flex-box(center);
+	position: relative;
+	cursor: pointer;
+	color: var(--color-primary-text);
+	@include border-radius(var(--border-radius__s));
+	padding: 4px 8px;
+	z-index: 1;
+
+	&:hover,
+	&.lyteMenuSelection {
+		background: var(--background-color-primary--hover);
+	}
+	&__icon {
+		margin-right: 12px;
+	}
+	&__name {
+		font-size: var(--font-size__xs);
+	}
+}
+.clsc__menu-item--negative {
+	@extend .clsc__menu-item;
+	color: var(--color-negative);
+	&:hover,
+	&.lyteMenuSelection {
+		background: var(--background-color-negative);
+	}
+}
+.clsc__icon-box {
+	display: inline-block;
+	@include icon-box(96px, 40px, none, 8px, var(--color-text-on-primary), hsl(323, 60%, 69%));
+}
+
+.clsc-modal-h-full {
+	.lyteModal {
+		height: 100% !important;
+	}
+}
+.clsc-modal-base {
+	.lyteModal {
+		@include width-curb($min: 362px, $width: 50% !important, $max: 536px);
+		@include box-shadow(var(--box-shadow__l));
+		background-color: var(--background-color-primary);
+		@include transition(0.2s);
+	}
+	.lyteModal > lyte-yield {
+		height: 100%;
+		padding: 32px;
+		overflow: auto;
+	}
+	> lyte-modal-freeze {
+		@include transition(0.2s);
+		background-color: var(--background-color-modal-freeze);
+	}
+}
+.clsc-modal-center {
+	.lyteModal {
+		@include border-radius(var(--border-radius__l));
+	}
+	&.modalWrapper {
+		.lyteModal {
+			opacity: 0;
+			@include transform(scale(0.95));
+		}
+		.lyteModalFadeIn {
+			opacity: 1;
+			@include transform(scale(1));
+		}
+	}
+}
+.clsc-modal-right {
+	.lyteModal {
+		border-top-left-radius: var(--border-radius__l);
+		border-bottom-left-radius: var(--border-radius__l);
+		margin-left: auto;
+	}
+	&.modalWrapper {
+		.lyteModal {
+			opacity: 0;
+			@include transform(translateX(100%));
+		}
+		.lyteModalFadeIn {
+			opacity: 1;
+			@include transform(translateX(0));
+		}
+	}
+}
+
+hr.clsc__hr {
+	height: 1px;
+	border: none;
+	margin: 8px 0;
+	background-color: var(--color-hr);
+
+	&.no-margin {
+		margin: 0;
+	}
+	&.mt-0 {
+		margin-top: 0;
+	}
+	&.mb-0 {
+		margin-bottom: 0;
+	}
+}

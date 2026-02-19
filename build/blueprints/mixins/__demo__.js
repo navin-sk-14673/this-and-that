@@ -1,0 +1,1 @@
+Lyte.Mixin.register([[id]], {});
