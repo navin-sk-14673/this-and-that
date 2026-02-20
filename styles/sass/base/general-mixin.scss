@@ -115,10 +115,10 @@ button.btn-icon-sec {
 
 	&:focus,
 	&:hover {
-		color: var(--color-primary--hover);
+		// color: var(--color-primary--hover);
 		// background-color: var(--background-color-primary--selected);
 		// background-color: var(--background-color-primary--hover); // old
-		background-color: rgba(215, 219, 235, 0.1);
+		background-color: rgba(215, 219, 235, 0.18);
 	}
 	&:disabled {
 		color: hsl(237deg 6.21% 57.14%);

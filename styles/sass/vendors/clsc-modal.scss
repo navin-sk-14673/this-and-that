@@ -5,12 +5,26 @@
 // 		height: 100% !important;
 // 	}
 // }
-// .clsc-modal-base.clsc-modal-w-30 > .lyteModal {
-// 	@include width-curb($min: 362px, $width: 30% !important, $max: 536px);
-// }
-// .clsc-modal-base.clsc-modal-w-50 > .lyteModal {
-// 	@include width-curb($min: 362px, $width: 50% !important, $max: 536px);
-// }
+
+.clsc-modal-base.clsc-modal-h-30 > .lyteModal {
+	@include height-curb($min: 362px, $height: 30% !important);
+}
+.clsc-modal-base.clsc-modal-h-60 > .lyteModal {
+	@include height-curb($min: 362px, $height: 60% !important);
+}
+.clsc-modal-base.clsc-modal-h-75 > .lyteModal {
+	@include height-curb($min: 362px, $height: 75% !important);
+}
+
+.clsc-modal-base.clsc-modal-w-30 > .lyteModal {
+	@include width-curb($min: 362px, $width: 30% !important);
+}
+.clsc-modal-base.clsc-modal-w-40 > .lyteModal {
+	@include width-curb($min: 362px, $width: 40% !important);
+}
+.clsc-modal-base.clsc-modal-w-75 > .lyteModal {
+	@include width-curb($min: 362px, $width: 75% !important);
+}
 
 // .clsc-modal-base {
 // 	.lyteModal {
@@ -66,7 +80,7 @@
 
 // .clsc-modal {
 // 	.lyteModal {
-// 		@include width-curb($min: 362px, $width: 50% !important, $max: 536px);
+// 		@include width-curb($min: 362px, $width: 50% !important);
 // 		@include border-radius(var(--border-radius__l));
 // 		@include box-shadow(var(--box-shadow__l));
 // 		background-color: var(--background-color-body);

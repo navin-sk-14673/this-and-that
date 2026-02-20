@@ -1,0 +1,48 @@
+@import '../../../../abstracts/util';
+
+clsc-toggle-switch[lyte-comp] {
+	--height-label: 18px;
+	--width-label: 34px;
+	--size-slider: 10px;
+	--slider-transform-x: 16px;
+
+	@include flex-box($inline: true);
+}
+.clsc-toggle-switch__label {
+	position: relative;
+	display: inline-block;
+	@include dimension--box(var(--width-label), var(--height-label));
+}
+.clsc-toggle-switch__label input {
+	@include dimension--box(0, 0);
+	opacity: 0;
+
+	&:checked + .clsc-toggle-switch__slider {
+		background-color: var(--color-primary);
+		&:before {
+			@include transform(translateX(var(--slider-transform-x)));
+		}
+	}
+	&:disabled + .clsc-toggle-switch__slider {
+		background-color: var(--color-hr);
+		cursor: not-allowed;
+	}
+	&:checked:disabled + .clsc-toggle-switch__slider {
+		background-color: rgb(175 193 255);
+	}
+}
+.clsc-toggle-switch__slider {
+	@include position(absolute, 0, 0, 0, 0);
+	cursor: pointer;
+	background-color: #ccc;
+	@include border-radius(var(--height-label));
+	@include transition(0.4s);
+	&:before {
+		content: '';
+		@include position(absolute, $left: 4px, $bottom: 4px);
+		@include dimension--square(var(--size-slider));
+		background-color: #fff;
+		@include border-radius(50%);
+		@include transition(0.4s);
+	}
+}

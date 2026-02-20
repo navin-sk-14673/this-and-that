@@ -1,0 +1,68 @@
+<template
+	tag-name="editor-user-preference-modal"
+	lyte-comp="true">
+	<lyte-modal
+		lt-prop-aria="true"
+		lt-prop-show="{{lbind(ltPropShow)}}"
+		lt-prop-overlay-close="true"
+		lt-prop-close-on-escape="true"
+		lt-prop-allow-multiple="true"
+		lt-prop='{ "transition": { "animation": "fadeIn" } }'
+		lt-prop-wrapper-class="clsc-modal-base clsc-modal-w-30 clsc-modal-center">
+		<template
+			is="registerYield"
+			yield-name="modal">
+			<div class="flex-col gap-2">
+				<!-- App Preferences -->
+				<div class="flex-col gap-1.5">
+					<h4
+						class="flex items-center gap-0.75 no-margin text-m font-semibold color-primary uppercase tracking-wider">
+						<span class="material-symbols-outlined text-l">devices</span>
+						<span>App Preferences</span>
+					</h4>
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-ms font-medium color-sec-text tracking-wide">Theme</label>
+						<clsc-multi-toggle-switch
+							name="theme"
+							selected="{{lbind(selectedTheme)}}"
+							options="{{themeOptions}}"></clsc-multi-toggle-switch>
+					</div>
+				</div>
+
+				<hr class="pref-divider" />
+
+				<!-- Editor Preferences -->
+				<div class="flex-col gap-1.5">
+					<h4
+						class="flex items-center gap-0.75 no-margin text-m font-semibold color-primary uppercase tracking-wider">
+						<span class="material-symbols-outlined text-l">code</span>
+						<span>Editor Preferences</span>
+					</h4>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-ms font-medium color-sec-text tracking-wide">Word Wrap</label>
+						<clsc-toggle-switch checked="{{lbind(wordWrap)}}"></clsc-toggle-switch>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-ms font-medium color-sec-text tracking-wide">Show Line Numbers</label>
+						<clsc-toggle-switch checked="{{lbind(lineNumbers)}}"></clsc-toggle-switch>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-ms font-medium color-sec-text tracking-wide">Show Minimap</label>
+						<clsc-toggle-switch checked="{{lbind(minimap)}}"></clsc-toggle-switch>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-ms font-medium color-sec-text tracking-wide">Tab Size</label>
+						<clsc-multi-toggle-switch
+							name="tabSize"
+							selected="{{lbind(selectedTabSize)}}"
+							options="{{tabSizeOptions}}"></clsc-multi-toggle-switch>
+					</div>
+				</div>
+			</div>
+		</template>
+	</lyte-modal>
+</template>

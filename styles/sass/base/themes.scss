@@ -1,0 +1,66 @@
+/* Dark theme overrides */
+[data-theme='dark'] {
+	--color-primary: rgb(100, 134, 255);
+	--color-primary--hover: rgb(120, 150, 255);
+	--color-primary--disabled: rgb(60, 80, 150);
+	--color-primary--selected: hsl(228, 50%, 25%);
+	--color-primary--selected--hover: hsl(228, 50%, 30%);
+	--color-primary-title: hsl(211, 80%, 80%);
+
+	--icon-outline-color: hsl(210, 20%, 75%);
+
+	--background-color-body: hsl(228, 20%, 10%);
+	--background-color-primary: hsl(228, 20%, 14%);
+	--background-color-primary--hover: hsl(228, 15%, 22%);
+	--background-color-primary--selected: hsl(228, 40%, 22%);
+
+	--background-color-secondary: hsl(228, 18%, 16%);
+	--background-color-sec-button: hsl(228, 18%, 18%);
+	--background-color-sec-button--hover: hsl(228, 20%, 24%);
+
+	--color-text-tertiary: rgb(130, 160, 255);
+	--color-text-tertiary--hover: #fff;
+	--color-text-tertiary--disabled: rgb(100, 100, 110);
+	--background-color-tertiary: rgb(70, 100, 200);
+	--background-color-tertiary--hover: rgb(90, 120, 220);
+	--background-color-tertiary--disabled: rgb(40, 40, 50);
+
+	--background-color-modal: hsla(228, 30%, 8%, 0.8);
+	--background-color-dialog: hsl(228, 20%, 16%);
+
+	--color-positive: #4caf50;
+	--color-positive--hover: #388e3c;
+	--color-negative: #ef5350;
+	--color-negative--hover: #d32f2f;
+	--color-negative--disabled: #5c3a3a;
+	--background-color-negative: hsl(0, 30%, 18%);
+
+	--background-color-highlight: rgba(80, 80, 110, 0.3);
+	--border-color-table-row: hsl(228, 15%, 25%);
+	--background-color-modal-freeze: rgba(10, 15, 30, 0.7);
+
+	--color-placeholder: hsl(228, 10%, 50%);
+	--color-icon: hsl(228, 10%, 60%);
+	--color-link: #6fa8dc;
+	--color-hr: hsla(228, 10%, 40%, 0.4);
+
+	--color-primary-text: hsl(210, 40%, 88%);
+	--color-text-on-primary: #ffffff;
+	--color-optional-text: hsl(228, 8%, 55%);
+
+	--color-sec-text: hsl(210, 15%, 78%);
+	--color-sec-line: hsla(210, 10%, 50%, 0.5);
+
+	--border-color-input-field: hsl(228, 15%, 30%);
+	--border-color-on-secondary-color: hsl(228, 15%, 28%);
+
+	--box-shadow__xs: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
+	--box-shadow__s: 0px 4px 8px hsla(0, 0%, 0%, 0.35);
+	--box-shadow__m: 0px 6px 20px hsla(0, 0%, 0%, 0.4);
+	--box-shadow__l: 0px 15px 50px hsla(0, 0%, 0%, 0.5);
+}
+
+/* Light theme (explicit) — same as defaults, no overrides needed */
+[data-theme='light'] {
+	/* Uses :root defaults */
+}

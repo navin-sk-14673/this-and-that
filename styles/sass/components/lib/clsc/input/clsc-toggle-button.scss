@@ -1,0 +1,6 @@
+@import '../../../../abstracts/util';
+
+clsc-toggle-button {
+	padding: 8px 12px;
+	@include border(1px solid var(--color-primary), 16px);
+}

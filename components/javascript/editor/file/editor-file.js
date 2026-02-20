@@ -30,6 +30,7 @@ Lyte.Component.register('editor-file', {
 			this.setData('state', this.STATES.DEFAULT);
 
 			const file = this.getData('file');
+			this.setData('file.language', MonacoEditor.getFileLanguageByExtension(file.extension));
 
 			if (file.isDelete) {
 				this.removeFile();
@@ -66,7 +67,6 @@ Lyte.Component.register('editor-file', {
 			const [fileName, extension] = this.splitStringByLastPeriod(value);
 			this.setData('file.title', fileName);
 			this.setData('file.extension', extension);
-			this.setData('file.language', MonacoEditor.getFileLanguageByExtension(extension));
 		},
 		onFileNameKeyup(event) {
 			const value = event.target.value;

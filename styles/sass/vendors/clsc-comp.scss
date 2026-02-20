@@ -71,7 +71,7 @@
 }
 .clsc-modal-base {
 	.lyteModal {
-		@include width-curb($min: 362px, $width: 50% !important, $max: 536px);
+		@include width-curb($min: 362px, $width: 50% !important);
 		@include box-shadow(var(--box-shadow__l));
 		background-color: var(--background-color-primary);
 		@include transition(0.2s);

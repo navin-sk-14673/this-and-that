@@ -1,0 +1,12 @@
+<template
+	tag-name="clsc-toggle-switch"
+	lyte-comp="true">
+	<label class="clsc-toggle-switch__label">
+		<input
+			type="checkbox"
+			checked="{{lbind(checked)}}"
+			disabled="{{lbind(disabled)}}"
+			onchange="{{action('onToggleChange',event)}}" />
+		<span class="clsc-toggle-switch__slider"></span>
+	</label>
+</template>

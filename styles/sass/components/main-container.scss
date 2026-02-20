@@ -47,10 +47,53 @@ main-container {
 		),
 		linear-gradient(135deg, rgb(37, 56, 222), rgb(96, 189, 244));
 }
+
+[data-theme='dark'] .main-container {
+	background-image: radial-gradient(
+			circle at 85% 1%,
+			hsla(230, 40%, 30%, 0.25) 0%,
+			hsla(230, 40%, 30%, 0.25) 96%,
+			transparent 96%,
+			transparent 100%
+		),
+		radial-gradient(
+			circle at 14% 15%,
+			hsla(260, 35%, 28%, 0.25) 0%,
+			hsla(260, 35%, 28%, 0.25) 1%,
+			transparent 1%,
+			transparent 100%
+		),
+		radial-gradient(
+			circle at 60% 90%,
+			hsla(210, 45%, 25%, 0.3) 0%,
+			hsla(210, 45%, 25%, 0.3) 20%,
+			transparent 20%,
+			transparent 100%
+		),
+		radial-gradient(
+			circle at 79% 7%,
+			hsla(240, 35%, 28%, 0.25) 0%,
+			hsla(240, 35%, 28%, 0.25) 78%,
+			transparent 78%,
+			transparent 100%
+		),
+		radial-gradient(
+			circle at 55% 65%,
+			hsla(220, 40%, 26%, 0.3) 0%,
+			hsla(220, 40%, 26%, 0.3) 52%,
+			transparent 52%,
+			transparent 100%
+		),
+		linear-gradient(135deg, rgb(18, 25, 75), rgb(25, 60, 100));
+}
 .editor-area-container {
 	@include border(1px solid #fff, var(--border-radius__m));
 	margin: 8px;
 	overflow: hidden;
+
+	[data-theme='dark'] & {
+		border-color: hsl(228, 15%, 25%);
+	}
 
 	&.--on-editor-change {
 		@include animation-frames(0.3s ease) {

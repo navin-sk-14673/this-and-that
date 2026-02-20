@@ -1,5 +1,5 @@
 Lyte.Router.configureDefaults({
-	baseURL: 'penpal',
+	baseURL: 'codepal',
 	history: 'hash',
 	linkActiveClass: 'link-to--active'
 });

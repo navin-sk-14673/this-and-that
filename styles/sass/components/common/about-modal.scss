@@ -1,0 +1,124 @@
+@import '../../abstracts/util';
+
+.lyte-rant {
+	--lyte-rant: none;
+}
+.about-modal__header {
+	padding: 16px 4px;
+	margin: -20px -8px 24px;
+	border-bottom: 1px solid var(--border-color-on-secondary-color);
+	gap: 24px;
+
+	.material-symbols-outlined {
+		font-size: 32px;
+		width: 40px;
+		text-align: center;
+		color: var(--color-primary);
+	}
+
+	h1 {
+		font-size: var(--font-size__xl);
+		letter-spacing: 0.5px;
+	}
+}
+
+.about-modal__body {
+	min-height: 200px;
+	gap: 16px;
+	margin: 0 -8px;
+}
+
+.about-modal__tabs {
+	// border-right: 1px solid var(--border-color-on-secondary-color);
+	padding-right: 12px;
+}
+
+.about-modal__tab {
+	@include flex-box(center, center);
+	@include dimension--square(40px);
+	@include border-radius(var(--border-radius__s));
+	@include transition(all 0.15s ease);
+	@include position(relative);
+	border: none;
+	background: transparent;
+	color: var(--color-sec-text);
+	cursor: pointer;
+
+	.material-symbols-outlined {
+		font-size: 22px;
+	}
+
+	&::after {
+		content: '';
+		@include position(absolute, $right: 0);
+		@include dimension--box(3px, 80%);
+		@include border-radius(2px);
+		margin-right: -4px;
+		background-color: transparent;
+		@include transition(all 0.15s ease);
+	}
+
+	&:hover {
+		&::after {
+			background-color: var(--background-color-primary--hover);
+		}
+	}
+
+	&--active {
+		color: var(--color-primary);
+
+		&::after {
+			background-color: var(--color-primary);
+		}
+
+		&:hover::after {
+			background-color: var(--color-primary);
+		}
+	}
+}
+
+.about-modal__content {
+	min-width: 0;
+}
+
+.about-modal__list {
+	margin: 0;
+	padding-left: 28px;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	font-size: var(--font-size__l);
+	color: var(--color-sec-text);
+	line-height: 1.5;
+
+	li {
+		@include position(relative);
+
+		&::before {
+			@include position(absolute, $left: -24px);
+			font-size: 14px;
+		}
+	}
+
+	&--sparkle li::before {
+		content: '✦';
+		color: var(--color-primary);
+	}
+
+	strong {
+		// text-decoration: underline;
+		// color: var(--color-primary);
+		// font-weight: 600;
+	}
+}
+
+.about-modal__link {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+
+	&:hover {
+		color: var(--color-primary--hover);
+	}
+}

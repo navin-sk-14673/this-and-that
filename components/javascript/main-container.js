@@ -47,7 +47,9 @@ Lyte.Component.register('main-container', {
 		return {
 			files: Lyte.attr('array', { default: [], watch: true }),
 			monaco: Lyte.attr('object'),
-			editorThemes: Lyte.attr('array')
+			editorThemes: Lyte.attr('array'),
+			showPreferenceModal: Lyte.attr('boolean', { default: false }),
+			showAboutModal: Lyte.attr('boolean', { default: false })
 		};
 	},
 	actions: {
@@ -56,11 +58,14 @@ Lyte.Component.register('main-container', {
 		},
 		onCreateFileClick() {
 			this.FILE_TREE.component.onCreateFile();
+		},
+		onAboutClick() {
+			this.setData('showAboutModal', true);
+		},
+		onPreferenceClick() {
+			this.setData('showPreferenceModal', true);
 		}
 	},
-	methods: {},
 
-	didDestroy() {
-		alert();
-	}
+	didDestroy() {}
 });

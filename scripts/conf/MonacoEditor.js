@@ -3101,6 +3101,12 @@ class MonacoEditor {
 			cursorSmoothCaretAnimation: 'on',
 			originalEditable: true,
 			readOnly: false
+		},
+		getFileEditorConf() {
+			return { ...this.FILE_EDITOR, ...MonacoEditor.getEditorOptions() };
+		},
+		getComparableFileEditorConf() {
+			return { ...this.COMPARABLE_FILE_EDITOR, ...MonacoEditor.getEditorOptions() };
 		}
 	};
 
@@ -3170,6 +3176,45 @@ class MonacoEditor {
 
 	static setTheme = (key) => monaco.editor.setTheme(key);
 
+	static applySavedTheme() {
+		const APP_PREF_KEY = 'penpal-app-prefs';
+		let savedTheme = 'system';
+		try {
+			const raw = localStorage.getItem(APP_PREF_KEY);
+			if (raw) savedTheme = JSON.parse(raw).theme || 'system';
+		} catch (e) {}
+
+		let isDark;
+		if (savedTheme === 'system') {
+			isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		} else {
+			isDark = savedTheme === 'dark';
+		}
+
+		monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+	}
+
+	static getEditorPrefs() {
+		const EDITOR_PREF_KEY = 'penpal-editor-prefs';
+		const defaults = { wordWrap: true, lineNumbers: true, minimap: true, tabSize: 4 };
+		try {
+			const raw = localStorage.getItem(EDITOR_PREF_KEY);
+			return raw ? { ...defaults, ...JSON.parse(raw) } : defaults;
+		} catch (e) {
+			return defaults;
+		}
+	}
+
+	static getEditorOptions() {
+		const prefs = MonacoEditor.getEditorPrefs();
+		return {
+			wordWrap: prefs.wordWrap ? 'on' : 'off',
+			lineNumbers: prefs.lineNumbers ? 'on' : 'off',
+			minimap: { enabled: prefs.minimap },
+			tabSize: prefs.tabSize
+		};
+	}
+
 	static initThemes = async () =>
 		fetch('/editor/themes/themelist.json')
 			.then((res) => res.json())
@@ -3213,6 +3258,7 @@ class MonacoEditor {
 			require(['vs/editor/editor.main'], () => {
 				MonacoEditor.IS_RESOLVED = true;
 				MonacoEditor.initModels(monaco);
+				MonacoEditor.applySavedTheme();
 				resolve(monaco);
 			})
 		);

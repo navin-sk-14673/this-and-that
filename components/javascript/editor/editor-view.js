@@ -6,7 +6,7 @@ Lyte.Component.register('editor-view', {
 			const container = this.$node.querySelector('.editor-view-container');
 			if (file.isComparator) {
 				const diffEditor = monaco.editor.createDiffEditor(container, {
-					...MonacoEditor.DEFAULT_CONF.COMPARABLE_FILE_EDITOR,
+					...MonacoEditor.DEFAULT_CONF.getComparableFileEditorConf(),
 					...{
 						language: file.language
 					}
@@ -37,12 +37,12 @@ Lyte.Component.register('editor-view', {
 
 					// openCustomContextMenu(clientX, clientY);
 				});
+				this.DIFF_EDITOR = diffEditor;
 			} else {
 				const editor = monaco.editor.create(container, {
-					...MonacoEditor.DEFAULT_CONF.FILE_EDITOR,
+					...MonacoEditor.DEFAULT_CONF.getFileEditorConf(),
 					...{
-						language: file.language,
-						wordWrap: 'on'
+						language: file.language
 					}
 				});
 
@@ -94,12 +94,13 @@ Lyte.Component.register('editor-view', {
 
 	__fileExtensionObservable: function () {
 		const fileLanguage = this.getData('file.language');
-		// console.log(fileLanguage);
-
-		// this.EDITOR.setModelLanguage(this.EDITOR.getModel(), fileLanguage);
-		// this.EDITOR.setModel({
-		// 	language: fileLanguage
-		// });
+		if (this.EDITOR) {
+			monaco.editor.setModelLanguage(this.EDITOR.getModel(), fileLanguage);
+		} else if (this.DIFF_EDITOR) {
+			const { original, modified } = this.DIFF_EDITOR.getModel();
+			monaco.editor.setModelLanguage(original, fileLanguage);
+			monaco.editor.setModelLanguage(modified, fileLanguage);
+		}
 	}.observes('file.language'),
 
 	__isActiveObservable: function () {

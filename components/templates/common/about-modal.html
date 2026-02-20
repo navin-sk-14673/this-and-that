@@ -1,0 +1,149 @@
+<template
+	tag-name="about-modal"
+	lyte-comp="true">
+	<lyte-modal
+		lt-prop-aria="true"
+		lt-prop-show="{{lbind(ltPropShow)}}"
+		lt-prop-overlay-close="true"
+		lt-prop-close-on-escape="true"
+		lt-prop-allow-multiple="true"
+		lt-prop='{ "transition": { "animation": "fadeIn" } }'
+		lt-prop-wrapper-class="clsc-modal-base clsc-modal-w-40 clsc-modal-h-60 clsc-modal-center">
+		<template
+			is="registerYield"
+			yield-name="modal">
+			<div class="about-modal flex-col">
+				<!-- Header -->
+				<div class="about-modal__header flex items-center">
+					<span class="material-symbols-outlined">code</span>
+					<h1 class="no-margin font-semibold color-primary">About CodePal</h1>
+				</div>
+
+				<!-- Tabs + Content -->
+				<div class="about-modal__body flex">
+					<!-- Vertical Tab Bar -->
+					<div class="about-modal__tabs flex-col gap-1">
+						<button
+							class="about-modal__tab {{if(activeTab == 'about', 'about-modal__tab--active', '')}}"
+							onclick="{{action('onTabSelect', 'about')}}">
+							<span class="material-symbols-outlined">info</span>
+						</button>
+						<button
+							class="about-modal__tab {{if(activeTab == 'limits', 'about-modal__tab--active', '')}}"
+							onclick="{{action('onTabSelect', 'limits')}}">
+							<span class="material-symbols-outlined">warning</span>
+						</button>
+						<button
+							class="about-modal__tab {{if(activeTab == 'data', 'about-modal__tab--active', '')}}"
+							onclick="{{action('onTabSelect', 'data')}}">
+							<span class="material-symbols-outlined">database</span>
+						</button>
+					</div>
+
+					<!-- Tab Content -->
+					<div class="about-modal__content grow mt-0.5">
+						<template lyte-switch="{{activeTab}}">
+							<template
+								lyte-case="about"
+								lyte-break>
+								<div class="flex-col gap-2">
+									<h4
+										class="flex items-center gap-0.5 no-margin text-l font-semibold color-primary uppercase tracking-wider">
+										<span>What's this thing?</span>
+									</h4>
+									<ul class="about-modal__list about-modal__list--sparkle">
+										<li>
+											A
+											<strong>browser-based code editor</strong>
+											— no installs, no sign-ups, no drama.
+										</li>
+										<li>
+											Dump your
+											<strong>temporary code snippets</strong>
+											here when you need a quick scratchpad.
+										</li>
+										<li>
+											<strong>Compare two files 🔀 side by side</strong>
+											like a pro — spot the difference, without squinting.
+										</li>
+										<li>
+											Each file gets its own
+											<strong>language model</strong>
+											for syntax highlighting and error detection. Fancy, right?
+										</li>
+									</ul>
+								</div>
+							</template>
+
+							<template
+								lyte-case="limits"
+								lyte-break>
+								<div class="flex-col gap-2">
+									<h4
+										class="flex items-center gap-0.5 no-margin text-l font-semibold color-primary uppercase tracking-wider">
+										<span>Heads up!</span>
+									</h4>
+									<ul class="about-modal__list about-modal__list--sparkle">
+										<li>
+											This app runs
+											<strong>entirely in your browser</strong>
+											— there's no server behind the curtain.
+										</li>
+										<li>
+											Keep your files
+											<strong>light to average weight</strong>
+											. Throw in a massive file and your browser might just... freeze. And stare
+											at you. Menacingly.
+										</li>
+										<li>
+											Think of it as a bicycle 🚲 — great for a quick ride, not for hauling
+											furniture.
+										</li>
+									</ul>
+								</div>
+							</template>
+
+							<template
+								lyte-case="data"
+								lyte-break>
+								<div class="flex-col gap-2">
+									<h4
+										class="flex items-center gap-0.5 no-margin text-l font-semibold color-primary uppercase tracking-wider">
+										<span>Where's my data?</span>
+									</h4>
+									<ul class="about-modal__list about-modal__list--sparkle">
+										<li>
+											Your files live in
+											<a
+												href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API"
+												target="_blank"
+												class="about-modal__link">
+												<strong>IndexedDB</strong>
+											</a>
+											— that's a little database inside your browser.
+										</li>
+										<li>
+											Clearing your browser data =
+											<strong>poof</strong>
+											, your files vanish into the void.
+										</li>
+										<li>
+											Using
+											<strong>incognito/private mode</strong>
+											? Once you close that tab, everything's gone. Like it never happened.
+										</li>
+										<li>
+											TL;DR —
+											<strong>don't treat this as permanent storage</strong>
+											⚠️ . Copy important stuff somewhere safe!
+										</li>
+									</ul>
+								</div>
+							</template>
+						</template>
+					</div>
+				</div>
+			</div>
+		</template>
+	</lyte-modal>
+</template>

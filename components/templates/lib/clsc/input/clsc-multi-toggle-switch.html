@@ -1,0 +1,29 @@
+<template
+	tag-name="clsc-multi-toggle-switch"
+	lyte-comp="true">
+	<div class="clsc-multi-toggle-switch">
+		<template
+			is="for"
+			items="{{options}}"
+			item="opt"
+			index="idx">
+			<label
+				class="clsc-multi-toggle-switch__option {{if(opt.value == selected, 'clsc-multi-toggle-switch__option--active', '')}}">
+				<input
+					type="radio"
+					name="{{name}}"
+					value="{{opt.value}}"
+					checked="{{opt.value == selected}}"
+					onchange="{{action('onOptionSelect', opt.value)}}" />
+				<template
+					is="if"
+					value="{{opt.icon}}">
+					<template is="then">
+						<span class="material-symbols-outlined clsc-multi-toggle-switch__icon">{{opt.icon}}</span>
+					</template>
+				</template>
+				<span class="clsc-multi-toggle-switch__label">{{opt.label}}</span>
+			</label>
+		</template>
+	</div>
+</template>

@@ -1,0 +1,63 @@
+@import '../../../../abstracts/util';
+
+clsc-multi-toggle-switch[lyte-comp] {
+	@include flex-box($inline: true);
+}
+
+.clsc-multi-toggle-switch {
+	display: inline-flex;
+	@include border-radius(6px);
+	overflow: hidden;
+	background-color: var(--background-color-secondary);
+	@include box-shadow(0 0 0 0.5px var(--color-text-tertiary));
+}
+
+.clsc-multi-toggle-switch__option {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	padding: 4px 10px;
+	cursor: pointer;
+	font-size: var(--font-size__ns);
+	font-weight: 500;
+	color: var(--color-sec-text);
+	@include transition(all 0.2s ease);
+	@include user-select(none);
+	position: relative;
+
+	// Separator between options
+	& + & {
+		border-left: 0.5px solid var(--color-text-tertiary);
+	}
+
+	input[type='radio'] {
+		@include position(absolute);
+		opacity: 0;
+		@include dimension--box(0, 0);
+		pointer-events: none;
+	}
+
+	&:hover:not(&--active) {
+		background-color: var(--background-color-primary--hover);
+	}
+
+	&--active {
+		background-color: var(--color-primary);
+		color: #fff;
+
+		& + .clsc-multi-toggle-switch__option,
+		& {
+			border-left-color: transparent;
+		}
+	}
+}
+
+.clsc-multi-toggle-switch__icon {
+	font-size: 16px;
+	line-height: 1;
+}
+
+.clsc-multi-toggle-switch__label {
+	line-height: 1;
+	white-space: nowrap;
+}
