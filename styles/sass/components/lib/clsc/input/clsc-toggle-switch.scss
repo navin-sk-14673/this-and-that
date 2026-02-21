@@ -1,9 +1,9 @@
 @import '../../../../abstracts/util';
 
 clsc-toggle-switch[lyte-comp] {
-	--height-label: 18px;
-	--width-label: 34px;
-	--size-slider: 10px;
+	--height-label: 20px;
+	--width-label: 36px;
+	--size-slider: 12px;
 	--slider-transform-x: 16px;
 
 	@include flex-box($inline: true);

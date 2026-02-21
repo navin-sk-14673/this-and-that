@@ -23,6 +23,15 @@
 	}
 
 	@include grid-container(4px) {
-		grid-template-columns: 210px;
+		grid-template-columns: 232px;
+	}
+}
+
+.editor-file-tree-empty {
+	&__icon {
+		width: 64px;
+		height: 64px;
+		// color: var(--color-primary);
+		opacity: 0.6;
 	}
 }

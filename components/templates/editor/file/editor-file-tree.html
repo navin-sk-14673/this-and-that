@@ -2,16 +2,56 @@
 	tag-name="editor-file-tree"
 	lyte-comp="true">
 	<div class="h-full flex-col">
-		<div class="editor-file-tree-container pr-2 overflow-x-hidden">
-			<template lyte-for="{{files}} as file index">
-				<editor-file
-					class="sortable-element {{sortableClass}} {{if(file.id == activeFileId, '--active')}}"
-					file="{{file}}"
-					file-index="{{index}}"
-					on-file-create="{{method('onFileCreate', file)}}"
-					on-file-update="{{method('onFileUpdate', file)}}"
-					on-file-remove="{{method('onFileRemove', file)}}"></editor-file>
-			</template>
-		</div>
+		<template lyte-if="{{files.length == 0}}">
+			<div class="editor-file-tree-empty flex-col flex-center gap-2 h-full mb-5 pr-1.5 text-center">
+				<span
+					class="material-symbols-outlined editor-file-tree-empty__icon text-primary"
+					style="font-size: 64px; opacity: 0.4">
+					note_add
+				</span>
+				<span
+					class="text-s text-primary"
+					style="opacity: 0.7">
+					Create a new...
+				</span>
+				<div class="flex-col gap-1 mt-1 w-full">
+					<button
+						class="btn-primary w-full"
+						onclick="{{action('onNewFileClick')}}">
+						<div class="w-full flex items-center justify-center gap-1">
+							<svg-icon
+								icon-name="file"
+								icon-size="ms"
+								svg-class="stroke-primary stroke-0.5"></svg-icon>
+							<span class="text-s">File</span>
+						</div>
+					</button>
+					<button
+						class="btn-primary w-full"
+						onclick="{{action('onNewComparatorFileClick')}}">
+						<div class="w-full flex items-center justify-center gap-1">
+							<svg-icon
+								icon-name="file-compare"
+								icon-size="ms"
+								svg-class="fill-primary stroke-0.5"></svg-icon>
+							<span class="text-s">Comparator</span>
+						</div>
+					</button>
+				</div>
+			</div>
+		</template>
+		<template lyte-else>
+			<div class="editor-file-tree-container pr-2 overflow-x-hidden">
+				<template lyte-for="{{files}} as file index">
+					<editor-file
+						class="sortable-element {{sortableClass}} {{if(file.id == activeFileId, '--active')}}"
+						file="{{file}}"
+						file-index="{{index}}"
+						on-file-create="{{method('onFileCreate', file)}}"
+						on-file-update="{{method('onFileUpdate', file)}}"
+						on-file-remove="{{method('onFileRemove', file)}}"></editor-file>
+				</template>
+			</div>
+		</template>
 	</div>
 </template>

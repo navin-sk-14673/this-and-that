@@ -35,6 +35,9 @@ editor-file.sortable-element-selected > .editor-file {
 	}
 }
 .editor-file-title-input {
+	@include placeholder {
+		color: var(--color-placeholder);
+	}
 	@include selection {
 		background-color: var(--background-color-highlight);
 	}

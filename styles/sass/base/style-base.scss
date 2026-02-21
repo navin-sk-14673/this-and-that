@@ -55,7 +55,7 @@
 	--border-color-table-row: #cfcfdf;
 	--background-color-modal-freeze: rgb(40 54 104 / 60%);
 
-	--color-placeholder: #676879;
+	--color-placeholder: var(--color-optional-text);
 	--color-icon: #676879;
 	--color-link: #1f76c2;
 	--color-hr: hsla(237, 8%, 44%, 0.2);

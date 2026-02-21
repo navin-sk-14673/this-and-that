@@ -17,13 +17,13 @@
 }
 
 .clsc-modal-base.clsc-modal-w-30 > .lyteModal {
-	@include width-curb($min: 362px, $width: 30% !important);
+	@include width-curb($min: 747px, $width: 30% !important);
 }
 .clsc-modal-base.clsc-modal-w-40 > .lyteModal {
-	@include width-curb($min: 362px, $width: 40% !important);
+	@include width-curb($min: 747px, $width: 40% !important);
 }
 .clsc-modal-base.clsc-modal-w-75 > .lyteModal {
-	@include width-curb($min: 362px, $width: 75% !important);
+	@include width-curb($min: 747px, $width: 75% !important);
 }
 
 // .clsc-modal-base {

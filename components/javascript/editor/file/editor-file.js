@@ -69,7 +69,6 @@ Lyte.Component.register('editor-file', {
 			this.setData('file.extension', extension);
 		},
 		onFileNameKeyup(event) {
-			const value = event.target.value;
 			if (event.key == 'Escape') {
 				const file = this.getData('file');
 				if (file.isCreate) {

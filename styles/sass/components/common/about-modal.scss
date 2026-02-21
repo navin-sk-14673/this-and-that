@@ -4,16 +4,18 @@
 	--lyte-rant: none;
 }
 .about-modal__header {
-	padding: 16px 4px;
-	margin: -20px -8px 24px;
-	border-bottom: 1px solid var(--border-color-on-secondary-color);
+	padding: 16px 8px;
+	margin: -20px -12px 24px;
+	// border-bottom: 1px solid var(--border-color-on-secondary-color);
+	background-color: var(--background-color-tertiary);
+	border-radius: 12px;
 	gap: 24px;
 
 	.material-symbols-outlined {
 		font-size: 32px;
 		width: 40px;
 		text-align: center;
-		color: var(--color-primary);
+		// color: var(--color-primary);
 	}
 
 	h1 {
@@ -48,32 +50,36 @@
 		font-size: 22px;
 	}
 
-	&::after {
-		content: '';
-		@include position(absolute, $right: 0);
-		@include dimension--box(3px, 80%);
-		@include border-radius(2px);
-		margin-right: -4px;
-		background-color: transparent;
-		@include transition(all 0.15s ease);
-	}
+	// &::after {
+	// 	// content: '';
+	// 	@include position(absolute, $right: 0);
+	// 	@include dimension--box(3px, 80%);
+	// 	@include border-radius(2px);
+	// 	margin-right: -4px;
+	// 	background-color: transparent;
+	// 	@include transition(all 0.15s ease);
+	// }
 
 	&:hover {
-		&::after {
-			background-color: var(--background-color-primary--hover);
-		}
+		background-color: var(--background-color-primary--hover);
+		// &::after {
+		// 	background-color: var(--background-color-primary--hover);
+		// }
 	}
 
+	&--active:hover,
 	&--active {
-		color: var(--color-primary);
+		// color: var(--color-primary);
+		color: var(--color-text-on-primary);
+		background-color: var(--color-primary);
 
-		&::after {
-			background-color: var(--color-primary);
-		}
+		// &::after {
+		// 	background-color: var(--color-primary);
+		// }
 
-		&:hover::after {
-			background-color: var(--color-primary);
-		}
+		// &:hover::after {
+		// 	background-color: var(--color-primary);
+		// }
 	}
 }
 

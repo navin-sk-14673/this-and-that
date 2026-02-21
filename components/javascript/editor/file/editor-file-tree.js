@@ -46,7 +46,14 @@ Lyte.Component.register('editor-file-tree', {
 			sortableClass: Lyte.attr('string')
 		};
 	},
-	actions: {},
+	actions: {
+		onNewFileClick() {
+			this.onCreateFile();
+		},
+		onNewComparatorFileClick() {
+			this.onCreateComparatorFile();
+		}
+	},
 	methods: {
 		onThemeSelect: (dropdown, selectedOption, optionIndex) => MonacoEditor.setTheme(selectedOption.key),
 

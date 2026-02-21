@@ -5,36 +5,43 @@
 	<editor-user-preference-modal lt-prop-show="{{lbind(showPreferenceModal)}}"></editor-user-preference-modal>
 	<about-modal lt-prop-show="{{lbind(showAboutModal)}}"></about-modal>
 	<div class="main-container flex h-full">
-		<div class="pb-2 pl-2 shrink-0">
+		<div
+			class="pb-2 pl-2 shrink-0"
+			style="min-width: 252px; max-width: 252px">
 			<div class="h-full flex-col">
 				<div class="flex items-center">
 					<h4 class="sticky top-0 text-title flex items-center gap-1">
 						<span class="material-symbols-outlined">code</span>
 						CodePal
 					</h4>
-					<div class="ml-auto flex">
-						<button
-							data-tooltip="New Comparator File"
-							data-tooltip-pos="bottom"
-							class="btn-icon-sec"
-							onclick="{{action('onCreateComparatorFileClick')}}">
-							<svg-icon
-								icon-name="file-compare"
-								icon-size="m"
-								svg-class="fill-primary stroke-0.5"></svg-icon>
-						</button>
-						<button
-							data-tooltip="New Editor File"
-							data-tooltip-pos="bottom"
-							class="btn-icon-sec"
-							onclick="{{action('onCreateFileClick')}}">
-							<svg-icon
-								icon-name="file"
-								icon-size="m"
-								svg-class="stroke-primary stroke-0.5"></svg-icon>
-							<!-- fill-primary -->
-						</button>
-					</div>
+					<template lyte-if="{{files.length > 0}}">
+						<div class="ml-auto flex">
+							<button
+								lt-prop-title="New Comparator File"
+								lt-prop-tooltip-class="clsc-text-tooltip"
+								lt-prop-tooltip-config='{"position": "bottom"}'
+								class="btn-icon-sec"
+								onclick="{{action('onCreateComparatorFileClick')}}">
+								<svg-icon
+									icon-name="file-compare"
+									icon-size="m"
+									svg-class="fill-primary stroke-0.5"></svg-icon>
+								<!-- <span class="material-symbols-outlined">difference</span> -->
+							</button>
+							<button
+								lt-prop-title="New Editor File"
+								lt-prop-tooltip-class="clsc-text-tooltip"
+								lt-prop-tooltip-config='{"position": "bottom"}'
+								class="btn-icon-sec"
+								onclick="{{action('onCreateFileClick')}}">
+								<svg-icon
+									icon-name="file"
+									icon-size="m"
+									svg-class="stroke-primary stroke-0.5"></svg-icon>
+								<!-- <span class="material-symbols-outlined">note_add</span> -->
+							</button>
+						</div>
+					</template>
 				</div>
 				<editor-file-tree
 					id="editor-file-tree"
@@ -43,17 +50,14 @@
 				<div class="flex-col pt-1">
 					<div class="flex items-center gap-0.5">
 						<button
-							class="btn-primary w-5"
+							class="btn-primary w-4 h-4"
 							onclick="{{action('onAboutClick')}}">
 							<span class="material-symbols-outlined text-xl">info_i</span>
 						</button>
 						<button
-							class="btn-primary w-5"
+							class="btn-primary w-4 h-4"
 							onclick="{{action('onPreferenceClick')}}">
-							<svg-icon
-								icon-name="cog"
-								icon-size="l"
-								svg-class="fill-primary stroke-0.5"></svg-icon>
+							<span class="material-symbols-outlined text-xl">settings</span>
 						</button>
 					</div>
 					<!-- <button class="btn-primary">

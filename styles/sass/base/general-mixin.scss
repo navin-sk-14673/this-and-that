@@ -15,6 +15,79 @@ button.btn-c2a {
 		@include transform(scale(0.95));
 	}
 }
+
+button.btn-c2a {
+	// padding
+	@for $i from 0 through 5 {
+		@if $i != 0 {
+			&.p-#{$i - 1}\.5 {
+				padding: #{$i * 8 - 4}px;
+			}
+		}
+		&.p-#{$i} {
+			padding: #{$i * 8}px;
+		}
+	}
+
+	// width
+	&.w-auto {
+		width: auto;
+	}
+	@for $i from 0 through 5 {
+		@if $i != 0 {
+			&.w-#{$i - 1}\.5 {
+				width: #{$i * 8 - 4}px;
+			}
+		}
+		&.w-#{$i} {
+			width: #{$i * 8}px;
+		}
+	}
+
+	// height
+	&.h-auto {
+		height: auto;
+	}
+	@for $i from 0 through 5 {
+		@if $i != 0 {
+			&.h-#{$i - 1}\.5 {
+				height: #{$i * 8 - 4}px;
+			}
+		}
+		&.h-#{$i} {
+			height: #{$i * 8}px;
+		}
+	}
+
+	// border-radius
+	&.rounded-inherit {
+		border-radius: inherit;
+	}
+	&.rounded-none {
+		border-radius: 0;
+	}
+	&.rounded-s {
+		border-radius: var(--border-radius__s);
+	}
+	&.rounded-m {
+		border-radius: var(--border-radius__m);
+	}
+	&.rounded-xm {
+		border-radius: var(--border-radius__xm);
+	}
+	&.rounded-l {
+		border-radius: var(--border-radius__l);
+	}
+	&.rounded-xl {
+		border-radius: var(--border-radius__xl);
+	}
+	&.rounded-2xl {
+		border-radius: var(--border-radius__2xl);
+	}
+	&.rounded-50\% {
+		border-radius: 50%;
+	}
+}
 button.btn-primary {
 	@extend .btn-c2a;
 	color: var(--color-primary-text);
