@@ -20,6 +20,8 @@ Lyte.Component.register('editor-user-preference-modal', {
 		const appPrefs = this.getAppPrefs();
 		this.setData('selectedTheme', appPrefs.theme);
 		this.applyTheme(appPrefs.theme);
+		this.setData('selectedTreePosition', appPrefs.treePosition || 'left');
+		this.applyTreePosition(appPrefs.treePosition || 'left');
 
 		// Load editor preferences
 		const editorPrefs = this.getEditorPrefs();
@@ -50,7 +52,14 @@ Lyte.Component.register('editor-user-preference-modal', {
 			}),
 			wordWrap: Lyte.attr('boolean', { default: true }),
 			lineNumbers: Lyte.attr('boolean', { default: true }),
-			minimap: Lyte.attr('boolean', { default: true })
+			minimap: Lyte.attr('boolean', { default: true }),
+			selectedTreePosition: Lyte.attr('string', { default: 'left' }),
+			treePositionOptions: Lyte.attr('array', {
+				default: [
+					{ value: 'left', label: 'Left', icon: 'align_horizontal_left' },
+					{ value: 'right', label: 'Right', icon: 'align_horizontal_right' }
+				]
+			})
 		};
 	},
 
@@ -88,6 +97,12 @@ Lyte.Component.register('editor-user-preference-modal', {
 		this.saveEditorPrefs({ tabSize: val });
 		this.applyEditorOption('tabSize', val);
 	}.observes('selectedTabSize'),
+
+	onTreePositionChange: function () {
+		const position = this.getData('selectedTreePosition');
+		this.saveAppPrefs({ treePosition: position });
+		this.applyTreePosition(position);
+	}.observes('selectedTreePosition'),
 
 	// --- Storage helpers ---
 
@@ -146,6 +161,10 @@ Lyte.Component.register('editor-user-preference-modal', {
 		} catch (e) {
 			// Monaco not loaded yet
 		}
+	},
+
+	applyTreePosition(position) {
+		document.documentElement.setAttribute('data-tree-position', position);
 	},
 
 	// --- Editor options application ---

@@ -6,10 +6,10 @@
 	<about-modal lt-prop-show="{{lbind(showAboutModal)}}"></about-modal>
 	<div class="main-container flex h-full">
 		<div
-			class="pb-2 pl-2 shrink-0"
+			class="sidebar-panel pb-2 pl-2 shrink-0"
 			style="min-width: 252px; max-width: 252px">
 			<div class="h-full flex-col">
-				<div class="flex items-center">
+				<div class="sidebar-header flex items-center justify-between">
 					<h4 class="sticky top-0 text-title flex items-center gap-1">
 						<span class="material-symbols-outlined">code</span>
 						CodePal
@@ -47,7 +47,7 @@
 					id="editor-file-tree"
 					files="{{files}}"
 					class="grow min-h-0"></editor-file-tree>
-				<div class="flex-col pt-1">
+				<div class="sidebar-footer flex-col pt-1">
 					<div class="flex items-center gap-0.5">
 						<button
 							class="btn-primary w-4 h-4"

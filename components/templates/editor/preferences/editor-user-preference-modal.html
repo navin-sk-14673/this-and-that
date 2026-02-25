@@ -76,6 +76,17 @@
 							selected="{{lbind(selectedTheme)}}"
 							options="{{themeOptions}}"></clsc-multi-toggle-switch>
 					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="font-medium color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							Editor Tree Position
+						</label>
+						<clsc-multi-toggle-switch
+							name="treePosition"
+							selected="{{lbind(selectedTreePosition)}}"
+							options="{{treePositionOptions}}"></clsc-multi-toggle-switch>
+					</div>
 				</div>
 			</div>
 		</template>

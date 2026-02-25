@@ -106,3 +106,108 @@ main-container {
 		}
 	}
 }
+
+// Right-side tree position
+[data-tree-position='right'] {
+	.main-container {
+		flex-direction: row-reverse;
+		background-image: radial-gradient(
+				circle at 15% 1%,
+				hsla(190, 0%, 93%, 0.05) 0%,
+				hsla(190, 0%, 93%, 0.05) 96%,
+				transparent 96%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 86% 15%,
+				hsla(190, 0%, 93%, 0.05) 0%,
+				hsla(190, 0%, 93%, 0.05) 1%,
+				transparent 1%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 40% 90%,
+				hsla(190, 0%, 93%, 0.05) 0%,
+				hsla(190, 0%, 93%, 0.05) 20%,
+				transparent 20%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 21% 7%,
+				hsla(190, 0%, 93%, 0.05) 0%,
+				hsla(190, 0%, 93%, 0.05) 78%,
+				transparent 78%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 45% 65%,
+				hsla(190, 0%, 93%, 0.05) 0%,
+				hsla(190, 0%, 93%, 0.05) 52%,
+				transparent 52%,
+				transparent 100%
+			),
+			linear-gradient(45deg, rgb(37, 56, 222), rgb(96, 189, 244));
+	}
+
+	&[data-theme='dark'] .main-container {
+		background-image: radial-gradient(
+				circle at 15% 1%,
+				hsla(230, 40%, 30%, 0.25) 0%,
+				hsla(230, 40%, 30%, 0.25) 96%,
+				transparent 96%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 86% 15%,
+				hsla(260, 35%, 28%, 0.25) 0%,
+				hsla(260, 35%, 28%, 0.25) 1%,
+				transparent 1%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 40% 90%,
+				hsla(210, 45%, 25%, 0.3) 0%,
+				hsla(210, 45%, 25%, 0.3) 20%,
+				transparent 20%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 21% 7%,
+				hsla(240, 35%, 28%, 0.25) 0%,
+				hsla(240, 35%, 28%, 0.25) 78%,
+				transparent 78%,
+				transparent 100%
+			),
+			radial-gradient(
+				circle at 45% 65%,
+				hsla(220, 40%, 26%, 0.3) 0%,
+				hsla(220, 40%, 26%, 0.3) 52%,
+				transparent 52%,
+				transparent 100%
+			),
+			linear-gradient(45deg, rgb(18, 25, 75), rgb(25, 60, 100));
+	}
+
+	.sidebar-panel {
+		padding-left: 0;
+		padding-right: 1rem;
+	}
+
+	.sidebar-header {
+		flex-direction: row-reverse;
+
+		> h4 {
+			flex-direction: row-reverse;
+		}
+
+		> .ml-auto,
+		> template > .ml-auto {
+			margin-left: 0;
+			flex-direction: row-reverse;
+		}
+	}
+
+	.sidebar-footer > .flex {
+		justify-content: flex-end;
+	}
+}
