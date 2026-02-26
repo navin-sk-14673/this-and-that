@@ -35,3 +35,18 @@
 		opacity: 0.6;
 	}
 }
+
+// --- External file drop placeholder ---
+
+.external-drop-placeholder {
+	border: 1px dashed var(--border-color-input-field);
+	@include border-radius(var(--border-radius__s));
+	background-color: rgba(237, 239, 247, 0.22);
+	min-height: 32px;
+	@include transition((opacity 0.15s ease));
+}
+
+editor-file-tree.--external-drag-active .editor-file-tree-empty {
+	pointer-events: none;
+	opacity: 0.4;
+}

@@ -90,6 +90,7 @@ main-container {
 	@include border(1px solid #fff, var(--border-radius__m));
 	margin: 8px;
 	overflow: hidden;
+	position: relative;
 
 	[data-theme='dark'] & {
 		border-color: hsl(228, 15%, 25%);
@@ -104,6 +105,66 @@ main-container {
 				@include transform(scale(1.005));
 			}
 		}
+	}
+}
+
+// --- Editor Area Drop Overlay ---
+
+.editor-drop-overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 100;
+	@include flex-box(center, center);
+	background-color: rgba(128, 128, 128, 0.15);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	border: 3px dashed var(--color-primary);
+	@include border-radius(var(--border-radius__m));
+	pointer-events: none;
+	animation: editorDropOverlayIn 0.25s ease forwards;
+
+	&__content {
+		@include flex-box(center, center, column, $gap: 12px);
+		pointer-events: none;
+		animation: editorDropContentIn 0.3s ease 0.05s both;
+	}
+
+	&__icon {
+		font-size: 96px;
+		color: var(--color-primary);
+		opacity: 0.7;
+	}
+
+	&__text {
+		font-size: var(--font-size__l);
+		font-weight: 500;
+		color: var(--color-primary);
+		opacity: 0.9;
+		letter-spacing: 0.5px;
+	}
+}
+
+@keyframes editorDropOverlayIn {
+	from {
+		opacity: 0;
+		backdrop-filter: blur(0);
+		-webkit-backdrop-filter: blur(0);
+	}
+	to {
+		opacity: 1;
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+	}
+}
+
+@keyframes editorDropContentIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9) translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
 	}
 }
 
