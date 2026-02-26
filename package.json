@@ -33,6 +33,7 @@
 		"@zoho/lyte": "3.3.0-BETA",
 		"@zoho/lyte-dom": "2.0.17",
 		"@zoho/lyte-ui-component": "3.85.3",
+		"jszip": "^3.10.1",
 		"material-file-icons": "^2.4.0",
 		"monaco-themes": "^0.4.4"
 	},

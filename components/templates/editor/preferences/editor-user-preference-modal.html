@@ -12,7 +12,7 @@
 		<template
 			is="registerYield"
 			yield-name="modal">
-			<div class="flex-col gap-2 text-l">
+			<div class="h-full flex-col gap-2 text-l">
 				<!-- Editor Preferences -->
 				<div class="flex-col gap-2">
 					<h4
@@ -22,7 +22,7 @@
 					</h4>
 
 					<div class="flex items-center justify-between gap-0.75">
-						<label class="font-medium color-sec-text tracking-wide">
+						<label class="text-m color-sec-text tracking-wide">
 							<span class="color-primary">✦</span>
 							Word Wrap
 						</label>
@@ -30,23 +30,15 @@
 					</div>
 
 					<div class="flex items-center justify-between gap-0.75">
-						<label class="font-medium color-sec-text tracking-wide">
+						<label class="text-m color-sec-text tracking-wide">
 							<span class="color-primary">✦</span>
-							Show Line Numbers
+							Sticky Scroll
 						</label>
-						<clsc-toggle-switch checked="{{lbind(lineNumbers)}}"></clsc-toggle-switch>
+						<clsc-toggle-switch checked="{{lbind(stickyScroll)}}"></clsc-toggle-switch>
 					</div>
 
 					<div class="flex items-center justify-between gap-0.75">
-						<label class="font-medium color-sec-text tracking-wide">
-							<span class="color-primary">✦</span>
-							Show Minimap
-						</label>
-						<clsc-toggle-switch checked="{{lbind(minimap)}}"></clsc-toggle-switch>
-					</div>
-
-					<div class="flex items-center justify-between gap-0.75">
-						<label class="font-medium color-sec-text tracking-wide">
+						<label class="text-m color-sec-text tracking-wide">
 							<span class="color-primary">✦</span>
 							Tab Size
 						</label>
@@ -54,6 +46,22 @@
 							name="tabSize"
 							selected="{{lbind(selectedTabSize)}}"
 							options="{{tabSizeOptions}}"></clsc-multi-toggle-switch>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							Show Minimap
+						</label>
+						<clsc-toggle-switch checked="{{lbind(minimap)}}"></clsc-toggle-switch>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							Show Line Numbers
+						</label>
+						<clsc-toggle-switch checked="{{lbind(lineNumbers)}}"></clsc-toggle-switch>
 					</div>
 				</div>
 
@@ -67,7 +75,7 @@
 						<span>App Preferences</span>
 					</h4>
 					<div class="flex items-center justify-between gap-0.75">
-						<label class="font-medium color-sec-text tracking-wide">
+						<label class="text-m color-sec-text tracking-wide">
 							<span class="color-primary">✦</span>
 							Theme
 						</label>
@@ -78,7 +86,7 @@
 					</div>
 
 					<div class="flex items-center justify-between gap-0.75">
-						<label class="font-medium color-sec-text tracking-wide">
+						<label class="text-m color-sec-text tracking-wide">
 							<span class="color-primary">✦</span>
 							Editor Tree Position
 						</label>
@@ -87,6 +95,105 @@
 							selected="{{lbind(selectedTreePosition)}}"
 							options="{{treePositionOptions}}"></clsc-multi-toggle-switch>
 					</div>
+				</div>
+
+				<template lyte-if="{{files.length > 0}}">
+					<hr class="pref-divider" />
+
+					<!-- Data Management -->
+					<div class="flex-col gap-2">
+						<h4
+							class="flex items-center gap-0.75 no-margin text-l font-semibold color-primary uppercase tracking-wider">
+							<span class="material-symbols-outlined text-l">folder_zip</span>
+							<span>Data Management</span>
+						</h4>
+
+						<div class="flex items-center justify-between gap-0.75">
+							<label class="text-m color-sec-text tracking-wide">
+								<span class="color-primary">✦</span>
+								Export All Files as ZIP
+							</label>
+							<button
+								class="btn-primary h-4 pref-btn-export"
+								onclick="{{action('onExportClick')}}">
+								<span class="material-symbols-outlined text-m">download</span>
+								<span>Export</span>
+							</button>
+						</div>
+
+						<div class="flex items-center justify-between gap-0.75">
+							<label class="text-m color-sec-text tracking-wide">
+								<span class="text-negative">✦</span>
+								Permanently Delete All Content
+							</label>
+							<button
+								class="btn-danger h-4 pref-btn-clear-data"
+								onclick="{{action('onClearDataClick')}}">
+								<span>Clear Data</span>
+							</button>
+						</div>
+					</div>
+				</template>
+			</div>
+		</template>
+	</lyte-modal>
+
+	<!-- Clear Data Confirmation Modal -->
+	<lyte-modal
+		lt-prop-aria="true"
+		lt-prop-show="{{lbind(showClearDataModal)}}"
+		lt-prop-overlay-close="true"
+		lt-prop-close-on-escape="true"
+		lt-prop-allow-multiple="true"
+		lt-prop='{"transition": {"animation": "fadeIn"}}'
+		lt-prop-wrapper-class="clsc-modal-base clsc-modal-center pref-clear-data-modal">
+		<template
+			is="registerYield"
+			yield-name="modal">
+			<div class="flex-col gap-3 text-center">
+				<div class="flex-col items-center gap-1.5">
+					<span
+						class="material-symbols-outlined color-negative"
+						style="font-size: 48px">
+						delete_forever
+					</span>
+					<h3 class="no-margin font-semibold color-primary-text">Clear All File Data?</h3>
+				</div>
+				<ul
+					style="
+						max-width: 340px;
+						margin: 0 auto;
+						padding-left: 28px;
+						text-align: left;
+						list-style-type: '👉 ';
+					">
+					<li
+						class="text-s color-sec-text"
+						style="line-height: 1.8">
+						All your files and their content will be permanently deleted.
+					</li>
+					<li
+						class="text-s color-sec-text"
+						style="line-height: 1.8">
+						Your preferences will be preserved.
+					</li>
+					<li
+						class="text-s color-negative font-medium"
+						style="line-height: 1.8">
+						This action cannot be undone.
+					</li>
+				</ul>
+				<div class="flex items-center justify-center gap-1">
+					<button
+						class="btn-sec pref-btn-confirm-action"
+						onclick="{{action('onClearDataCancel')}}">
+						Cancel
+					</button>
+					<button
+						class="btn-danger pref-btn-confirm-action"
+						onclick="{{action('onClearDataConfirm')}}">
+						Clear Data
+					</button>
 				</div>
 			</div>
 		</template>

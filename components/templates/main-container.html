@@ -2,7 +2,9 @@
 	tag-name="main-container"
 	lyte-comp="true"
 	class="h-full">
-	<editor-user-preference-modal lt-prop-show="{{lbind(showPreferenceModal)}}"></editor-user-preference-modal>
+	<editor-user-preference-modal
+		lt-prop-show="{{lbind(showPreferenceModal)}}"
+		files="{{files}}"></editor-user-preference-modal>
 	<about-modal lt-prop-show="{{lbind(showAboutModal)}}"></about-modal>
 	<div class="main-container flex h-full">
 		<div

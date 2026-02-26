@@ -9,6 +9,9 @@ Lyte.Component.register('editor-file-tree', {
 	},
 	initSortable() {
 		const sortable = this.$node.querySelector('.editor-file-tree-container');
+		if (!sortable) {
+			return;
+		}
 		$L(sortable).sortable({
 			gridView: true,
 			tolerance: 'intersect',
@@ -92,6 +95,12 @@ Lyte.Component.register('editor-file-tree', {
 	onCreateFile() {
 		this.createNewFile(false);
 	},
+
+	__filesObserver: function () {
+		if (this.getData('files').length && !this.getData('sortableClass')) {
+			Lyte.resolvePromises(this).then(() => this.initSortable());
+		}
+	}.observes('files.length'),
 
 	__routePageObservable(trans) {
 		const fileId = trans.dynamicParams[0];

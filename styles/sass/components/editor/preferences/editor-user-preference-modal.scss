@@ -88,4 +88,35 @@ editor-user-preference-modal {
 		@include transition((transform 0.2s ease));
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 	}
+
+	// --- Clear Data / Export buttons ---
+
+	.pref-btn-clear-data,
+	.pref-btn-export {
+		@include flex-box(center, center, $gap: 4px);
+		padding: 6px 16px;
+		font-size: var(--font-size__s);
+		@include border-radius(var(--border-radius__m));
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+}
+
+// --- Clear Data Confirmation Modal ---
+
+.pref-clear-data-modal > .lyteModal {
+	width: auto !important;
+	min-width: 360px;
+	max-width: 420px;
+	height: auto !important;
+	min-height: unset;
+}
+
+.pref-btn-confirm-action {
+	@include flex-box(center, center, $gap: 4px);
+	padding: 8px 20px;
+	font-size: var(--font-size__s);
+	@include border-radius(var(--border-radius__m));
+	cursor: pointer;
+	min-width: 120px;
 }

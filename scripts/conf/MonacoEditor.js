@@ -3196,7 +3196,7 @@ class MonacoEditor {
 
 	static getEditorPrefs() {
 		const EDITOR_PREF_KEY = 'penpal-editor-prefs';
-		const defaults = { wordWrap: true, lineNumbers: true, minimap: true, tabSize: 4 };
+		const defaults = { wordWrap: true, lineNumbers: true, minimap: true, stickyScroll: true, tabSize: 4 };
 		try {
 			const raw = localStorage.getItem(EDITOR_PREF_KEY);
 			return raw ? { ...defaults, ...JSON.parse(raw) } : defaults;
@@ -3211,6 +3211,7 @@ class MonacoEditor {
 			wordWrap: prefs.wordWrap ? 'on' : 'off',
 			lineNumbers: prefs.lineNumbers ? 'on' : 'off',
 			minimap: { enabled: prefs.minimap },
+			stickyScroll: { enabled: prefs.stickyScroll },
 			tabSize: prefs.tabSize
 		};
 	}

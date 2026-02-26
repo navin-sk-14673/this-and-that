@@ -37,5 +37,6 @@
 	"consolidated_files/css/loader-styles.css": ["styles/css/pages/index/load.css"],
 	"consolidated_files/init.js": ["scripts/init/post-init.js"],
 	"consolidated_files/conf.js": ["scripts/conf"],
-	"consolidated_files/util.js": ["scripts/util"]
+	"consolidated_files/util.js": ["scripts/util"],
+	"consolidated_files/lib/jszip.js": ["scripts/lib/jszip.min.js"]
 }

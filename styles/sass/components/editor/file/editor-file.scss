@@ -36,9 +36,15 @@ editor-file.sortable-element-selected > .editor-file {
 }
 .editor-file-title-input {
 	@include placeholder {
-		color: var(--color-placeholder);
+		color: hsl(228, 15%, 82%);
 	}
 	@include selection {
 		background-color: var(--background-color-highlight);
+	}
+}
+
+[data-theme='dark'] .editor-file-title-input {
+	@include placeholder {
+		color: hsl(228, 15%, 30%);
 	}
 }

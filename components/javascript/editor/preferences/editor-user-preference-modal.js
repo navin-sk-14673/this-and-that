@@ -12,6 +12,7 @@ Lyte.Component.register('editor-user-preference-modal', {
 		wordWrap: true,
 		lineNumbers: true,
 		minimap: true,
+		stickyScroll: true,
 		tabSize: 4
 	},
 
@@ -28,12 +29,14 @@ Lyte.Component.register('editor-user-preference-modal', {
 		this.setData('wordWrap', editorPrefs.wordWrap);
 		this.setData('lineNumbers', editorPrefs.lineNumbers);
 		this.setData('minimap', editorPrefs.minimap);
+		this.setData('stickyScroll', editorPrefs.stickyScroll);
 		this.setData('selectedTabSize', String(editorPrefs.tabSize));
 	},
 
 	data: function () {
 		return {
 			ltPropShow: Lyte.attr('boolean', { default: false }),
+			files: Lyte.attr('array', { default: [] }),
 			selectedTheme: Lyte.attr('string', { default: 'system' }),
 			themeOptions: Lyte.attr('array', {
 				default: [
@@ -53,19 +56,124 @@ Lyte.Component.register('editor-user-preference-modal', {
 			wordWrap: Lyte.attr('boolean', { default: true }),
 			lineNumbers: Lyte.attr('boolean', { default: true }),
 			minimap: Lyte.attr('boolean', { default: true }),
+			stickyScroll: Lyte.attr('boolean', { default: true }),
 			selectedTreePosition: Lyte.attr('string', { default: 'left' }),
 			treePositionOptions: Lyte.attr('array', {
 				default: [
 					{ value: 'left', label: 'Left', icon: 'align_horizontal_left' },
 					{ value: 'right', label: 'Right', icon: 'align_horizontal_right' }
 				]
-			})
+			}),
+			showClearDataModal: Lyte.attr('boolean', { default: false })
 		};
 	},
 
-	actions: {},
+	actions: {
+		onExportClick() {
+			this._exportAsZip();
+		},
+		onClearDataClick() {
+			this.setData('showClearDataModal', true);
+		},
+		onClearDataCancel() {
+			this.setData('showClearDataModal', false);
+		},
+		onClearDataConfirm() {
+			this.setData('showClearDataModal', false);
+			FileManager.clearAllFileData().then(() => {
+				this.setData('ltPropShow', false);
+				window.location.reload();
+			});
+		}
+	},
 
 	methods: {},
+
+	// --- Export as ZIP ---
+
+	async _exportAsZip() {
+		try {
+			const files = this.getData('files');
+			if (!files || files.length === 0) return;
+
+			const zip = new JSZip();
+			const usedNames = {};
+
+			// Helper to get a unique filename
+			const getUniqueName = (name) => {
+				if (!usedNames[name]) {
+					usedNames[name] = 1;
+					return name;
+				}
+				let counter = usedNames[name];
+				usedNames[name] = counter + 1;
+
+				// Insert counter before extension
+				const dotIndex = name.lastIndexOf('.');
+				if (dotIndex > 0) {
+					return name.slice(0, dotIndex) + ' (' + counter + ')' + name.slice(dotIndex);
+				}
+				return name + ' (' + counter + ')';
+			};
+
+			// Build metadata array (no content)
+			const metaFiles = files.map((file) => ({
+				id: file.id,
+				title: file.title,
+				extension: file.extension,
+				language: file.language,
+				index: file.index,
+				isComparator: file.isComparator
+			}));
+
+			// Add each file's content to the ZIP
+			for (const file of files) {
+				const contentRecord = await FileContentManager.getFileContent(file.id);
+				const ext = file.extension || '';
+				const baseTitle = file.title || 'untitled';
+
+				if (file.isComparator) {
+					let original = '';
+					let modified = '';
+					try {
+						const raw = contentRecord ? contentRecord.content : '';
+						const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+						original = parsed.original || '';
+						modified = parsed.modified || '';
+					} catch (e) {
+						// fallback if parsing fails
+					}
+
+					const leftName = getUniqueName(baseTitle + '.left' + ext);
+					const rightName = getUniqueName(baseTitle + '.right' + ext);
+					zip.file(leftName, original);
+					zip.file(rightName, modified);
+				} else {
+					const fileName = getUniqueName(baseTitle + ext);
+					zip.file(fileName, contentRecord ? contentRecord.content || '' : '');
+				}
+			}
+
+			// Add metadata
+			zip.file(
+				'codepal.meta.json',
+				JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), files: metaFiles }, null, 2)
+			);
+
+			// Generate and trigger download
+			const blob = await zip.generateAsync({ type: 'blob' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'codepal-export.zip';
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		} catch (e) {
+			console.error('Export failed:', e);
+		}
+	},
 
 	// Observers
 	onWordWrapChange: function () {
@@ -85,6 +193,12 @@ Lyte.Component.register('editor-user-preference-modal', {
 		this.saveEditorPrefs({ minimap: val });
 		this.applyEditorOption('minimap', { enabled: val });
 	}.observes('minimap'),
+
+	onStickyScrollChange: function () {
+		const val = this.getData('stickyScroll');
+		this.saveEditorPrefs({ stickyScroll: val });
+		this.applyEditorOption('stickyScroll', { enabled: val });
+	}.observes('stickyScroll'),
 
 	onThemeChange: function () {
 		const theme = this.getData('selectedTheme');

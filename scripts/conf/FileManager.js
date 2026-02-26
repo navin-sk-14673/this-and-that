@@ -158,4 +158,20 @@ class FileManager {
 		isComparator: isComparator,
 		isCreate: true
 	});
+
+	static clearAllFileData = () =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result,
+					transaction = db.transaction(['files', 'fileContent'], 'readwrite');
+
+				transaction.objectStore('files').clear();
+				transaction.objectStore('fileContent').clear();
+
+				transaction.oncomplete = () => resolve(true);
+				transaction.onerror = () => reject(false);
+			};
+			request.onerror = () => reject(false);
+		});
 }
