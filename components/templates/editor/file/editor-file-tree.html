@@ -2,7 +2,41 @@
 	tag-name="editor-file-tree"
 	lyte-comp="true">
 	<div class="h-full flex-col">
-		<template lyte-if="{{files.length == 0}}">
+		<template lyte-if="{{!filesLoaded}}">
+			<div class="file-tree-shimmer pr-2">
+				<div class="file-tree-shimmer__row">
+					<div class="file-tree-shimmer__icon"></div>
+					<div
+						class="file-tree-shimmer__text"
+						style="width: 70%"></div>
+				</div>
+				<div class="file-tree-shimmer__row">
+					<div class="file-tree-shimmer__icon"></div>
+					<div
+						class="file-tree-shimmer__text"
+						style="width: 55%"></div>
+				</div>
+				<div class="file-tree-shimmer__row">
+					<div class="file-tree-shimmer__icon"></div>
+					<div
+						class="file-tree-shimmer__text"
+						style="width: 82%"></div>
+				</div>
+				<div class="file-tree-shimmer__row">
+					<div class="file-tree-shimmer__icon"></div>
+					<div
+						class="file-tree-shimmer__text"
+						style="width: 45%"></div>
+				</div>
+				<div class="file-tree-shimmer__row">
+					<div class="file-tree-shimmer__icon"></div>
+					<div
+						class="file-tree-shimmer__text"
+						style="width: 65%"></div>
+				</div>
+			</div>
+		</template>
+		<template lyte-if="{{filesLoaded && files.length == 0}}">
 			<div class="editor-file-tree-empty flex-col flex-center gap-2 h-full mb-5 pr-1.5 text-center">
 				<span
 					class="material-symbols-outlined editor-file-tree-empty__icon text-primary"
@@ -14,33 +48,44 @@
 					style="opacity: 0.7">
 					Create a new...
 				</span>
-				<div class="flex-col gap-1 mt-1 w-full">
-					<button
-						class="btn-primary w-full"
+				<div class="flex-col gap-0.5 mt-1 w-full">
+					<div
+						class="editor-file-tree-empty__action"
 						onclick="{{action('onNewFileClick')}}">
-						<div class="w-full flex items-center justify-center gap-1">
-							<svg-icon
-								icon-name="file"
-								icon-size="ms"
-								svg-class="stroke-primary stroke-0.5"></svg-icon>
-							<span class="text-s">File</span>
-						</div>
-					</button>
-					<button
-						class="btn-primary w-full"
+						<span
+							class="material-symbols-outlined"
+							style="font-size: 18px">
+							note_add
+						</span>
+						<span class="editor-file-tree-empty__action-label text-s">File</span>
+						<span class="editor-file-tree-empty__action-shortcut text-xs">⌃⇧N</span>
+					</div>
+					<div
+						class="editor-file-tree-empty__action"
 						onclick="{{action('onNewComparatorFileClick')}}">
-						<div class="w-full flex items-center justify-center gap-1">
-							<svg-icon
-								icon-name="file-compare"
-								icon-size="ms"
-								svg-class="fill-primary stroke-0.5"></svg-icon>
-							<span class="text-s">Comparator</span>
-						</div>
-					</button>
+						<span
+							class="material-symbols-outlined"
+							style="font-size: 18px">
+							difference
+						</span>
+						<span class="editor-file-tree-empty__action-label text-s">Comparator</span>
+						<span class="editor-file-tree-empty__action-shortcut text-xs">⌃⇧M</span>
+					</div>
+					<div class="editor-file-tree-empty__divider"></div>
+					<div
+						class="editor-file-tree-empty__action"
+						onclick="{{action('onImportFilesClick')}}">
+						<span
+							class="material-symbols-outlined"
+							style="font-size: 18px">
+							upload_file
+						</span>
+						<span class="editor-file-tree-empty__action-label text-s">Import Files</span>
+					</div>
 				</div>
 			</div>
 		</template>
-		<template lyte-else>
+		<template lyte-if="{{filesLoaded && files.length > 0}}">
 			<div class="editor-file-tree-container pr-2 overflow-x-hidden">
 				<template lyte-for="{{files}} as file index">
 					<editor-file

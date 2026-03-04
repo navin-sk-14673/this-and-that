@@ -9,10 +9,17 @@ Lyte.Component.register('main-container', {
 		});
 	},
 	didConnect() {
-		FileManager.getAllFiles().then((files) => this.setData('files', files));
+		FileManager.getAllFiles().then((files) => {
+			this.setData('files', files);
+			this.setData('filesLoaded', true);
+		});
+
+		// Purge archived files older than 7 days
+		FileManager.purgeOldArchives();
 
 		this.FILE_TREE = this.$node.querySelector('#editor-file-tree');
 		this._initEditorAreaDrop();
+		this._initKeyboardShortcuts();
 		// const ORIGINAL_JSON = {
 		// 		name: 'Navin',
 		// 		age: 12,
@@ -47,10 +54,19 @@ Lyte.Component.register('main-container', {
 	data: function () {
 		return {
 			files: Lyte.attr('array', { default: [], watch: true }),
+			filesLoaded: Lyte.attr('boolean', { default: false }),
 			monaco: Lyte.attr('object'),
 			editorThemes: Lyte.attr('array'),
 			showPreferenceModal: Lyte.attr('boolean', { default: false }),
-			showAboutModal: Lyte.attr('boolean', { default: false })
+			showAboutModal: Lyte.attr('boolean', { default: false }),
+			addFileMenuOptions: Lyte.attr('array', {
+				default: [
+					{ label: 'New File', icon: 'note_add', action: 'onNewFile', shortcut: '⌃⇧N' },
+					{ label: 'New Comparator', icon: 'difference', action: 'onNewComparator', shortcut: '⌃⇧M' },
+					{ separator: true },
+					{ label: 'Import Files', icon: 'upload_file', action: 'onImportFile' }
+				]
+			})
 		};
 	},
 	actions: {
@@ -66,6 +82,116 @@ Lyte.Component.register('main-container', {
 		onPreferenceClick() {
 			this.setData('showPreferenceModal', true);
 		}
+	},
+	methods: {
+		onNewFile() {
+			this.FILE_TREE.component.onCreateFile();
+		},
+		onNewComparator() {
+			this.FILE_TREE.component.onCreateComparatorFile();
+		},
+		onImportFile() {
+			this._triggerFileImport();
+		}
+	},
+
+	// --- Keyboard Shortcuts ---
+
+	_initKeyboardShortcuts() {
+		this._onGlobalKeydown = (e) => {
+			if (e.ctrlKey && e.shiftKey && !e.metaKey && !e.altKey) {
+				if (e.code === 'KeyN') {
+					e.preventDefault();
+					e.stopPropagation();
+					this.FILE_TREE.component.onCreateFile();
+				} else if (e.code === 'KeyM') {
+					e.preventDefault();
+					e.stopPropagation();
+					this.FILE_TREE.component.onCreateComparatorFile();
+				} else if (e.code === 'KeyT') {
+					e.preventDefault();
+					e.stopPropagation();
+					this.FILE_TREE.component.restoreArchivedFile();
+				}
+			}
+		};
+		// Use capture phase so it fires before Monaco intercepts
+		document.addEventListener('keydown', this._onGlobalKeydown, true);
+	},
+
+	// --- File Import via Input ---
+
+	_triggerFileImport() {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.multiple = true;
+		input.style.display = 'none';
+		input.addEventListener('change', (e) => {
+			if (e.target.files && e.target.files.length > 0) {
+				this._importFiles(e.target.files);
+			}
+			input.remove();
+		});
+		document.body.appendChild(input);
+		input.click();
+	},
+
+	async _importFiles(fileList) {
+		const files = this.getData('files');
+		const newFiles = [];
+		const skippedFiles = [];
+
+		for (let i = 0; i < fileList.length; i++) {
+			const file = fileList[i];
+
+			if (file.size > 100 * 1024 * 1024) {
+				skippedFiles.push(file.name);
+				continue;
+			}
+
+			try {
+				const content = await file.text();
+				const [title, extension] = this._splitFileName(file.name);
+				const language = MonacoEditor.getFileLanguageByExtension(extension);
+
+				const fileJSON = {
+					id: FileManager.getNewFileName(),
+					title: title,
+					extension: extension,
+					language: language,
+					index: i,
+					isComparator: false
+				};
+
+				newFiles.push({ meta: fileJSON, content: content });
+			} catch (err) {
+				console.warn('Could not read file:', file.name, err);
+			}
+		}
+
+		if (skippedFiles.length > 0) {
+			alert('The following files exceed the 100 MB limit and were skipped:\n\n' + skippedFiles.join('\n'));
+		}
+
+		if (newFiles.length === 0) return;
+
+		// Persist to IndexedDB first
+		for (let i = 0; i < newFiles.length; i++) {
+			const { meta, content } = newFiles[i];
+			await FileManager.createFile(files, meta);
+			await FileContentManager.updateFileContent({ id: meta.id, content: content });
+		}
+
+		// Insert at top of file list
+		for (let i = 0; i < newFiles.length; i++) {
+			Lyte.arrayUtils(files, 'insertAt', i, newFiles[i].meta);
+		}
+
+		// Navigate to the first imported file
+		Lyte.Router.transitionTo({
+			route: 'index.view',
+			dynamicParams: [newFiles[0].meta.id]
+		});
 	},
 
 	// --- Editor Area External File Drop ---
@@ -217,5 +343,9 @@ Lyte.Component.register('main-container', {
 		});
 	},
 
-	didDestroy() {}
+	didDestroy() {
+		if (this._onGlobalKeydown) {
+			document.removeEventListener('keydown', this._onGlobalKeydown, true);
+		}
+	}
 });

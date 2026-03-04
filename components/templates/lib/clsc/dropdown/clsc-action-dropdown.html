@@ -1,0 +1,36 @@
+<template
+	tag-name="clsc-action-dropdown"
+	lyte-comp="true">
+	<div class="clsc-action-dropdown">
+		<button
+			class="clsc-action-dropdown__trigger btn-icon-sec">
+			<span class="material-symbols-outlined clsc-action-dropdown__trigger-icon">add</span>
+		</button>
+		<div class="clsc-action-dropdown__menu">
+			<template lyte-for="{{options}} as option optIndex">
+				<template lyte-if="{{option.separator}}">
+					<hr class="clsc-action-dropdown__separator" />
+				</template>
+				<template lyte-else>
+					<button
+						class="clsc-action-dropdown__item"
+						onclick="{{action('onItemClick', optIndex)}}">
+						<template lyte-if="{{option.icon}}">
+							<span class="material-symbols-outlined clsc-action-dropdown__item-icon">{{option.icon}}</span>
+						</template>
+						<template lyte-if="{{option.svgIcon}}">
+							<svg-icon
+								icon-name="{{option.svgIcon}}"
+								icon-size="ms"
+								svg-class="{{option.svgClass}}"></svg-icon>
+						</template>
+						<span class="clsc-action-dropdown__item-label">{{option.label}}</span>
+						<template lyte-if="{{option.shortcut}}">
+							<span class="clsc-action-dropdown__item-shortcut">{{option.shortcut}}</span>
+						</template>
+					</button>
+				</template>
+			</template>
+		</div>
+	</div>
+</template>

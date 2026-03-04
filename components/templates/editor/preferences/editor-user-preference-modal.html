@@ -65,7 +65,38 @@
 					</div>
 				</div>
 
-				<hr class="pref-divider" />
+				<!-- Keyboard Shortcuts -->
+				<div class="flex-col gap-2">
+					<h4
+						class="flex items-center gap-0.75 no-margin text-l font-semibold color-primary uppercase tracking-wider">
+						<span class="material-symbols-outlined text-l">keyboard</span>
+						<span>Keyboard Shortcuts</span>
+					</h4>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							New File
+						</label>
+						<kbd class="pref-kbd">Ctrl + Shift + N</kbd>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							New Comparator File
+						</label>
+						<kbd class="pref-kbd">Ctrl + Shift + M</kbd>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							Reopen Closed Tab
+						</label>
+						<kbd class="pref-kbd">Ctrl + Shift + T</kbd>
+					</div>
+				</div>
 
 				<!-- App Preferences -->
 				<div class="flex-col gap-2">
@@ -98,8 +129,6 @@
 				</div>
 
 				<template lyte-if="{{files.length > 0}}">
-					<hr class="pref-divider" />
-
 					<!-- Data Management -->
 					<div class="flex-col gap-2">
 						<h4

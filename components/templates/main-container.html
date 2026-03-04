@@ -18,36 +18,19 @@
 					</h4>
 					<template lyte-if="{{files.length > 0}}">
 						<div class="ml-auto flex">
-							<button
-								lt-prop-title="New Comparator File"
-								lt-prop-tooltip-class="clsc-text-tooltip"
-								lt-prop-tooltip-config='{"position": "bottom"}'
-								class="btn-icon-sec"
-								onclick="{{action('onCreateComparatorFileClick')}}">
-								<svg-icon
-									icon-name="file-compare"
-									icon-size="m"
-									svg-class="fill-primary stroke-0.5"></svg-icon>
-								<!-- <span class="material-symbols-outlined">difference</span> -->
-							</button>
-							<button
-								lt-prop-title="New Editor File"
-								lt-prop-tooltip-class="clsc-text-tooltip"
-								lt-prop-tooltip-config='{"position": "bottom"}'
-								class="btn-icon-sec"
-								onclick="{{action('onCreateFileClick')}}">
-								<svg-icon
-									icon-name="file"
-									icon-size="m"
-									svg-class="stroke-primary stroke-0.5"></svg-icon>
-								<!-- <span class="material-symbols-outlined">note_add</span> -->
-							</button>
+							<clsc-action-dropdown
+								options="{{lbind(addFileMenuOptions)}}"
+								on-new-file="{{method('onNewFile')}}"
+								on-new-comparator="{{method('onNewComparator')}}"
+								on-import-file="{{method('onImportFile')}}">
+							</clsc-action-dropdown>
 						</div>
 					</template>
 				</div>
 				<editor-file-tree
 					id="editor-file-tree"
 					files="{{files}}"
+					files-loaded="{{filesLoaded}}"
 					class="grow min-h-0"></editor-file-tree>
 				<div class="sidebar-footer flex-col pt-1">
 					<div class="flex items-center gap-0.5">

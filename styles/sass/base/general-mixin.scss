@@ -183,7 +183,7 @@ button.btn-icon-sec {
 
 	@include dimension--square(32px);
 	padding: 0;
-	color: var(--color-primary--selected);
+	color: var(--color-primary-title);
 	background-color: transparent;
 
 	&:focus,

@@ -226,6 +226,7 @@ Lyte.Component.register('editor-file-tree', {
 	data: function () {
 		return {
 			files: Lyte.attr('array', { default: [] }),
+			filesLoaded: Lyte.attr('boolean', { default: false }),
 			activeFileId: Lyte.attr('string'),
 			currentThemeIndex: Lyte.attr('number', { default: 0 }),
 			sortableClass: Lyte.attr('string')
@@ -237,6 +238,9 @@ Lyte.Component.register('editor-file-tree', {
 		},
 		onNewComparatorFileClick() {
 			this.onCreateComparatorFile();
+		},
+		onImportFilesClick() {
+			this._triggerFileImport();
 		}
 	},
 	methods: {
@@ -259,11 +263,37 @@ Lyte.Component.register('editor-file-tree', {
 			const files = this.getData('files');
 			for (let i = 0; i < files.length; i++) {
 				if (files[i].id == file.id) {
+					const fileData = { ...files[i], index: i };
 					Lyte.arrayUtils(files, 'removeAt', i, 1);
-					return FileManager.deleteFile(file.id);
+					return FileManager.archiveFile(fileData);
 				}
 			}
 		}
+	},
+
+	async restoreArchivedFile() {
+		const restoredFile = await FileManager.restoreLastArchivedFile();
+		if (!restoredFile) return false;
+
+		const files = this.getData('files');
+		const insertIndex = Math.min(restoredFile.index, files.length);
+
+		// Re-insert into the Lyte array at the original position (clamped)
+		Lyte.arrayUtils(files, 'insertAt', insertIndex, restoredFile);
+
+		// Update positions for affected files in IndexedDB
+		for (let i = insertIndex; i < files.length; i++) {
+			files[i].index = i;
+			await FileManager.updateFile(files[i]);
+		}
+
+		// Navigate to the restored file
+		Lyte.Router.transitionTo({
+			route: 'index.view',
+			dynamicParams: [restoredFile.id]
+		});
+
+		return true;
 	},
 
 	createNewFile(isComparator) {
@@ -276,6 +306,131 @@ Lyte.Component.register('editor-file-tree', {
 	},
 	onCreateFile() {
 		this.createNewFile(false);
+	},
+
+	_triggerFileImport() {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.multiple = true;
+		input.style.display = 'none';
+
+		input.addEventListener('change', async () => {
+			const selectedFiles = input.files;
+			if (!selectedFiles || selectedFiles.length === 0) return;
+
+			const files = this.getData('files');
+			const newFiles = [];
+			const skippedFiles = [];
+
+			// First pass: read all files and detect comparator pairs
+			const readFiles = [];
+			for (let i = 0; i < selectedFiles.length; i++) {
+				const selected = selectedFiles[i];
+
+				if (selected.size > 100 * 1024 * 1024) {
+					skippedFiles.push(selected.name);
+					continue;
+				}
+
+				try {
+					const content = await selected.text();
+					const [title, extension] = this._splitFileName(selected.name);
+					readFiles.push({ title, extension, content, originalName: selected.name });
+				} catch (err) {
+					console.warn('Could not read file:', selected.name, err);
+				}
+			}
+
+			// Detect comparator pairs: title.left.ext <-> title.right.ext
+			const comparatorLeftRegex = /^(.+)\.left$/;
+			const comparatorRightRegex = /^(.+)\.right$/;
+
+			// Build a map of right-side files keyed by "baseTitle + extension"
+			const rightFilesMap = new Map();
+			for (const file of readFiles) {
+				const rightMatch = file.title.match(comparatorRightRegex);
+				if (rightMatch) {
+					const key = rightMatch[1] + file.extension;
+					rightFilesMap.set(key, file);
+				}
+			}
+
+			// Track which files have been consumed as part of a comparator pair
+			const consumed = new Set();
+
+			for (const file of readFiles) {
+				if (consumed.has(file)) continue;
+
+				const leftMatch = file.title.match(comparatorLeftRegex);
+				if (leftMatch) {
+					const baseTitle = leftMatch[1];
+					const key = baseTitle + file.extension;
+					const rightFile = rightFilesMap.get(key);
+
+					if (rightFile && !consumed.has(rightFile)) {
+						// Couple into a comparator file
+						consumed.add(file);
+						consumed.add(rightFile);
+
+						const language = MonacoEditor.getFileLanguageByExtension(file.extension);
+						const fileJSON = {
+							id: FileManager.getNewFileName(),
+							title: baseTitle,
+							extension: file.extension,
+							language: language,
+							index: newFiles.length,
+							isComparator: true
+						};
+						const comparatorContent = {
+							original: file.content,
+							modified: rightFile.content
+						};
+						newFiles.push({ meta: fileJSON, content: comparatorContent });
+						continue;
+					}
+				}
+
+				// Regular file (or unpaired left/right)
+				const language = MonacoEditor.getFileLanguageByExtension(file.extension);
+				const fileJSON = {
+					id: FileManager.getNewFileName(),
+					title: file.title,
+					extension: file.extension,
+					language: language,
+					index: newFiles.length,
+					isComparator: false
+				};
+				newFiles.push({ meta: fileJSON, content: file.content });
+			}
+
+			if (skippedFiles.length > 0) {
+				alert('The following files exceed the 100 MB limit and were skipped:\n\n' + skippedFiles.join('\n'));
+			}
+
+			if (newFiles.length === 0) return;
+
+			for (let i = 0; i < newFiles.length; i++) {
+				const { meta, content } = newFiles[i];
+				await FileManager.createFile(files, meta);
+				await FileContentManager.updateFileContent({ id: meta.id, content: content });
+			}
+
+			for (let i = 0; i < newFiles.length; i++) {
+				Lyte.arrayUtils(files, 'insertAt', i, newFiles[i].meta);
+			}
+
+			if (newFiles.length > 0) {
+				Lyte.Router.transitionTo({
+					route: 'index.view',
+					dynamicParams: [newFiles[0].meta.id]
+				});
+			}
+
+			input.remove();
+		});
+
+		document.body.appendChild(input);
+		input.click();
 	},
 
 	__filesObserver: function () {

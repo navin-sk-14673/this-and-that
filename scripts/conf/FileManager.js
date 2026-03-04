@@ -1,24 +1,35 @@
 class FileManager {
 	static DB_NAME = 'TestDatabase';
+	static DB_VERSION = 2;
+	static ARCHIVE_MAX_AGE_DAYS = 7;
 
 	static {
 		FileManager.init();
 	}
 
 	static init() {
-		const request = indexedDB.open(FileManager.DB_NAME);
+		const request = indexedDB.open(FileManager.DB_NAME, FileManager.DB_VERSION);
 		request.onupgradeneeded = () => {
 			const db = request.result;
 
-			const filesObjectStore = db.createObjectStore('files', { keyPath: 'id' });
-			filesObjectStore.createIndex('title', 'title', { unique: false });
-			filesObjectStore.createIndex('index', 'index', { unique: false });
-			filesObjectStore.createIndex('extension', 'extension', { unique: false });
-			filesObjectStore.createIndex('language', 'language', { unique: false });
-			filesObjectStore.createIndex('isComparator', 'isComparator', { unique: false });
+			if (!db.objectStoreNames.contains('files')) {
+				const filesObjectStore = db.createObjectStore('files', { keyPath: 'id' });
+				filesObjectStore.createIndex('title', 'title', { unique: false });
+				filesObjectStore.createIndex('index', 'index', { unique: false });
+				filesObjectStore.createIndex('extension', 'extension', { unique: false });
+				filesObjectStore.createIndex('language', 'language', { unique: false });
+				filesObjectStore.createIndex('isComparator', 'isComparator', { unique: false });
+			}
 
-			const fileContentObjectStore = db.createObjectStore('fileContent', { keyPath: 'id' });
-			fileContentObjectStore.createIndex('content', 'content', { unique: false });
+			if (!db.objectStoreNames.contains('fileContent')) {
+				const fileContentObjectStore = db.createObjectStore('fileContent', { keyPath: 'id' });
+				fileContentObjectStore.createIndex('content', 'content', { unique: false });
+			}
+
+			if (!db.objectStoreNames.contains('archivedFiles')) {
+				const archivedStore = db.createObjectStore('archivedFiles', { keyPath: 'id' });
+				archivedStore.createIndex('deletedAt', 'deletedAt', { unique: false });
+			}
 		};
 		request.onsuccess = () => {};
 		request.onerror = () => {
@@ -116,6 +127,116 @@ class FileManager {
 			};
 		});
 
+	// --- Soft-delete: archive a file instead of permanently deleting ---
+
+	static archiveFile = async (fileData) =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result,
+					transaction = db.transaction(['files', 'archivedFiles'], 'readwrite');
+
+				// Remove from active files
+				transaction.objectStore('files').delete(fileData.id);
+
+				// Add to archive with deletion timestamp
+				const archived = {
+					id: fileData.id,
+					title: fileData.title,
+					extension: fileData.extension,
+					language: fileData.language,
+					index: fileData.index,
+					isComparator: fileData.isComparator,
+					deletedAt: Date.now()
+				};
+				transaction.objectStore('archivedFiles').put(archived);
+
+				// Content stays in fileContent store — not deleted
+				transaction.oncomplete = () => resolve(true);
+				transaction.onerror = () => resolve(false);
+			};
+		});
+
+	static restoreLastArchivedFile = async () =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result,
+					transaction = db.transaction(['archivedFiles', 'files'], 'readwrite'),
+					archiveStore = transaction.objectStore('archivedFiles'),
+					cursorRequest = archiveStore.index('deletedAt').openCursor(null, 'prev');
+
+				cursorRequest.onsuccess = (event) => {
+					const cursor = event.target.result;
+					if (!cursor) {
+						// No archived files
+						return resolve(null);
+					}
+
+					const archived = cursor.value;
+
+					// Remove from archive
+					archiveStore.delete(archived.id);
+
+					// Re-insert into active files
+					const restoredFile = {
+						id: archived.id,
+						title: archived.title,
+						extension: archived.extension,
+						language: archived.language,
+						index: archived.index,
+						isComparator: archived.isComparator
+					};
+					transaction.objectStore('files').put(restoredFile);
+
+					transaction.oncomplete = () => resolve(restoredFile);
+					transaction.onerror = () => resolve(null);
+				};
+				cursorRequest.onerror = () => resolve(null);
+			};
+		});
+
+	static purgeOldArchives = async (maxAgeDays = FileManager.ARCHIVE_MAX_AGE_DAYS) =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result;
+
+				if (!db.objectStoreNames.contains('archivedFiles')) {
+					return resolve(0);
+				}
+
+				const cutoff = Date.now() - maxAgeDays * 24 * 60 * 60 * 1000,
+					transaction = db.transaction('archivedFiles', 'readwrite'),
+					store = transaction.objectStore('archivedFiles'),
+					range = IDBKeyRange.upperBound(cutoff),
+					cursorRequest = store.index('deletedAt').openCursor(range);
+
+				const expiredIds = [];
+
+				cursorRequest.onsuccess = (event) => {
+					const cursor = event.target.result;
+					if (cursor) {
+						expiredIds.push(cursor.value.id);
+						cursor.delete();
+						cursor.continue();
+					}
+				};
+
+				transaction.oncomplete = () => {
+					// Now clean up file content for expired entries
+					if (expiredIds.length > 0) {
+						Promise.all(expiredIds.map((id) => FileContentManager.deleteFileContent(id))).then(() =>
+							resolve(expiredIds.length)
+						);
+					} else {
+						resolve(0);
+					}
+				};
+				transaction.onerror = () => resolve(0);
+			};
+		});
+
 	static getFileByOrder = async (fileIndex) =>
 		new Promise((resolve, reject) => {
 			const request = indexedDB.open(FileManager.DB_NAME);
@@ -164,10 +285,20 @@ class FileManager {
 			const request = indexedDB.open(FileManager.DB_NAME);
 			request.onsuccess = () => {
 				const db = request.result,
-					transaction = db.transaction(['files', 'fileContent'], 'readwrite');
+					storeNames = ['files', 'fileContent'];
+
+				if (db.objectStoreNames.contains('archivedFiles')) {
+					storeNames.push('archivedFiles');
+				}
+
+				const transaction = db.transaction(storeNames, 'readwrite');
 
 				transaction.objectStore('files').clear();
 				transaction.objectStore('fileContent').clear();
+
+				if (db.objectStoreNames.contains('archivedFiles')) {
+					transaction.objectStore('archivedFiles').clear();
+				}
 
 				transaction.oncomplete = () => resolve(true);
 				transaction.onerror = () => reject(false);

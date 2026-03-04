@@ -1,10 +1,6 @@
 const metaTags = [
 	getHtmlTag('script', {
 		type: 'text/javascript',
-		src: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'
-	}),
-	getHtmlTag('script', {
-		type: 'text/javascript',
 		src: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js'
 	}),
 	getHtmlTag('link', {
