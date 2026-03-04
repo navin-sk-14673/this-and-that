@@ -64,7 +64,7 @@ Lyte.Component.register('main-container', {
 					{ label: 'New File', icon: 'note_add', action: 'onNewFile', shortcut: '⌃⇧N' },
 					{ label: 'New Comparator', icon: 'difference', action: 'onNewComparator', shortcut: '⌃⇧M' },
 					{ separator: true },
-					{ label: 'Import Files', icon: 'upload_file', action: 'onImportFile' }
+					{ label: 'Import Files', icon: 'upload_file', action: 'onImportFile', shortcut: '⌃⇧O' }
 				]
 			})
 		};
@@ -112,6 +112,10 @@ Lyte.Component.register('main-container', {
 					e.preventDefault();
 					e.stopPropagation();
 					this.FILE_TREE.component.restoreArchivedFile();
+				} else if (e.code === 'KeyO') {
+					e.preventDefault();
+					e.stopPropagation();
+					this._triggerFileImport();
 				}
 			}
 		};
