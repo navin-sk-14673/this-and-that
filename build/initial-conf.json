@@ -20,8 +20,6 @@
 		"addons/@zoho/lyte-ui-component/dist/components/lyte-tooltip.js",
 		"addons/@zoho/lyte-ui-component/dist/components/lyte-dropdown.js"
 	],
-	"consolidated_files/models/initial-models.js": ["data-store"],
-	"consolidated_files/mixins/initial-mixins.js": ["mixins"],
 	"consolidated_files/components/initial-helpers.js": ["components/helpers"],
 	"consolidated_files/routes/initial-routes.js": ["routes"],
 	"consolidated_files/components/initial-components.js": ["components/javascript"],
@@ -29,12 +27,8 @@
 		"styles/css/vendors",
 		"styles/css/base",
 		"styles/css/components",
-		"styles/css/fonts",
-		"styles/css/icons",
-		"styles/css/layout",
-		"styles/css/themes"
+		"styles/css/icons"
 	],
-	"consolidated_files/css/loader-styles.css": ["styles/css/pages/index/load.css"],
 	"consolidated_files/init.js": ["scripts/init/post-init.js"],
 	"consolidated_files/conf.js": ["scripts/conf"],
 	"consolidated_files/util.js": ["scripts/util"],

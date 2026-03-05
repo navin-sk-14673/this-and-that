@@ -145,7 +145,7 @@ module.exports = {
 		});
 
 		/* Ignore dev files in output folder */
-		const ignoreFiles = ['release.js', 'package.json', 'README.md'];
+		const ignoreFiles = ['package.json', 'README.md'];
 		ignoreFiles.forEach((file) => {
 			fs.unlinkSync(path.join(buildOptions.outputFolder, file));
 		});

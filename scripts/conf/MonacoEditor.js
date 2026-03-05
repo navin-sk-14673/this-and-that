@@ -3110,12 +3110,18 @@ class MonacoEditor {
 		}
 	};
 
-	static {
-		MonacoEditor.ICON_DEFS.icons.forEach((icon) => {
-			const langauge = icon.name;
+	static _init() {
+		MonacoEditor.ICON_DEFS.icons.forEach(function (icon) {
+			var langauge = icon.name;
 			MonacoEditor.LANGUAGE_SVG_MAP[langauge] = icon.svg;
-			icon.extensions?.forEach((extension) => (MonacoEditor.EXTENSION_LANGUAGE_MAP[`.${extension}`] = langauge));
-			icon.files?.forEach((file) => (MonacoEditor.FILES_LANGUAGE_MAP[file] = langauge));
+			if (icon.extensions)
+				icon.extensions.forEach(function (extension) {
+					MonacoEditor.EXTENSION_LANGUAGE_MAP['.' + extension] = langauge;
+				});
+			if (icon.files)
+				icon.files.forEach(function (file) {
+					MonacoEditor.FILES_LANGUAGE_MAP[file] = langauge;
+				});
 		});
 		require.config({
 			paths: {
@@ -3270,3 +3276,5 @@ class MonacoEditor {
 		MonacoEditor.JSON_MODEL = monaco.editor.createModel('', 'json', monaco.Uri.parse('json://grid/settings.json'));
 	}
 }
+
+MonacoEditor._init();

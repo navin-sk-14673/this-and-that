@@ -17,6 +17,12 @@ Lyte.Component.register('main-container', {
 		// Purge archived files older than 7 days
 		FileManager.purgeOldArchives();
 
+		// First-time user walkthrough
+		if (!localStorage.getItem('codepal.walkthroughDone')) {
+			this.setData('isAboutWalkthrough', true);
+			this.setData('showAboutModal', true);
+		}
+
 		this.FILE_TREE = this.$node.querySelector('#editor-file-tree');
 		this._initEditorAreaDrop();
 		this._initKeyboardShortcuts();

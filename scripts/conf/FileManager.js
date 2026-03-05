@@ -3,10 +3,6 @@ class FileManager {
 	static DB_VERSION = 2;
 	static ARCHIVE_MAX_AGE_DAYS = 7;
 
-	static {
-		FileManager.init();
-	}
-
 	static init() {
 		const request = indexedDB.open(FileManager.DB_NAME, FileManager.DB_VERSION);
 		request.onupgradeneeded = () => {
@@ -436,3 +432,5 @@ class FileManager {
 			request.onerror = () => reject(false);
 		});
 }
+
+FileManager.init();

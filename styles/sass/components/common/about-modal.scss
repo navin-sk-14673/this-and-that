@@ -125,3 +125,53 @@
 		color: var(--color-primary--hover);
 	}
 }
+
+// Walkthrough footer (first-time only)
+.about-modal__footer {
+	margin: auto -4px -8px;
+	padding-top: 16px;
+	border-top: 1px solid var(--border-color-on-secondary-color);
+}
+
+.about-modal__dots {
+	gap: 6px;
+}
+
+.about-modal__dot {
+	@include dimension--square(7px);
+	@include border-radius(50%);
+	@include transition(background-color 0.2s ease);
+	background-color: var(--border-color-on-secondary-color);
+
+	&--active {
+		background-color: var(--color-primary);
+	}
+}
+
+.about-modal__btn {
+	@include border-radius(var(--border-radius__s));
+	border: none;
+	padding: 6px 20px;
+	font-size: var(--font-size__m);
+	font-weight: 500;
+	cursor: pointer;
+	@include transition(all 0.15s ease);
+
+	&--next {
+		background: transparent;
+		color: var(--color-sec-text);
+
+		&:hover {
+			background-color: var(--background-color-primary--hover);
+		}
+	}
+
+	&--okay {
+		background-color: var(--color-primary);
+		color: #fff;
+
+		&:hover {
+			background-color: var(--color-primary--hover);
+		}
+	}
+}

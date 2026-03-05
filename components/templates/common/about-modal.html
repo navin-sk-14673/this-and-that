@@ -4,15 +4,16 @@
 	<lyte-modal
 		lt-prop-aria="true"
 		lt-prop-show="{{lbind(ltPropShow)}}"
-		lt-prop-overlay-close="true"
-		lt-prop-close-on-escape="true"
+		lt-prop-overlay-close="{{if(ltPropIsWalkthrough, false, true)}}"
+		lt-prop-close-on-escape="{{if(ltPropIsWalkthrough, false, true)}}"
 		lt-prop-allow-multiple="true"
+		lt-prop-prevent-focus="true"
 		lt-prop='{ "transition": { "animation": "fadeIn" } }'
 		lt-prop-wrapper-class="clsc-modal-base clsc-modal-w-40 clsc-modal-h-60 clsc-modal-center">
 		<template
 			is="registerYield"
 			yield-name="modal">
-			<div class="about-modal flex-col">
+			<div class="about-modal h-full flex-col">
 				<!-- Header -->
 				<div class="about-modal__header flex items-center">
 					<span class="material-symbols-outlined color-primary">code</span>
@@ -143,6 +144,36 @@
 						</template>
 					</div>
 				</div>
+
+				<!-- Walkthrough Footer (first-time only) -->
+				<template lyte-if="{{ltPropIsWalkthrough}}">
+					<div class="about-modal__footer flex items-center">
+						<div class="about-modal__dots flex items-center gap-0.5">
+							<span
+								class="about-modal__dot {{if(activeTab == 'about', 'about-modal__dot--active', '')}}"></span>
+							<span
+								class="about-modal__dot {{if(activeTab == 'limits', 'about-modal__dot--active', '')}}"></span>
+							<span
+								class="about-modal__dot {{if(activeTab == 'data', 'about-modal__dot--active', '')}}"></span>
+						</div>
+						<div class="ml-auto flex gap-1">
+							<template lyte-if="{{activeTab != 'data'}}">
+								<button
+									class="about-modal__btn about-modal__btn--next"
+									onclick="{{action('onWalkthroughNext')}}">
+									Next
+								</button>
+							</template>
+							<template lyte-if="{{activeTab == 'data'}}">
+								<button
+									class="about-modal__btn about-modal__btn--okay"
+									onclick="{{action('onWalkthroughDone')}}">
+									Get Started!
+								</button>
+							</template>
+						</div>
+					</div>
+				</template>
 			</div>
 		</template>
 	</lyte-modal>

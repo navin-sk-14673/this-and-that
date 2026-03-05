@@ -5,7 +5,9 @@
 	<editor-user-preference-modal
 		lt-prop-show="{{lbind(showPreferenceModal)}}"
 		files="{{files}}"></editor-user-preference-modal>
-	<about-modal lt-prop-show="{{lbind(showAboutModal)}}"></about-modal>
+	<about-modal
+		lt-prop-show="{{lbind(showAboutModal)}}"
+		lt-prop-is-walkthrough="{{lbind(isAboutWalkthrough)}}"></about-modal>
 	<editor-archive-panel
 		lt-prop-show="{{lbind(showArchivePanel)}}"
 		files="{{files}}"></editor-archive-panel>
@@ -39,7 +41,9 @@
 						<button
 							class="btn-icon-sec"
 							onclick="{{action('onArchiveClick')}}"
-							title="Archived Files">
+							lt-prop-title="Archived Files"
+							lt-prop-tooltip-class="clsc-text-tooltip"
+							lt-prop-tooltip-config='{"position":"top","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'>
 							<span
 								class="material-symbols-outlined"
 								style="font-size: 22px">

@@ -23,18 +23,16 @@ const metaTags = [
 metaTags.forEach((tag) => document.head.append(tag));
 
 insertDependencies([
-	'/consolidated_files/conf.js',
-	'/consolidated_files/util.js',
-	'/consolidated_files/lyte/es5-adapter.js',
-	'/consolidated_files/lyte/lyte-req.js',
-	'/consolidated_files/lyte-ui-components/plugins.js',
-	'/consolidated_files/lyte-ui-components/components.js',
-	// '/consolidated_files/models/initial-models.js',
-	// '/consolidated_files/mixins/initial-mixins.js',
-	'/consolidated_files/components/initial-helpers.js',
-	'/consolidated_files/routes/initial-routes.js',
-	'/consolidated_files/components/initial-components.js',
-	'/consolidated_files/css/initial-styles.css'
+	'/codepal/consolidated_files/conf.js',
+	'/codepal/consolidated_files/util.js',
+	'/codepal/consolidated_files/lyte/es5-adapter.js',
+	'/codepal/consolidated_files/lyte/lyte-req.js',
+	'/codepal/consolidated_files/lyte-ui-components/plugins.js',
+	'/codepal/consolidated_files/lyte-ui-components/components.js',
+	'/codepal/consolidated_files/components/initial-helpers.js',
+	'/codepal/consolidated_files/routes/initial-routes.js',
+	'/codepal/consolidated_files/components/initial-components.js',
+	'/codepal/consolidated_files/css/initial-styles.css'
 ]);
 
 fetch('/assets/icons.svg')
