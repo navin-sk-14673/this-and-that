@@ -3,7 +3,8 @@ Lyte.Component.register('editor-file-icon', {
 		return {
 			extension: Lyte.attr('string'),
 			language: Lyte.attr('string'),
-			isComparator: Lyte.attr('boolean', { default: false })
+			isComparator: Lyte.attr('boolean', { default: false }),
+			svgClass: Lyte.attr('string')
 		};
 	},
 	actions: {},

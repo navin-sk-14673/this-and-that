@@ -12,12 +12,42 @@
 		<template
 			is="registerYield"
 			yield-name="modal">
-			<div class="h-full flex-col gap-2 text-l">
+			<div class="flex-col gap-5 text-l">
+				<!-- App Preferences -->
+				<div class="flex-col gap-2">
+					<h4
+						class="flex items-center gap-0.75 no-margin text-l font-semibold color-primary uppercase tracking-wider">
+						<span class="material-symbols-outlined text-l">devices</span>
+						<span>App Preferences</span>
+					</h4>
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							Theme
+						</label>
+						<clsc-multi-toggle-switch
+							name="theme"
+							selected="{{lbind(selectedTheme)}}"
+							options="{{themeOptions}}"></clsc-multi-toggle-switch>
+					</div>
+
+					<div class="flex items-center justify-between gap-0.75">
+						<label class="text-m color-sec-text tracking-wide">
+							<span class="color-primary">✦</span>
+							Editor Tree Position
+						</label>
+						<clsc-multi-toggle-switch
+							name="treePosition"
+							selected="{{lbind(selectedTreePosition)}}"
+							options="{{treePositionOptions}}"></clsc-multi-toggle-switch>
+					</div>
+				</div>
+
 				<!-- Editor Preferences -->
 				<div class="flex-col gap-2">
 					<h4
 						class="flex items-center gap-0.75 no-margin text-l font-semibold color-primary uppercase tracking-wider">
-						<span class="material-symbols-outlined text-l">code</span>
+						<span class="material-symbols-outlined text-l font-extrabold">code</span>
 						<span>Editor Preferences</span>
 					</h4>
 
@@ -100,39 +130,9 @@
 					<div class="flex items-center justify-between gap-0.75">
 						<label class="text-m color-sec-text tracking-wide">
 							<span class="color-primary">✦</span>
-							Reopen Closed Tab
+							Reopen Archived File
 						</label>
 						<kbd class="pref-kbd">Ctrl + Shift + T</kbd>
-					</div>
-				</div>
-
-				<!-- App Preferences -->
-				<div class="flex-col gap-2">
-					<h4
-						class="flex items-center gap-0.75 no-margin text-l font-semibold color-primary uppercase tracking-wider">
-						<span class="material-symbols-outlined text-l">devices</span>
-						<span>App Preferences</span>
-					</h4>
-					<div class="flex items-center justify-between gap-0.75">
-						<label class="text-m color-sec-text tracking-wide">
-							<span class="color-primary">✦</span>
-							Theme
-						</label>
-						<clsc-multi-toggle-switch
-							name="theme"
-							selected="{{lbind(selectedTheme)}}"
-							options="{{themeOptions}}"></clsc-multi-toggle-switch>
-					</div>
-
-					<div class="flex items-center justify-between gap-0.75">
-						<label class="text-m color-sec-text tracking-wide">
-							<span class="color-primary">✦</span>
-							Editor Tree Position
-						</label>
-						<clsc-multi-toggle-switch
-							name="treePosition"
-							selected="{{lbind(selectedTreePosition)}}"
-							options="{{treePositionOptions}}"></clsc-multi-toggle-switch>
 					</div>
 				</div>
 
@@ -190,11 +190,11 @@
 			<div class="flex-col gap-3 text-center">
 				<div class="flex-col items-center gap-1.5">
 					<span
-						class="material-symbols-outlined color-negative"
+						class="material-symbols-outlined color-sec-text"
 						style="font-size: 48px">
 						delete_forever
 					</span>
-					<h3 class="no-margin font-semibold color-primary-text">Clear All File Data?</h3>
+					<h3 class="no-margin font-semibold color-sec-text">Clear All File Data?</h3>
 				</div>
 				<ul
 					style="
@@ -215,7 +215,7 @@
 						Your preferences will be preserved.
 					</li>
 					<li
-						class="text-s color-negative font-medium"
+						class="text-s text-negative font-medium"
 						style="line-height: 1.8">
 						This action cannot be undone.
 					</li>

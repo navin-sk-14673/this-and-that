@@ -71,6 +71,7 @@
 }
 .clsc-modal-base {
 	.lyteModal {
+		position: relative;
 		@include width-curb($min: 362px, $width: 50% !important);
 		@include box-shadow(var(--box-shadow__l));
 		background-color: var(--background-color-primary);
@@ -98,6 +99,23 @@
 		.lyteModalFadeIn {
 			opacity: 1;
 			@include transform(scale(1));
+		}
+	}
+}
+.clsc-modal-left {
+	.lyteModal {
+		border-top-right-radius: var(--border-radius__l);
+		border-bottom-right-radius: var(--border-radius__l);
+		margin-right: auto;
+	}
+	&.modalWrapper {
+		.lyteModal {
+			opacity: 0;
+			@include transform(translateX(-100%));
+		}
+		.lyteModalFadeIn {
+			opacity: 1;
+			@include transform(translateX(0));
 		}
 	}
 }

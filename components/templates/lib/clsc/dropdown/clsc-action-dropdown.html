@@ -2,9 +2,8 @@
 	tag-name="clsc-action-dropdown"
 	lyte-comp="true">
 	<div class="clsc-action-dropdown">
-		<button
-			class="clsc-action-dropdown__trigger btn-icon-sec">
-			<span class="material-symbols-outlined clsc-action-dropdown__trigger-icon">add</span>
+		<button class="clsc-action-dropdown__trigger btn-icon-sec">
+			<span class="material-symbols-outlined clsc-action-dropdown__trigger-icon">{{triggerIcon}}</span>
 		</button>
 		<div class="clsc-action-dropdown__menu">
 			<template lyte-for="{{options}} as option optIndex">
@@ -16,7 +15,9 @@
 						class="clsc-action-dropdown__item"
 						onclick="{{action('onItemClick', optIndex)}}">
 						<template lyte-if="{{option.icon}}">
-							<span class="material-symbols-outlined clsc-action-dropdown__item-icon">{{option.icon}}</span>
+							<span class="material-symbols-outlined clsc-action-dropdown__item-icon">
+								{{option.icon}}
+							</span>
 						</template>
 						<template lyte-if="{{option.svgIcon}}">
 							<svg-icon

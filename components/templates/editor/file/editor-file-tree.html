@@ -37,6 +37,12 @@
 			</div>
 		</template>
 		<template lyte-if="{{filesLoaded && files.length == 0}}">
+			<div class="editor-file-tree-empty-drop-ghost pr-2">
+				<div class="editor-file-tree-empty-drop-ghost__row">
+					<div class="editor-file-tree-empty-drop-ghost__icon"></div>
+					<div class="editor-file-tree-empty-drop-ghost__text"></div>
+				</div>
+			</div>
 			<div class="editor-file-tree-empty flex-col flex-center gap-2 h-full mb-5 pr-1.5 text-center">
 				<span
 					class="material-symbols-outlined editor-file-tree-empty__icon text-primary"

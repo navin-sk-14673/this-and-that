@@ -1,29 +1,20 @@
 @import '../../../abstracts/util';
 
 .editor-file-tree-container {
-	$scrollbar-width: 2px;
-	$scrollbar-height: 2px;
-	$scrollbar-thumb-color: rgba(215, 219, 235, 0.4);
-	$scrollbar-thumb-radius: 16px;
-	$scrollbar-track-piece-color: rgba(215, 219, 235, 0.1);
-
-	scrollbar-width: $scrollbar-width;
-	scrollbar-color: $scrollbar-thumb-color $scrollbar-track-piece-color;
-
-	&::-webkit-scrollbar {
-		width: $scrollbar-width;
-		height: $scrollbar-height;
-	}
-	&::-webkit-scrollbar-track-piece {
-		background-color: $scrollbar-track-piece-color;
-	}
-	&::-webkit-scrollbar-thumb {
-		@include border-radius($scrollbar-thumb-radius);
-		background-color: $scrollbar-thumb-color;
-	}
+	// Use narrower scrollbar for the compact sidebar
+	--scrollbar-size: 4px;
+	--scrollbar-thumb: rgba(150, 160, 190, 0.3);
+	--scrollbar-thumb--hover: rgba(150, 160, 190, 0.55);
+	--scrollbar-track: transparent;
 
 	@include grid-container(4px) {
 		grid-template-columns: 232px;
+	}
+
+	// Chrome treats <a> (from link-to) as draggable by default, which
+	// hijacks external file drag-and-drop. Disable native drag on them.
+	a {
+		-webkit-user-drag: none;
 	}
 }
 
@@ -81,16 +72,74 @@
 // --- External file drop placeholder ---
 
 .external-drop-placeholder {
-	border: 1px dashed var(--border-color-input-field);
-	@include border-radius(var(--border-radius__s));
-	background-color: rgba(237, 239, 247, 0.22);
-	min-height: 32px;
-	@include transition((opacity 0.15s ease));
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	&__row {
+		@include flex-box(center);
+		gap: 6px;
+		height: 32px;
+		padding: 6px 8px 6px 10px;
+		@include border-radius(var(--border-radius__s));
+		border: 1px dashed var(--border-color-input-field);
+		background-color: rgba(237, 239, 247, 0.15);
+	}
+
+	&__icon {
+		@include dimension--square(14px);
+		@include border-radius(3px);
+		background-color: rgba(215, 219, 235, 0.15);
+		flex-shrink: 0;
+	}
+
+	&__text {
+		height: 10px;
+		@include border-radius(var(--border-radius__xs));
+		background-color: rgba(215, 219, 235, 0.15);
+	}
+}
+
+// --- Empty-state drag-over ghost ---
+
+.editor-file-tree-empty-drop-ghost {
+	display: none;
+	flex-direction: column;
+	gap: 4px;
+	padding-top: 4px;
+
+	&__row {
+		@include flex-box(center);
+		gap: 6px;
+		height: 32px;
+		padding: 6px 8px 6px 10px;
+		@include border-radius(var(--border-radius__s));
+		border: 1px dashed var(--border-color-input-field);
+		background-color: rgba(237, 239, 247, 0.15);
+	}
+
+	&__icon {
+		@include dimension--square(14px);
+		@include border-radius(3px);
+		background-color: rgba(215, 219, 235, 0.15);
+		flex-shrink: 0;
+	}
+
+	&__text {
+		height: 10px;
+		width: 55%;
+		@include border-radius(var(--border-radius__xs));
+		background-color: rgba(215, 219, 235, 0.15);
+	}
+}
+
+editor-file-tree.--external-drag-active .editor-file-tree-empty-drop-ghost {
+	display: flex;
 }
 
 editor-file-tree.--external-drag-active .editor-file-tree-empty {
 	pointer-events: none;
-	opacity: 0.4;
+	opacity: 0.15;
 }
 
 // --- Shimmer skeleton loader ---

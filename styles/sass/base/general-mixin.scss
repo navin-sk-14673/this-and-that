@@ -222,20 +222,15 @@ button.btn-icon-sec__s {
 
 button.btn-tertiary {
 	@extend .btn-c2a;
-	color: var(--color-text-tertiary);
-	background-color: #fff;
-	border: 1px solid var(--background-color-tertiary);
-	font-size: 15px;
+	color: var(--color-primary);
 
 	&:focus,
 	&:hover {
-		color: var(--color-text-tertiary--hover);
-		border: 1px solid var(--background-color-tertiary--hover);
-		background-color: var(--background-color-tertiary--hover);
+		color: var(--color-primary-text);
+		background-color: var(--color-primary);
 	}
 	&:disabled {
 		color: var(--color-text-tertiary--disabled);
-		border-color: #0000;
 		background-color: var(--background-color-tertiary--disabled);
 	}
 }
@@ -306,29 +301,44 @@ button.button-c2a:active {
 	}
 }
 
-:root {
-	$scrollbar-width: 4px; // for vertical scrolbar
-	$scrollbar-height: 4px; // for horizontal scrolbar
-	$scrollbar-thumb-color: hsl(0, 0%, 66%);
-	$scrollbar-thumb-color--hover: hsl(0, 0%, 60%);
-	$scrollbar-thumb-radius: 16px;
-	$scrollbar-track-piece-color: hsla(0, 0%, 0%, 0);
+// --- Modern Scrollbar ---
+// Uses standard `scrollbar-*` properties (Firefox 64+, Chrome 121+, Safari 17.4+)
+// plus `::-webkit-scrollbar` for older Chromium / Safari with enhanced hover UX.
 
-	scrollbar-width: $scrollbar-width;
-	scrollbar-color: $scrollbar-thumb-color $scrollbar-track-piece-color;
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
 
-	::-webkit-scrollbar {
-		width: $scrollbar-width;
-		height: $scrollbar-height;
+::-webkit-scrollbar {
+	width: var(--scrollbar-size);
+	height: var(--scrollbar-size);
+	background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-track {
+	background: var(--scrollbar-track);
+	border-radius: var(--scrollbar-radius);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--scrollbar-thumb);
+	border-radius: var(--scrollbar-radius);
+	border: 2px solid transparent;
+	background-clip: padding-box;
+	transition: background 0.2s ease;
+
+	&:hover {
+		background: var(--scrollbar-thumb--hover);
+		background-clip: padding-box;
 	}
-	::-webkit-scrollbar-track-piece {
-		background-color: $scrollbar-track-piece-color;
+
+	&:active {
+		background: var(--scrollbar-thumb--hover);
+		background-clip: padding-box;
 	}
-	::-webkit-scrollbar-thumb {
-		@include border-radius($scrollbar-thumb-radius);
-		background-color: $scrollbar-thumb-color;
-		&:hover {
-			background-color: $scrollbar-thumb-color--hover;
-		}
-	}
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
 }

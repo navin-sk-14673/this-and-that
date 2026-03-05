@@ -1,0 +1,59 @@
+@import '../../../../abstracts/util';
+
+// --- Toast Notification ---
+
+.clsc-toast {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 100000;
+
+	@include flex-box(center, center);
+	gap: 8px;
+	padding: 8px 16px;
+	@include border-radius(var(--border-radius__m));
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+	font-size: var(--font-size__s);
+	font-weight: 500;
+	white-space: nowrap;
+	pointer-events: none;
+
+	animation: clsc-toast-in 0.25s ease forwards;
+
+	&--success {
+		background-color: var(--color-positive);
+		color: #fff;
+	}
+
+	&--error {
+		background-color: var(--color-negative);
+		color: #fff;
+	}
+
+	&--info {
+		background-color: var(--color-primary);
+		color: #fff;
+	}
+}
+
+.clsc-toast__icon {
+	flex-shrink: 0;
+}
+
+.clsc-toast__message {
+	color: inherit;
+	line-height: 1.3;
+}
+
+@keyframes clsc-toast-in {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}

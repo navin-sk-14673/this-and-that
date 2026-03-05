@@ -1,0 +1,163 @@
+<template
+	tag-name="editor-archive-panel"
+	lyte-comp="true">
+	<lyte-modal
+		lt-prop-aria="true"
+		lt-prop-show="{{lbind(ltPropShow)}}"
+		lt-prop-overlay-close="true"
+		lt-prop-close-on-escape="true"
+		lt-prop-allow-multiple="true"
+		lt-prop-prevent-focus="true"
+		lt-prop='{ "transition": { "animation": "fadeIn" } }'
+		lt-prop-wrapper-class="{{archivePanelWrapperClass}}">
+		<template
+			is="registerYield"
+			yield-name="modal">
+			<div class="archive-panel h-full flex-col">
+				<!-- Header -->
+				<template lyte-if="{{loaded && archivedFiles.length > 0}}">
+					<div class="archive-panel__header flex items-center gap-1">
+						<span class="material-symbols-outlined color-primary">archive</span>
+						<h4 class="font-semibold color-primary">Archived Files</h4>
+						<span class="archive-panel__count text-xs">{{archivedFiles.length}}</span>
+						<button
+							lt-prop-title="Delete All"
+							lt-prop-tooltip-class="clsc-text-tooltip"
+							lt-prop-tooltip-config='{"position":"bottom","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'
+							class="btn-danger-sec w-3.5 h-3.5 p-0.5 ml-auto"
+							onclick="{{action('onDeleteAllClick')}}">
+							<span
+								class="material-symbols-outlined"
+								style="font-size: 20px">
+								delete_forever
+							</span>
+						</button>
+					</div>
+				</template>
+
+				<!-- Content -->
+				<div class="archive-panel__body grow min-h-0">
+					<template lyte-if="{{!loaded}}">
+						<div class="archive-panel__loading flex-center h-full">
+							<span class="text-s color-sec-text">Loading...</span>
+						</div>
+					</template>
+					<template lyte-if="{{loaded && archivedFiles.length == 0}}">
+						<div class="archive-panel__empty flex-col flex-center gap-1.5 h-full">
+							<span
+								class="material-symbols-outlined text-primary"
+								style="font-size: 36px; opacity: 0.3">
+								archive
+							</span>
+							<span
+								class="text-xs text-primary"
+								style="opacity: 0.5">
+								No Archived files
+							</span>
+						</div>
+					</template>
+					<template lyte-if="{{loaded && archivedFiles.length > 0}}">
+						<div class="archive-panel__list flex-col gap-0.5">
+							<template lyte-for="{{archivedFiles}} as archivedFile archivedIndex">
+								<div class="archive-panel__item flex items-center gap-1 pl-0.5">
+									<editor-file-icon
+										extension="{{archivedFile.extension}}"
+										is-comparator="{{archivedFile.isComparator}}"
+										class="w-3 h-3 shrink-0"
+										svg-class="fill-transparent stroke-sec stroke-0.5"></editor-file-icon>
+									<div class="archive-panel__item-info grow min-w-0">
+										<template lyte-if="{{archivedFile.title}}">
+											<div class="archive-panel__item-title text-s truncate">
+												{{archivedFile.title}}{{archivedFile.extension}}
+											</div>
+										</template>
+										<template lyte-else>
+											<div
+												class="archive-panel__item-title archive-panel__item-title--empty text-s truncate">
+												Untitled file
+											</div>
+										</template>
+										<div class="archive-panel__item-meta">{{archivedFile.autoDeleteLabel}}</div>
+									</div>
+									<div class="archive-panel__item-actions flex items-center shrink-0">
+										<button
+											class="archive-panel__item-btn archive-panel__item-btn--restore btn-c2a h-3 w-auto p-0.5 rounded-s"
+											onclick="{{action('onRestoreClick', archivedFile)}}"
+											title="Restore">
+											<span
+												class="material-symbols-outlined"
+												style="font-size: 18px">
+												restore
+											</span>
+										</button>
+										<button
+											class="archive-panel__item-btn archive-panel__item-btn--delete btn-c2a h-3 w-auto p-0.5 rounded-s"
+											onclick="{{action('onDeleteClick', archivedFile)}}"
+											title="Delete permanently">
+											<span
+												class="material-symbols-outlined"
+												style="font-size: 18px">
+												delete
+											</span>
+										</button>
+									</div>
+								</div>
+							</template>
+						</div>
+					</template>
+				</div>
+			</div>
+		</template>
+	</lyte-modal>
+
+	<!-- Delete All Confirmation Modal -->
+	<lyte-modal
+		lt-prop-aria="true"
+		lt-prop-show="{{lbind(showDeleteAllModal)}}"
+		lt-prop-overlay-close="true"
+		lt-prop-close-on-escape="true"
+		lt-prop-allow-multiple="true"
+		lt-prop='{"transition": {"animation": "fadeIn"}}'
+		lt-prop-wrapper-class="clsc-modal-base clsc-modal-center archive-panel-confirm-modal">
+		<template
+			is="registerYield"
+			yield-name="modal">
+			<div class="flex-col gap-3 text-center">
+				<div class="flex-col items-center gap-1.5">
+					<span
+						class="material-symbols-outlined color-sec-text"
+						style="font-size: 48px">
+						delete_forever
+					</span>
+					<h3 class="no-margin font-semibold color-sec-text">Delete All Archived Files?</h3>
+				</div>
+				<p
+					class="text-s color-sec-text"
+					style="max-width: 300px; margin: 0 auto; line-height: 1.6">
+					All
+					<strong>{{archivedFiles.length}}</strong>
+					archived files will be permanently deleted. This action cannot be undone.
+				</p>
+				<div class="flex items-center justify-center gap-1">
+					<button
+						class="btn-sec pref-btn-confirm-action"
+						onclick="{{action('onDeleteAllCancel')}}">
+						Cancel
+					</button>
+					<button
+						class="btn-danger pref-btn-confirm-action"
+						onclick="{{action('onDeleteAllConfirm')}}">
+						Delete All
+					</button>
+				</div>
+			</div>
+		</template>
+	</lyte-modal>
+
+	<!-- Toast -->
+	<clsc-toast
+		lt-prop-show="{{lbind(showToast)}}"
+		lt-prop-message="{{toastMessage}}"
+		lt-prop-type="{{toastType}}"
+		lt-prop-icon="{{toastIcon}}"></clsc-toast>
+</template>

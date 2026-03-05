@@ -114,6 +114,22 @@ class FileManager {
 			})
 		).then((res) => res.every((response) => response));
 
+	static saveFileOrder(files) {
+		try {
+			const meta = files.map((f) => ({
+				id: f.id,
+				index: f.index,
+				title: f.title,
+				extension: f.extension,
+				language: f.language,
+				isComparator: f.isComparator
+			}));
+			localStorage.setItem('clsc-file-order', JSON.stringify(meta));
+		} catch (e) {
+			console.warn('Could not save file order to localStorage', e);
+		}
+	}
+
 	static deleteFile = async (fileId) =>
 		new Promise((resolve, reject) => {
 			const request = indexedDB.open(FileManager.DB_NAME);
@@ -128,6 +144,120 @@ class FileManager {
 		});
 
 	// --- Soft-delete: archive a file instead of permanently deleting ---
+
+	static getAllArchivedFiles = async () =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result;
+
+				if (!db.objectStoreNames.contains('archivedFiles')) {
+					return resolve([]);
+				}
+
+				const cursorRequest = db
+					.transaction('archivedFiles', 'readonly')
+					.objectStore('archivedFiles')
+					.index('deletedAt')
+					.openCursor(null, 'prev');
+
+				const files = [];
+				cursorRequest.onsuccess = (event) => {
+					const cursor = event.target.result;
+					if (cursor) {
+						files.push(cursor.value);
+						cursor.continue();
+					} else {
+						resolve(files);
+					}
+				};
+				cursorRequest.onerror = () => resolve([]);
+			};
+		});
+
+	static permanentDeleteArchivedFile = async (fileId) =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result,
+					transaction = db.transaction('archivedFiles', 'readwrite');
+
+				transaction.objectStore('archivedFiles').delete(fileId);
+
+				transaction.oncomplete = () => FileContentManager.deleteFileContent(fileId).then(() => resolve(true));
+				transaction.onerror = () => resolve(false);
+			};
+		});
+
+	static deleteAllArchivedFiles = async () =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result;
+
+				if (!db.objectStoreNames.contains('archivedFiles')) {
+					return resolve(true);
+				}
+
+				// First collect all archived file IDs so we can delete their content too
+				const ids = [];
+				const cursorRequest = db
+					.transaction('archivedFiles', 'readonly')
+					.objectStore('archivedFiles')
+					.openCursor();
+
+				cursorRequest.onsuccess = (event) => {
+					const cursor = event.target.result;
+					if (cursor) {
+						ids.push(cursor.value.id);
+						cursor.continue();
+					} else {
+						// Clear the archive store
+						const clearTransaction = db.transaction('archivedFiles', 'readwrite');
+						clearTransaction.objectStore('archivedFiles').clear();
+
+						clearTransaction.oncomplete = () =>
+							Promise.all(ids.map((id) => FileContentManager.deleteFileContent(id)))
+								.then(() => resolve(true))
+								.catch(() => resolve(false));
+						clearTransaction.onerror = () => resolve(false);
+					}
+				};
+				cursorRequest.onerror = () => resolve(false);
+			};
+		});
+
+	static restoreArchivedFileById = async (fileId) =>
+		new Promise((resolve, reject) => {
+			const request = indexedDB.open(FileManager.DB_NAME);
+			request.onsuccess = () => {
+				const db = request.result,
+					transaction = db.transaction(['archivedFiles', 'files'], 'readwrite'),
+					archiveStore = transaction.objectStore('archivedFiles'),
+					getRequest = archiveStore.get(fileId);
+
+				getRequest.onsuccess = () => {
+					const archived = getRequest.result;
+					if (!archived) return resolve(null);
+
+					archiveStore.delete(archived.id);
+
+					const restoredFile = {
+						id: archived.id,
+						title: archived.title,
+						extension: archived.extension,
+						language: archived.language,
+						index: archived.index,
+						isComparator: archived.isComparator
+					};
+					transaction.objectStore('files').put(restoredFile);
+
+					transaction.oncomplete = () => resolve(restoredFile);
+					transaction.onerror = () => resolve(null);
+				};
+				getRequest.onerror = () => resolve(null);
+			};
+		});
 
 	static archiveFile = async (fileData) =>
 		new Promise((resolve, reject) => {

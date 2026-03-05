@@ -64,7 +64,7 @@
 	--color-text-on-primary: #ffffff;
 	--color-optional-text: #b3b2b2;
 
-	--color-sec-text: hsl(0, 0%, 47%);
+	--color-sec-text: #676879; // hsl(0, 0%, 47%);
 	--color-sec-line: hsla(0, 0%, 47%, 0.667);
 
 	--font-size__ns: 12px;
@@ -87,6 +87,14 @@
 	--box-shadow__l: 0px 15px 50px hsla(0, 0%, 0%, 0.3);
 
 	--max-height-dropdown: 240px;
+
+	// Scrollbar
+	--scrollbar-size: 6px;
+	--scrollbar-size--hover: 10px;
+	--scrollbar-thumb: rgba(0, 0, 0, 0.2);
+	--scrollbar-thumb--hover: rgba(0, 0, 0, 0.38);
+	--scrollbar-track: transparent;
+	--scrollbar-radius: 100px;
 }
 :root {
 	@extend %tap-on-highlight--disable;
@@ -99,9 +107,9 @@
 	}
 }
 :root {
-	--color-sec-text: hsl(230, 6%, 21%);
-	--color-sec-text--hover: hsl(230, 6%, 21%);
-	--color-sec-text--selected: hsl(230, 6%, 21%);
+	--color-sec-text: #676879; // hsl(230, 6%, 21%);
+	--color-sec-text--hover: #676879;
+	--color-sec-text--selected: #676879;
 }
 /*
 

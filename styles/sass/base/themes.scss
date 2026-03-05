@@ -58,6 +58,11 @@
 	--box-shadow__s: 0px 4px 8px hsla(0, 0%, 0%, 0.35);
 	--box-shadow__m: 0px 6px 20px hsla(0, 0%, 0%, 0.4);
 	--box-shadow__l: 0px 15px 50px hsla(0, 0%, 0%, 0.5);
+
+	// Scrollbar
+	--scrollbar-thumb: rgba(255, 255, 255, 0.16);
+	--scrollbar-thumb--hover: rgba(255, 255, 255, 0.32);
+	--scrollbar-track: transparent;
 }
 
 /* Light theme (explicit) — same as defaults, no overrides needed */

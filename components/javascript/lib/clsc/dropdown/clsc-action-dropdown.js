@@ -2,7 +2,9 @@ Lyte.Component.register('clsc-action-dropdown', {
 	data: function () {
 		return {
 			options: Lyte.attr('array', { default: [] }),
-			isOpen: Lyte.attr('boolean', { default: false })
+			isOpen: Lyte.attr('boolean', { default: false }),
+			triggerIcon: Lyte.attr('string', { default: 'add' }),
+			menuPosition: Lyte.attr('string', { default: 'side' }) // 'side' | 'top'
 		};
 	},
 
@@ -11,6 +13,11 @@ Lyte.Component.register('clsc-action-dropdown', {
 	didConnect() {
 		this._wrapper = this.$node.querySelector('.clsc-action-dropdown');
 		if (!this._wrapper) return;
+
+		// Apply position modifier
+		if (this.getData('menuPosition') === 'top') {
+			this._wrapper.classList.add('clsc-action-dropdown--up');
+		}
 
 		this._onEnter = () => {
 			clearTimeout(this._hideTimer);

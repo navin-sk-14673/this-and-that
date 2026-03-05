@@ -88,4 +88,25 @@ class FileContentManager {
 				transaction.onerror = () => reject(false);
 			};
 		});
+
+	/**
+	 * Read a File/Blob as text using the Response API.
+	 * Some browser extensions (e.g. CrowdStrike Falcon) intercept
+	 * File.text() / FileReader — routing through new Response()
+	 * uses the Fetch/Streams pipeline which bypasses those hooks.
+	 *
+	 * A timeout guard ensures the promise rejects if the read is
+	 * silently blocked (no error thrown, just stalls forever).
+	 */
+	static readFileText(file, timeoutMs = 3000) {
+		return Promise.race([
+			new Response(file).text(),
+			new Promise((_, reject) =>
+				setTimeout(
+					() => reject(new Error('File read timed out — possibly blocked by a browser extension')),
+					timeoutMs
+				)
+			)
+		]);
+	}
 }

@@ -102,11 +102,38 @@
 		border-top: 1px solid var(--border-color-on-secondary-color);
 		margin: 4px 6px;
 	}
+
+	// --- Menu Position: Up (opens to the right, bottom-aligned) ---
+
+	&--up &__menu {
+		top: auto;
+		bottom: 0;
+		left: calc(100% + 6px);
+		transform: translateX(-4px) scale(0.97);
+
+		&::before {
+			top: 0;
+			bottom: auto;
+			right: 100%;
+			left: auto;
+			width: 10px;
+			height: 100%;
+		}
+	}
+
+	&--up#{&}--open &__menu {
+		transform: translateX(0) scale(1);
+	}
+
+	// Suppress icon rotation for up-position menus
+	&--up &__trigger-icon {
+		transform: none !important;
+	}
 }
 
-// When sidebar is on the right, open menu to the left
+// When sidebar is on the right, open side-menu to the left
 [data-tree-position='right'] {
-	.clsc-action-dropdown__menu {
+	.clsc-action-dropdown:not(.clsc-action-dropdown--up) .clsc-action-dropdown__menu {
 		left: auto;
 		right: calc(100% + 6px);
 		transform: translateX(4px) scale(0.97);
@@ -117,8 +144,23 @@
 		}
 	}
 
-	.clsc-action-dropdown--open .clsc-action-dropdown__menu {
+	.clsc-action-dropdown--open:not(.clsc-action-dropdown--up) .clsc-action-dropdown__menu {
+		transform: translateX(0) scale(1);
+	}
+
+	// Up-position: open to the left, bottom-aligned
+	.clsc-action-dropdown--up .clsc-action-dropdown__menu {
+		left: auto;
+		right: calc(100% + 6px);
+		transform: translateX(4px) scale(0.97);
+
+		&::before {
+			right: auto;
+			left: 100%;
+		}
+	}
+
+	.clsc-action-dropdown--up.clsc-action-dropdown--open .clsc-action-dropdown__menu {
 		transform: translateX(0) scale(1);
 	}
 }
-

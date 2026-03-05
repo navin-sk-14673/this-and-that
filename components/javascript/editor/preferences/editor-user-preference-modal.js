@@ -154,12 +154,6 @@ Lyte.Component.register('editor-user-preference-modal', {
 				}
 			}
 
-			// Add metadata
-			zip.file(
-				'codepal.meta.json',
-				JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), files: metaFiles }, null, 2)
-			);
-
 			// Generate and trigger download
 			const blob = await zip.generateAsync({ type: 'blob' });
 			const url = URL.createObjectURL(blob);

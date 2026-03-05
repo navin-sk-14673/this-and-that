@@ -144,6 +144,12 @@ main-container {
 	}
 }
 
+[data-theme='light'] .editor-drop-overlay {
+	background-color: rgba(255, 255, 255, 0.45);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
 @keyframes editorDropOverlayIn {
 	from {
 		opacity: 0;
@@ -270,5 +276,9 @@ main-container {
 
 	.sidebar-footer > .flex {
 		justify-content: flex-end;
+
+		> .btn-icon-sec .material-symbols-outlined {
+			font-size: 21px;
+		}
 	}
 }

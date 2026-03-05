@@ -1,0 +1,14 @@
+<template
+	tag-name="clsc-toast"
+	lyte-comp="true">
+	<template lyte-if="{{ltPropShow}}">
+		<div class="clsc-toast clsc-toast--{{ltPropType}}">
+			<span
+				class="material-symbols-outlined clsc-toast__icon"
+				style="font-size: 18px">
+				{{ltPropIcon}}
+			</span>
+			<span class="clsc-toast__message text-s">{{ltPropMessage}}</span>
+		</div>
+	</template>
+</template>

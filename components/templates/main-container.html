@@ -6,6 +6,9 @@
 		lt-prop-show="{{lbind(showPreferenceModal)}}"
 		files="{{files}}"></editor-user-preference-modal>
 	<about-modal lt-prop-show="{{lbind(showAboutModal)}}"></about-modal>
+	<editor-archive-panel
+		lt-prop-show="{{lbind(showArchivePanel)}}"
+		files="{{files}}"></editor-archive-panel>
 	<div class="main-container flex h-full">
 		<div
 			class="sidebar-panel pb-2 pl-2 shrink-0"
@@ -22,8 +25,7 @@
 								options="{{lbind(addFileMenuOptions)}}"
 								on-new-file="{{method('onNewFile')}}"
 								on-new-comparator="{{method('onNewComparator')}}"
-								on-import-file="{{method('onImportFile')}}">
-							</clsc-action-dropdown>
+								on-import-file="{{method('onImportFile')}}"></clsc-action-dropdown>
 						</div>
 					</template>
 				</div>
@@ -33,58 +35,24 @@
 					files-loaded="{{filesLoaded}}"
 					class="grow min-h-0"></editor-file-tree>
 				<div class="sidebar-footer flex-col pt-1">
-					<div class="flex items-center gap-0.5">
+					<div class="flex items-center gap-0.5 pr-1.5">
 						<button
-							class="btn-primary w-4 h-4"
-							onclick="{{action('onAboutClick')}}">
-							<span class="material-symbols-outlined text-xl">info_i</span>
+							class="btn-icon-sec"
+							onclick="{{action('onArchiveClick')}}"
+							title="Archived Files">
+							<span
+								class="material-symbols-outlined"
+								style="font-size: 22px">
+								archive
+							</span>
 						</button>
-						<button
-							class="btn-primary w-4 h-4"
-							onclick="{{action('onPreferenceClick')}}">
-							<span class="material-symbols-outlined text-xl">settings</span>
-						</button>
+						<clsc-action-dropdown
+							trigger-icon="tune"
+							menu-position="top"
+							options="{{lbind(footerMenuOptions)}}"
+							on-open-about="{{method('onOpenAbout')}}"
+							on-open-settings="{{method('onOpenSettings')}}"></clsc-action-dropdown>
 					</div>
-					<!-- <button class="btn-primary">
-                            <div class="w-full flex items-center gap-1">
-                                <svg-icon
-                                    icon-name="plus"
-                                    icon-size="l"
-                                    svg-class="stroke-primary fill-primary stroke-3"></svg-icon>
-                                <span>New Editor File</span>
-                            </div>
-                        </button> -->
-					<!-- <button class="btn-primary mt-1">
-                            <div class="w-full flex items-center gap-1">
-                                <span>Settings</span>
-                                <span
-                                    class="ml-auto"
-                                    style="color: #ececec">
-                                    <kbd class="flex-center gap-1 text-xs">
-                                        <span class="text-l">⌥</span>
-                                        <span>+</span>
-                                        <span>N</span>
-                                    </kbd>
-                                </span>
-                            </div>
-                        </button> -->
-					<!-- <h4 class="no-margin text-title">Theme</h4>
-                        <clsc-template-dropdown
-                            data="{{editorThemes}}"
-                            placeholder="Choose Theme"
-                            active-option-index="{{currentThemeIndex}}"
-                            on-select="{{method('onThemeSelect')}}">
-                            <template
-                                is="yield"
-                                yield-name="lyte-drop-button">
-                                <div class="flex-center gap-1.5">{{selected.name}}</div>
-                            </template>
-                            <template
-                                is="yield"
-                                yield-name="lyte-drop-item">
-                                <div class="">{{item.name}}</div>
-                            </template>
-                        </clsc-template-dropdown> -->
 				</div>
 			</div>
 		</div>
