@@ -12,7 +12,7 @@
 				</template>
 				<template lyte-else>
 					<button
-						class="clsc-action-dropdown__item"
+						class="clsc-action-dropdown__item {{option.className}}"
 						onclick="{{action('onItemClick', optIndex)}}">
 						<template lyte-if="{{option.icon}}">
 							<span class="material-symbols-outlined clsc-action-dropdown__item-icon">

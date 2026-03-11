@@ -1,6 +1,75 @@
 @import '../../../abstracts/util';
 
+// --- Modal structure ---
 
+.pref-modal__header {
+	padding: 16px 8px;
+	margin: -20px -12px 0;
+	border-bottom: 1px solid var(--border-color-on-secondary-color);
+	gap: 24px;
+
+	.material-symbols-outlined {
+		font-size: 32px;
+		width: 40px;
+		text-align: center;
+	}
+
+	h1 {
+		font-size: var(--font-size__xl);
+		letter-spacing: 0.5px;
+	}
+}
+
+.pref-modal__body {
+	min-height: 0;
+	gap: 16px;
+	margin: 0 -4px;
+	padding-top: 24px;
+}
+
+.pref-modal__tabs {
+	padding-right: 12px;
+}
+
+.pref-modal__tab {
+	@include flex-box(center, center);
+	@include dimension--square(40px);
+	@include border-radius(var(--border-radius__s));
+	@include transition(all 0.15s ease);
+	@include position(relative);
+	border: none;
+	background: transparent;
+	color: var(--color-sec-text);
+	cursor: pointer;
+
+	.material-symbols-outlined {
+		font-size: 22px;
+	}
+
+	&:hover {
+		background-color: var(--background-color-primary--hover);
+	}
+
+	&--active:hover,
+	&--active {
+		color: var(--color-primary);
+		background-color: transparent;
+
+		&::after {
+			content: '';
+			@include position(absolute, $right: -2px);
+			@include dimension--box(3px, 60%);
+			@include border-radius(2px);
+			background-color: var(--color-primary);
+		}
+	}
+}
+
+.pref-modal__content {
+	min-width: 0;
+	overflow-y: auto;
+	padding-right: 16px;
+}
 
 // --- Clear Data / Export buttons ---
 
@@ -28,6 +97,13 @@
 	letter-spacing: 0.03em;
 	line-height: 1.5;
 	flex-shrink: 0;
+}
+
+// --- Monaco shortcut sub-groups ---
+
+.pref-shortcut-group {
+	padding-top: 8px;
+	border-top: 1px solid var(--border-color-on-secondary-color);
 }
 
 // --- Clear Data Confirmation Modal ---

@@ -9,7 +9,7 @@ clsc-multi-toggle-switch[lyte-comp] {
 	@include border-radius(6px);
 	overflow: hidden;
 	background-color: var(--background-color-secondary);
-	@include box-shadow(0 0 0 0.5px var(--color-text-tertiary));
+	border: 0.5px solid var(--color-text-tertiary);
 }
 
 .clsc-multi-toggle-switch__option {

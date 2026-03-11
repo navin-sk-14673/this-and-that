@@ -35,7 +35,7 @@ insertDependencies([
 	'/codepal/consolidated_files/css/initial-styles.css'
 ]);
 
-fetch('/assets/icons.svg')
+fetch('/codepal/assets/icons.svg')
 	.then((res) => res.text())
 	.then((res) => {
 		const ICONS_GROUP_DIV = document.getElementById('icons-group');

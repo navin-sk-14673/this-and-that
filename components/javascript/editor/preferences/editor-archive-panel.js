@@ -33,7 +33,17 @@ Lyte.Component.register('editor-archive-panel', {
 			showToast: Lyte.attr('boolean', { default: false }),
 			toastMessage: Lyte.attr('string', { default: '' }),
 			toastType: Lyte.attr('string', { default: 'success' }),
-			toastIcon: Lyte.attr('string', { default: 'check_circle' })
+			toastIcon: Lyte.attr('string', { default: 'check_circle' }),
+			archiveMenuOptions: Lyte.attr('array', {
+				default: [
+					{
+						label: 'Delete All',
+						icon: 'delete_forever',
+						action: 'onDeleteAll',
+						className: 'clsc-action-dropdown__item--negative'
+					}
+				]
+			})
 		};
 	},
 
@@ -106,7 +116,11 @@ Lyte.Component.register('editor-archive-panel', {
 		}
 	},
 
-	methods: {},
+	methods: {
+		onDeleteAll() {
+			this.setData('showDeleteAllModal', true);
+		}
+	},
 
 	// Reload archived files whenever the panel is shown
 	__showObserver: function () {

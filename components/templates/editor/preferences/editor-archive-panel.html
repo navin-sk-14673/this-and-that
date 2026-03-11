@@ -20,18 +20,11 @@
 						<span class="material-symbols-outlined color-primary">archive</span>
 						<h4 class="font-semibold color-primary">Archived Files</h4>
 						<span class="archive-panel__count text-xs">{{archivedFiles.length}}</span>
-						<button
-							lt-prop-title="Delete All"
-							lt-prop-tooltip-class="clsc-text-tooltip"
-							lt-prop-tooltip-config='{"position":"bottom","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'
-							class="btn-danger-sec w-3.5 h-3.5 p-0.5 ml-auto"
-							onclick="{{action('onDeleteAllClick')}}">
-							<span
-								class="material-symbols-outlined"
-								style="font-size: 20px">
-								delete_forever
-							</span>
-						</button>
+						<clsc-action-dropdown
+							class="ml-auto"
+							trigger-icon="more_vert"
+							options="{{lbind(archiveMenuOptions)}}"
+							on-delete-all="{{method('onDeleteAll')}}"></clsc-action-dropdown>
 					</div>
 				</template>
 
@@ -83,7 +76,9 @@
 										<button
 											class="archive-panel__item-btn archive-panel__item-btn--restore btn-c2a h-3 w-auto p-0.5 rounded-s"
 											onclick="{{action('onRestoreClick', archivedFile)}}"
-											title="Restore">
+											lt-prop-title="Restore"
+											lt-prop-tooltip-class="clsc-text-tooltip"
+											lt-prop-tooltip-config='{"position":"bottom","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'>
 											<span
 												class="material-symbols-outlined"
 												style="font-size: 18px">
@@ -93,7 +88,9 @@
 										<button
 											class="archive-panel__item-btn archive-panel__item-btn--delete btn-c2a h-3 w-auto p-0.5 rounded-s"
 											onclick="{{action('onDeleteClick', archivedFile)}}"
-											title="Delete permanently">
+											lt-prop-title="Delete permanently"
+											lt-prop-tooltip-class="clsc-text-tooltip"
+											lt-prop-tooltip-config='{"position":"bottom","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'>
 											<span
 												class="material-symbols-outlined"
 												style="font-size: 18px">

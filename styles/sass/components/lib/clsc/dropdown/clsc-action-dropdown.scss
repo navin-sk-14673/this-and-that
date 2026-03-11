@@ -97,6 +97,15 @@
 		letter-spacing: 0.04em;
 	}
 
+	&__item--negative,
+	&__item--negative &__item-icon {
+		color: var(--color-negative);
+	}
+
+	&__item--negative:hover {
+		background-color: var(--background-color-negative);
+	}
+
 	&__separator {
 		border: none;
 		border-top: 1px solid var(--border-color-on-secondary-color);

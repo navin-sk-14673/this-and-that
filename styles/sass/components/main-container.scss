@@ -275,10 +275,8 @@ main-container {
 	}
 
 	.sidebar-footer > .flex {
-		justify-content: flex-end;
-
-		> .btn-icon-sec .material-symbols-outlined {
-			font-size: 21px;
-		}
+		flex-direction: row-reverse;
+		padding-right: 0;
+		padding-left: 12px;
 	}
 }

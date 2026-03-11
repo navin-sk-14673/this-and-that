@@ -32,6 +32,34 @@
 	.material-symbols-outlined {
 		font-size: 20px;
 	}
+
+	.clsc-action-dropdown--open .clsc-action-dropdown__trigger-icon {
+		transform: none;
+	}
+
+	.clsc-action-dropdown__trigger {
+		color: var(--color-sec-text);
+	}
+
+	.clsc-action-dropdown__menu {
+		top: calc(100% + 6px);
+		left: auto;
+		right: 0;
+		transform: translateY(-4px) scale(0.97);
+
+		&::before {
+			top: auto;
+			bottom: 100%;
+			left: 0;
+			right: 0;
+			width: 100%;
+			height: 10px;
+		}
+	}
+
+	.clsc-action-dropdown--open .clsc-action-dropdown__menu {
+		transform: translateY(0) scale(1);
+	}
 }
 
 .archive-panel__count {

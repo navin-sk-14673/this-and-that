@@ -124,6 +124,15 @@ Lyte.Component.register('main-container', {
 
 	_initKeyboardShortcuts() {
 		this._onGlobalKeydown = (e) => {
+			// Disable shortcuts when any modal is open
+			if (
+				this.getData('showAboutModal') ||
+				this.getData('showArchivePanel') ||
+				this.getData('showPreferenceModal')
+			) {
+				return;
+			}
+
 			if (e.ctrlKey && e.shiftKey && !e.metaKey && !e.altKey) {
 				if (e.code === 'KeyN') {
 					e.preventDefault();

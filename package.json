@@ -11,11 +11,9 @@
 		"sass:watch": "sass --no-source-map --color --style=compressed --watch --poll styles/sass:styles/css",
 		"lyte:watch": "PUPPETEER_TIMEOUT=60000 npm run sass:build && lyte serve --env=dev --port=4040",
 		"watch": "concurrently npm:sass:watch npm:lyte:watch",
-		"start": "npm run watch",
+		"dev": "npm run watch",
 		"format": "prettier --write --ignore-unknown .",
 		"lint": "eslint .",
-		"lyte-model:g": "lyte g model ${npm_config_model} && lyte g adapter ${npm_config_model} && lyte g serializer ${npm_config_model}",
-		"lyte-model:d": "lyte d model ${npm_config_model} && lyte d adapter ${npm_config_model} && lyte d serializer ${npm_config_model}",
 		"deploy": "bash deploy/deploy.sh"
 	},
 	"repository": {

@@ -64,11 +64,19 @@ Lyte.Component.register('editor-user-preference-modal', {
 					{ value: 'right', label: 'Right', icon: 'align_horizontal_right' }
 				]
 			}),
-			showClearDataModal: Lyte.attr('boolean', { default: false })
+			showClearDataModal: Lyte.attr('boolean', { default: false }),
+			isMac: Lyte.attr('boolean', { default: /Mac|iPhone|iPad|iPod/i.test(navigator.platform) }),
+			activeSettingsTab: Lyte.attr('string', { default: 'preferences' })
 		};
 	},
 
 	actions: {
+		onSettingsTabSelect(tab) {
+			this.setData('activeSettingsTab', tab);
+		},
+		onAboutClick() {
+			this.executeMethod('onOpenAbout');
+		},
 		onExportClick() {
 			this._exportAsZip();
 		},

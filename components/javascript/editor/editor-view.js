@@ -3,6 +3,8 @@ Lyte.Component.register('editor-view', {
 		const file = this.getData('file');
 
 		return FileContentManager.getFileContent(file.id).then((fileContent) => {
+			if (!fileContent) return;
+
 			const container = this.$node.querySelector('.editor-view-container');
 			if (file.isComparator) {
 				const diffEditor = monaco.editor.createDiffEditor(container, {

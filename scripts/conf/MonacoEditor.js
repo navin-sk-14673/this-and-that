@@ -3223,7 +3223,7 @@ class MonacoEditor {
 	}
 
 	static initThemes = async () =>
-		fetch('/editor/themes/themelist.json')
+		fetch('/codepal/editor/themes/themelist.json')
 			.then((res) => res.json())
 			.then(async (themeFiles) => {
 				MonacoEditor.ALL_THEMES = themeFiles;
@@ -3231,7 +3231,7 @@ class MonacoEditor {
 					themeNames = Object.values(themeFiles);
 				MonacoEditor.AVAILABLE_THEMES = themeKeys;
 
-				const promise = themeNames.map((theme) => fetch(`/editor/themes/${theme}.json`));
+				const promise = themeNames.map((theme) => fetch(`/codepal/editor/themes/${theme}.json`));
 				return Promise.all(promise)
 					.then((responses) => Promise.all(responses.map((response) => response.json())))
 					.then((themes) =>

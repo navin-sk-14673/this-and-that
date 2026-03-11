@@ -4,7 +4,8 @@
 	class="h-full">
 	<editor-user-preference-modal
 		lt-prop-show="{{lbind(showPreferenceModal)}}"
-		files="{{files}}"></editor-user-preference-modal>
+		files="{{files}}"
+		on-open-about="{{method('onOpenAbout')}}"></editor-user-preference-modal>
 	<about-modal
 		lt-prop-show="{{lbind(showAboutModal)}}"
 		lt-prop-is-walkthrough="{{lbind(isAboutWalkthrough)}}"></about-modal>
@@ -40,8 +41,32 @@
 					<div class="flex items-center gap-0.5 pr-1.5">
 						<button
 							class="btn-icon-sec"
+							onclick="{{action('onPreferenceClick')}}"
+							lt-prop-title="Settings"
+							lt-prop-tooltip-class="clsc-text-tooltip"
+							lt-prop-tooltip-config='{"position":"top","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'>
+							<span
+								class="material-symbols-outlined"
+								style="font-size: 22px">
+								tune
+							</span>
+						</button>
+						<!-- <button
+							class="btn-icon-sec"
+							onclick="{{action('onAboutClick')}}"
+							lt-prop-title="About"
+							lt-prop-tooltip-class="clsc-text-tooltip"
+							lt-prop-tooltip-config='{"position":"top","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'>
+							<span
+								class="material-symbols-outlined"
+								style="font-size: 22px">
+								info
+							</span>
+						</button> -->
+						<button
+							class="btn-icon-sec"
 							onclick="{{action('onArchiveClick')}}"
-							lt-prop-title="Archived Files"
+							lt-prop-title="Archives"
 							lt-prop-tooltip-class="clsc-text-tooltip"
 							lt-prop-tooltip-config='{"position":"top","animation":{"start":"clsc-tooltip-start","during":"clsc-tooltip-animation","end":"clsc-tooltip-end"}}'>
 							<span
@@ -50,12 +75,6 @@
 								archive
 							</span>
 						</button>
-						<clsc-action-dropdown
-							trigger-icon="tune"
-							menu-position="top"
-							options="{{lbind(footerMenuOptions)}}"
-							on-open-about="{{method('onOpenAbout')}}"
-							on-open-settings="{{method('onOpenSettings')}}"></clsc-action-dropdown>
 					</div>
 				</div>
 			</div>
