@@ -7,6 +7,7 @@ Lyte.Component.register('editor-file-tree', {
 
 		this.initSortable();
 		this.initExternalDrop();
+		this._initContextMenu();
 	},
 	initSortable() {
 		const sortable = this.$node.querySelector('.editor-file-tree-container');
@@ -64,6 +65,30 @@ Lyte.Component.register('editor-file-tree', {
 		dropZone.addEventListener('drop', this._onDrop, true);
 		dropZone.addEventListener('dragenter', this._onDragEnter);
 		dropZone.addEventListener('dragleave', this._onDragLeave);
+	},
+
+	_initContextMenu() {
+		this.$node.addEventListener('contextmenu', (e) => {
+			const fileEl = e.target.closest('editor-file');
+			if (!fileEl) return;
+
+			e.preventDefault();
+			e.stopPropagation();
+
+			const fileIndex = fileEl.component.getData('fileIndex');
+			const files = this.getData('files');
+			const file = files[fileIndex];
+			if (!file) return;
+
+			// Store coordinates for File Info popover positioning
+			this.__fileInfoX = e.clientX;
+			this.__fileInfoY = e.clientY;
+
+			const menu = this.$node.querySelector('#editor-file-context-menu');
+			if (menu && menu.component) {
+				menu.component.open(e.clientX, e.clientY, file);
+			}
+		});
 	},
 
 	_isExternalFileDrag(e) {
@@ -218,6 +243,17 @@ Lyte.Component.register('editor-file-tree', {
 		return [name, ''];
 	},
 
+	_getDuplicateTitle(title) {
+		const copyNumMatch = title.match(/^(.+) copy \((\d+)\)$/);
+		if (copyNumMatch) {
+			return copyNumMatch[1] + ' copy (' + (parseInt(copyNumMatch[2]) + 1) + ')';
+		}
+		if (title.endsWith(' copy')) {
+			return title + ' (2)';
+		}
+		return title + ' copy';
+	},
+
 	async _handleDrop(e) {
 		if (!this._isExternalFileDrag(e)) return;
 		e.preventDefault();
@@ -348,7 +384,27 @@ Lyte.Component.register('editor-file-tree', {
 			filesLoaded: Lyte.attr('boolean', { default: false }),
 			activeFileId: Lyte.attr('string'),
 			currentThemeIndex: Lyte.attr('number', { default: 0 }),
-			sortableClass: Lyte.attr('string')
+			sortableClass: Lyte.attr('string'),
+			contextMenuOptions: Lyte.attr('array', {
+				default: [
+					{ label: 'Duplicate', icon: 'content_copy', action: 'onDuplicateFile', shortcut: '⌃⇧D' },
+					{
+						label: 'Archive',
+						icon: 'archive',
+						action: 'onArchiveFile',
+						className: 'clsc-context-menu__item--negative'
+					},
+					{ separator: true },
+					{ label: 'Copy File Content', icon: 'content_paste', action: 'onCopyFileContent' },
+					{ label: 'Open in New Tab', icon: 'open_in_new', action: 'onOpenInNewTab' },
+					{ separator: true },
+					{ label: 'Download File', icon: 'download', action: 'onDownloadFile' },
+					{ label: 'Copy as Snippet', icon: 'code', action: 'onCopySnippet' },
+					{ separator: true },
+					{ label: 'File Info', icon: 'info', action: 'onFileInfo' },
+					{ label: 'Change Language', icon: 'translate', disabled: true }
+				]
+			})
 		};
 	},
 	actions: {
@@ -387,7 +443,146 @@ Lyte.Component.register('editor-file-tree', {
 					return FileManager.archiveFile(fileData);
 				}
 			}
+		},
+
+		// --- Context menu action handlers ---
+
+		async onDuplicateFile(option, file) {
+			const files = this.getData('files');
+			const sourceIndex = files.findIndex((f) => f.id === file.id);
+			if (sourceIndex === -1) return;
+
+			const source = files[sourceIndex];
+			const newMeta = {
+				id: FileManager.getNewFileName(),
+				title: this._getDuplicateTitle(source.title),
+				extension: source.extension,
+				language: source.language,
+				index: sourceIndex + 1,
+				isComparator: source.isComparator || false
+			};
+
+			// Copy content from source
+			const record = await FileContentManager.getFileContent(source.id);
+			const content = record
+				? record.content
+				: source.isComparator
+				? JSON.stringify({ original: '', modified: '' })
+				: '';
+			await FileManager.updateFile(newMeta);
+			await FileContentManager.updateFileContent({ id: newMeta.id, content: content });
+
+			Lyte.arrayUtils(files, 'insertAt', sourceIndex + 1, newMeta);
+			await FileManager.updateFilePositions(files, sourceIndex + 1, files.length - 1);
+			FileManager.saveFileOrder(files);
+
+			Lyte.Router.transitionTo({
+				route: 'index.view',
+				dynamicParams: [newMeta.id]
+			});
+		},
+
+		async onArchiveFile(option, file) {
+			const files = this.getData('files');
+			for (let i = 0; i < files.length; i++) {
+				if (files[i].id === file.id) {
+					const fileData = { ...files[i], index: i };
+					Lyte.arrayUtils(files, 'removeAt', i, 1);
+					return FileManager.archiveFile(fileData);
+				}
+			}
+		},
+
+		onOpenInNewTab(option, file) {
+			const base = window.location.pathname;
+			const url = base + '#/view/' + encodeURIComponent(file.id);
+			window.open(url, '_blank');
+		},
+
+		async onCopyFileContent(option, file) {
+			const record = await FileContentManager.getFileContent(file.id);
+			const content = record ? record.content : '';
+			let text = '';
+			if (typeof content === 'object') {
+				text = 'Original:\n' + (content.original || '') + '\n\nModified:\n' + (content.modified || '');
+			} else {
+				text = content || '';
+			}
+			await navigator.clipboard.writeText(text);
+		},
+
+		async onDownloadFile(option, file) {
+			const record = await FileContentManager.getFileContent(file.id);
+			const content = record ? record.content : '';
+			let text = '';
+			if (typeof content === 'object') {
+				text = content.modified || content.original || '';
+			} else {
+				text = content || '';
+			}
+			const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = (file.title || 'untitled') + (file.extension || '');
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			URL.revokeObjectURL(url);
+		},
+
+		async onCopySnippet(option, file) {
+			const record = await FileContentManager.getFileContent(file.id);
+			const content = record ? record.content : '';
+			const text = typeof content === 'object' ? content.modified || content.original || '' : content || '';
+			const lang = file.language || '';
+			const snippet = '```' + lang + '\n' + text + '\n```';
+			await navigator.clipboard.writeText(snippet);
+		},
+
+		async onFileInfo(option, file) {
+			const record = await FileContentManager.getFileContent(file.id);
+			const raw = record ? record.content : '';
+			let text = '';
+			if (typeof raw === 'object') {
+				text = (raw.original || '') + (raw.modified || '');
+			} else {
+				text = raw || '';
+			}
+
+			const bytes = new Blob([text]).size;
+			const lines = text ? text.split('\n').length : 0;
+			const chars = text.length;
+			const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+
+			const formatBytes = (b) => {
+				if (b < 1024) return b + ' B';
+				if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+				return (b / (1024 * 1024)).toFixed(1) + ' MB';
+			};
+
+			const entries = [
+				{ icon: 'code', label: 'Language', value: file.language || 'Plain Text' },
+				{ icon: 'category', label: 'Type', value: file.isComparator ? 'Comparator' : 'File' },
+				{ separator: true },
+				{ icon: 'straighten', label: 'Size', value: formatBytes(bytes) },
+				{ icon: 'format_list_numbered', label: 'Lines', value: lines.toLocaleString() },
+				{ icon: 'text_fields', label: 'Characters', value: chars.toLocaleString() },
+				{ icon: 'notes', label: 'Words', value: words.toLocaleString() },
+				{ separator: true },
+				{ icon: 'fingerprint', label: 'File ID', value: file.id }
+			];
+
+			const popover = this.$node.querySelector('#editor-file-info-popover');
+			if (popover && popover.component) {
+				const title = (file.title || 'Untitled') + (file.extension || '');
+				popover.component.open(this.__fileInfoX || 0, this.__fileInfoY || 0, title, entries);
+			}
 		}
+	},
+
+	duplicateFile(file) {
+		this.getMethods('onDuplicateFile').call(this, null, file);
 	},
 
 	async restoreArchivedFile() {

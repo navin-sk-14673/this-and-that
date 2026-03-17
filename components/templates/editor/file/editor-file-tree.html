@@ -105,5 +105,16 @@
 				</template>
 			</div>
 		</template>
+		<clsc-context-menu
+			id="editor-file-context-menu"
+			options="{{contextMenuOptions}}"
+			on-duplicate-file="{{method('onDuplicateFile')}}"
+			on-archive-file="{{method('onArchiveFile')}}"
+			on-open-in-new-tab="{{method('onOpenInNewTab')}}"
+			on-copy-file-content="{{method('onCopyFileContent')}}"
+			on-download-file="{{method('onDownloadFile')}}"
+			on-copy-snippet="{{method('onCopySnippet')}}"
+			on-file-info="{{method('onFileInfo')}}"></clsc-context-menu>
+		<clsc-info-popover id="editor-file-info-popover"></clsc-info-popover>
 	</div>
 </template>

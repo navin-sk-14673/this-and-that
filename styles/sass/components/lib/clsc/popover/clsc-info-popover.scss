@@ -1,0 +1,106 @@
+@import '../../../../abstracts/util';
+
+.clsc-info-popover {
+	position: fixed;
+	z-index: 1001;
+	min-width: 240px;
+	max-width: 320px;
+	background-color: var(--background-color-dialog);
+	color: var(--color-sec-text);
+	@include border(1px solid var(--border-color-on-secondary-color), var(--border-radius__m));
+	@include box-shadow(var(--box-shadow__m));
+	animation: clsc-info-popover-in 0.12s ease-out;
+	overflow: hidden;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		padding: 10px 12px 0;
+	}
+
+	&__title {
+		font-size: var(--font-size__s);
+		font-weight: 600;
+		color: var(--color-primary-text);
+		letter-spacing: 0.02em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		background: none;
+		color: var(--color-optional-text);
+		cursor: pointer;
+		padding: 2px;
+		@include border-radius(var(--border-radius__s));
+		@include transition(background-color 0.12s ease);
+
+		&:hover {
+			background-color: var(--background-color-sec-button--hover);
+			color: var(--color-sec-text);
+		}
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: 8px 6px;
+	}
+
+	&__row {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 5px 8px;
+		@include border-radius(var(--border-radius__s));
+	}
+
+	&__row-icon {
+		font-size: 16px;
+		color: var(--color-icon);
+		flex-shrink: 0;
+	}
+
+	&__row-label {
+		font-size: var(--font-size__xs);
+		color: var(--color-optional-text);
+		white-space: nowrap;
+	}
+
+	&__row-value {
+		margin-left: auto;
+		font-size: var(--font-size__xs);
+		font-weight: 500;
+		color: var(--color-sec-text);
+		text-align: right;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 160px;
+	}
+
+	&__separator {
+		border: none;
+		border-top: 1px solid var(--border-color-on-secondary-color);
+		margin: 4px 6px;
+	}
+}
+
+@keyframes clsc-info-popover-in {
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}

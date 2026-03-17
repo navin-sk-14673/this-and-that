@@ -146,6 +146,10 @@ Lyte.Component.register('main-container', {
 					e.preventDefault();
 					e.stopPropagation();
 					this.FILE_TREE.component.restoreArchivedFile();
+				} else if (e.code === 'KeyD') {
+					e.preventDefault();
+					e.stopPropagation();
+					this._duplicateActiveFile();
 				} else if (e.code === 'KeyO') {
 					e.preventDefault();
 					e.stopPropagation();
@@ -155,6 +159,19 @@ Lyte.Component.register('main-container', {
 		};
 		// Use capture phase so it fires before Monaco intercepts
 		document.addEventListener('keydown', this._onGlobalKeydown, true);
+	},
+
+	// --- Duplicate Active File ---
+
+	_duplicateActiveFile() {
+		const activeFileId = Lyte.Router.getCurrentRouteInfo().dynamicParams[0];
+		if (!activeFileId) return;
+
+		const files = this.getData('files');
+		const file = files.find((f) => f.id === activeFileId);
+		if (!file) return;
+
+		this.FILE_TREE.component.duplicateFile(file);
 	},
 
 	// --- File Import via Input ---

@@ -1,0 +1,42 @@
+<template
+	tag-name="clsc-info-popover"
+	lyte-comp="true">
+	<template lyte-if="{{isOpen}}">
+		<div
+			class="clsc-info-popover"
+			style="top: {{posY}}px; left: {{posX}}px;">
+			<template lyte-if="{{title}}">
+				<div class="clsc-info-popover__header">
+					<span class="clsc-info-popover__title">{{title}}</span>
+					<button
+						class="clsc-info-popover__close"
+						onclick="{{action('onClose')}}">
+						<span
+							class="material-symbols-outlined"
+							style="font-size: 16px">
+							close
+						</span>
+					</button>
+				</div>
+			</template>
+			<div class="clsc-info-popover__body">
+				<template lyte-for="{{entries}} as entry entryIndex">
+					<template lyte-if="{{entry.separator}}">
+						<hr class="clsc-info-popover__separator" />
+					</template>
+					<template lyte-else>
+						<div class="clsc-info-popover__row">
+							<template lyte-if="{{entry.icon}}">
+								<span class="material-symbols-outlined clsc-info-popover__row-icon">
+									{{entry.icon}}
+								</span>
+							</template>
+							<span class="clsc-info-popover__row-label">{{entry.label}}</span>
+							<span class="clsc-info-popover__row-value">{{entry.value}}</span>
+						</div>
+					</template>
+				</template>
+			</div>
+		</div>
+	</template>
+</template>

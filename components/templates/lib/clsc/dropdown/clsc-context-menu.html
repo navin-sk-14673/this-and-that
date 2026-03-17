@@ -1,0 +1,31 @@
+<template
+	tag-name="clsc-context-menu"
+	lyte-comp="true">
+	<template lyte-if="{{isOpen}}">
+		<div
+			class="clsc-context-menu"
+			style="top: {{posY}}px; left: {{posX}}px;">
+			<template lyte-for="{{options}} as option optIndex">
+				<template lyte-if="{{option.separator}}">
+					<hr class="clsc-context-menu__separator" />
+				</template>
+				<template lyte-else>
+					<button
+						class="clsc-context-menu__item {{option.className}} {{if(option.disabled, 'clsc-context-menu__item--disabled', '')}}"
+						onclick="{{action('onItemClick', optIndex)}}"
+						{{if(option.disabled, 'disabled', '')}}>
+						<template lyte-if="{{option.icon}}">
+							<span class="material-symbols-outlined clsc-context-menu__item-icon">
+								{{option.icon}}
+							</span>
+						</template>
+						<span class="clsc-context-menu__item-label">{{option.label}}</span>
+						<template lyte-if="{{option.shortcut}}">
+							<span class="clsc-context-menu__item-shortcut">{{option.shortcut}}</span>
+						</template>
+					</button>
+				</template>
+			</template>
+		</div>
+	</template>
+</template>
