@@ -108,13 +108,24 @@
 		<clsc-context-menu
 			id="editor-file-context-menu"
 			options="{{contextMenuOptions}}"
+			on-rename-file="{{method('onRenameFile')}}"
 			on-duplicate-file="{{method('onDuplicateFile')}}"
 			on-archive-file="{{method('onArchiveFile')}}"
 			on-open-in-new-tab="{{method('onOpenInNewTab')}}"
 			on-copy-file-content="{{method('onCopyFileContent')}}"
 			on-download-file="{{method('onDownloadFile')}}"
 			on-copy-snippet="{{method('onCopySnippet')}}"
+			on-change-language="{{method('onChangeLanguage')}}"
 			on-file-info="{{method('onFileInfo')}}"></clsc-context-menu>
+		<clsc-context-menu
+			id="editor-tree-context-menu"
+			options="{{treeContextMenuOptions}}"
+			on-new-file="{{method('onTreeNewFile')}}"
+			on-new-comparator="{{method('onTreeNewComparator')}}"
+			on-import-files="{{method('onTreeImportFiles')}}"></clsc-context-menu>
+		<clsc-language-picker
+			id="editor-language-picker"
+			on-language-selected="{{method('onLanguageSelected')}}"></clsc-language-picker>
 		<clsc-info-popover id="editor-file-info-popover"></clsc-info-popover>
 	</div>
 </template>

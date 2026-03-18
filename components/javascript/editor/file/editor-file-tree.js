@@ -70,23 +70,30 @@ Lyte.Component.register('editor-file-tree', {
 	_initContextMenu() {
 		this.$node.addEventListener('contextmenu', (e) => {
 			const fileEl = e.target.closest('editor-file');
-			if (!fileEl) return;
+			if (fileEl) {
+				e.preventDefault();
+				e.stopPropagation();
 
-			e.preventDefault();
-			e.stopPropagation();
+				const fileIndex = fileEl.component.getData('fileIndex');
+				const files = this.getData('files');
+				const file = files[fileIndex];
+				if (!file) return;
 
-			const fileIndex = fileEl.component.getData('fileIndex');
-			const files = this.getData('files');
-			const file = files[fileIndex];
-			if (!file) return;
+				this.__fileInfoX = e.clientX;
+				this.__fileInfoY = e.clientY;
 
-			// Store coordinates for File Info popover positioning
-			this.__fileInfoX = e.clientX;
-			this.__fileInfoY = e.clientY;
+				const menu = this.$node.querySelector('#editor-file-context-menu');
+				if (menu && menu.component) {
+					menu.component.open(e.clientX, e.clientY, file);
+				}
+			} else {
+				e.preventDefault();
+				e.stopPropagation();
 
-			const menu = this.$node.querySelector('#editor-file-context-menu');
-			if (menu && menu.component) {
-				menu.component.open(e.clientX, e.clientY, file);
+				const treeMenu = this.$node.querySelector('#editor-tree-context-menu');
+				if (treeMenu && treeMenu.component) {
+					treeMenu.component.open(e.clientX, e.clientY);
+				}
 			}
 		});
 	},
@@ -385,8 +392,17 @@ Lyte.Component.register('editor-file-tree', {
 			activeFileId: Lyte.attr('string'),
 			currentThemeIndex: Lyte.attr('number', { default: 0 }),
 			sortableClass: Lyte.attr('string'),
+			treeContextMenuOptions: Lyte.attr('array', {
+				default: [
+					{ label: 'File', icon: 'note_add', action: 'onNewFile', shortcut: '⌃⇧N' },
+					{ label: 'Comparator', icon: 'difference', action: 'onNewComparator', shortcut: '⌃⇧M' },
+					{ separator: true },
+					{ label: 'Import Files', icon: 'upload_file', action: 'onImportFiles', shortcut: '⌃⇧O' }
+				]
+			}),
 			contextMenuOptions: Lyte.attr('array', {
 				default: [
+					{ label: 'Rename', icon: 'edit', action: 'onRenameFile' },
 					{ label: 'Duplicate', icon: 'content_copy', action: 'onDuplicateFile', shortcut: '⌃⇧D' },
 					{
 						label: 'Archive',
@@ -402,7 +418,7 @@ Lyte.Component.register('editor-file-tree', {
 					{ label: 'Copy as Snippet', icon: 'code', action: 'onCopySnippet' },
 					{ separator: true },
 					{ label: 'File Info', icon: 'info', action: 'onFileInfo' },
-					{ label: 'Change Language', icon: 'translate', disabled: true }
+					{ label: 'Change Language', icon: 'translate', action: 'onChangeLanguage' }
 				]
 			})
 		};
@@ -446,6 +462,20 @@ Lyte.Component.register('editor-file-tree', {
 		},
 
 		// --- Context menu action handlers ---
+
+		onRenameFile(option, file) {
+			const allFileEls = this.$node.querySelectorAll('editor-file');
+			for (const el of allFileEls) {
+				if (el.component.getData('file').id === file.id) {
+					el.component.setData('state', el.component.STATES.CREATE);
+					requestAnimationFrame(() => {
+						const input = el.querySelector('clsc-input input');
+						if (input) input.focus();
+					});
+					break;
+				}
+			}
+		},
 
 		async onDuplicateFile(option, file) {
 			const files = this.getData('files');
@@ -540,6 +570,13 @@ Lyte.Component.register('editor-file-tree', {
 			await navigator.clipboard.writeText(snippet);
 		},
 
+		onChangeLanguage(option, file) {
+			const picker = this.$node.querySelector('#editor-language-picker');
+			if (picker && picker.component) {
+				picker.component.open(this.__fileInfoX || 0, this.__fileInfoY || 0, file);
+			}
+		},
+
 		async onFileInfo(option, file) {
 			const record = await FileContentManager.getFileContent(file.id);
 			const raw = record ? record.content : '';
@@ -578,6 +615,31 @@ Lyte.Component.register('editor-file-tree', {
 				const title = (file.title || 'Untitled') + (file.extension || '');
 				popover.component.open(this.__fileInfoX || 0, this.__fileInfoY || 0, title, entries);
 			}
+		},
+
+		onLanguageSelected(lang, file) {
+			const files = this.getData('files');
+			const target = files.find((f) => f.id === file.id);
+			if (!target) return;
+			Lyte.objectUtils(target, 'add', 'language', lang.id);
+
+			const monacoLang = monaco.languages.getLanguages().find((l) => l.id === lang.id);
+			if (monacoLang && monacoLang.extensions && monacoLang.extensions.length > 0) {
+				Lyte.objectUtils(target, 'add', 'extension', monacoLang.extensions[0]);
+			}
+
+			FileManager.updateFile(target);
+			FileManager.saveFileOrder(files);
+		},
+
+		onTreeNewFile() {
+			this.onCreateFile();
+		},
+		onTreeNewComparator() {
+			this.onCreateComparatorFile();
+		},
+		onTreeImportFiles() {
+			this._triggerFileImport();
 		}
 	},
 

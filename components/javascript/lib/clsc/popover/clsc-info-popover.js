@@ -22,11 +22,13 @@ Lyte.Component.register('clsc-info-popover', {
 		};
 
 		document.addEventListener('click', this._onDocClick, true);
+		document.addEventListener('contextmenu', this._onDocClick, true);
 		document.addEventListener('keydown', this._onDocKeydown);
 	},
 
 	didDestroy() {
 		document.removeEventListener('click', this._onDocClick, true);
+		document.removeEventListener('contextmenu', this._onDocClick, true);
 		document.removeEventListener('keydown', this._onDocKeydown);
 	},
 

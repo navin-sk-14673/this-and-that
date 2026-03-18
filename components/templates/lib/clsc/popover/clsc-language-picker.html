@@ -1,0 +1,45 @@
+<template
+	tag-name="clsc-language-picker"
+	lyte-comp="true">
+	<template lyte-if="{{isOpen}}">
+		<div
+			class="clsc-language-picker"
+			style="top: {{posY}}px; left: {{posX}}px;">
+			<div class="clsc-language-picker__header">
+				<span
+					class="material-symbols-outlined clsc-language-picker__search-icon"
+					style="font-size: 16px">
+					search
+				</span>
+				<input
+					type="text"
+					class="clsc-language-picker__input"
+					placeholder="Search languages..."
+					oninput="{{action('onSearchInput', event)}}"
+					onkeydown="{{action('onKeydown', event)}}" />
+			</div>
+			<div class="clsc-language-picker__list">
+				<template lyte-for="{{filteredLanguages}} as lang langIndex">
+					<div
+						class="clsc-language-picker__item {{if(langIndex == focusedIndex, '--focused')}} {{if(lang.id == __contextFile.language, '--active')}}"
+						onclick="{{action('onItemClick', langIndex)}}">
+						<div
+							class="clsc-language-picker__item-icon"
+							data-lang-id="{{lang.id}}"></div>
+						<span class="clsc-language-picker__item-name">{{lang.name}}</span>
+						<span
+							lyte-if="{{lang.id != lang.name}}"
+							class="clsc-language-picker__item-id">
+							{{lang.id}}
+						</span>
+					</div>
+				</template>
+				<div
+					lyte-if="{{filteredLanguages.length == 0}}"
+					class="clsc-language-picker__empty">
+					No matching languages
+				</div>
+			</div>
+		</div>
+	</template>
+</template>
